@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/nav_usage"
+            android:title="@string/navigation_drawer_usage" />
+        <item
+            android:id="@+id/nav_terms_of_use"
+            android:title="@string/navigation_drawer_terms_of_use" />
+        <item
+            android:id="@+id/nav_external_file_import"
+            android:title="@string/external_file_import" />
+        <item
+            android:id="@+id/nav_contact"
+            android:title="@string/navigation_drawer_contact" />
+</menu>

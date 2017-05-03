@@ -1,0 +1,248 @@
+<android.support.v4.widget.DrawerLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        tools:context="jp.clipline.clsimplecamera.CameraActivity"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:configChanges="orientation"
+        >
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutPreview"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_centerInParent="true"
+            >
+
+            <SurfaceView
+                android:id="@+id/surfaceView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+        <Button
+            android:layout_gravity="top|left"
+            android:id="@+id/buttonFocus"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="90dp"
+            android:visibility="invisible"
+            android:background="@drawable/ic_forcus"
+            />
+
+        <FrameLayout
+            android:id="@+id/frameLayoutSeekBarZoom"
+            android:layout_height="400dp"
+            android:layout_width="140dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            >
+
+            <SeekBar
+                android:layout_gravity="center|left"
+                android:layout_width="360dp"
+                android:layout_height="24dp"
+                android:id="@+id/seekBarZoom"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:rotation="270"
+                android:minWidth="100dp"
+                android:layout_marginLeft="-70dp"
+                android:progressDrawable="@drawable/seek_bar_zoom"
+                android:thumb="@drawable/seek_bar_thumb_zoom"
+                android:background="@drawable/seekbar_background"
+                />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/frameLayoutSeekBarBrightness"
+            android:layout_height="400dp"
+            android:layout_width="180dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            >
+
+            <SeekBar
+                android:layout_gravity="center|right"
+                android:layout_width="360dp"
+                android:layout_height="58dp"
+                android:id="@+id/seekBarBrightness"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:rotation="270"
+                android:minWidth="100dp"
+                android:layout_marginRight="-40dp"
+                android:progressDrawable="@drawable/seek_bar_zoom"
+                android:thumb="@drawable/seek_bar_thumb_brightness"
+                android:background="@drawable/seekbar_background"
+                />
+
+        </FrameLayout>
+
+        <TextView
+            android:text="0:00:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif-smallcaps"
+            android:id="@+id/textViewVideoRecordingTime"
+            android:textColorLink="?attr/colorBackgroundFloating"
+            android:textSize="36sp"
+            android:textColor="@android:color/background_light"
+            android:textStyle="normal"
+            android:layout_marginTop="12dp" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutTop"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:background="#FF000000"
+        >
+
+        <ImageButton
+            android:id="@+id/icSettings"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/ic_settings"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="16dp"
+            />
+
+        <ImageView
+            android:layout_gravity="top|left"
+            android:scaleType="centerCrop"
+            android:layout_alignParentTop="true"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_margin="16dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/imageViewOpenGallery" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutBottom"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="#FF000000"
+        >
+
+        <Button
+            android:id="@+id/buttonVideoRecording"
+            android:layout_centerInParent="true"
+            android:layout_height="64dp"
+            android:layout_width="64dp"
+            android:background="@drawable/shutter_button_recording"
+            />
+
+        <Button
+            android:id="@+id/buttonVideo"
+            android:layout_centerInParent="true"
+            android:layout_height="64dp"
+            android:layout_width="64dp"
+            android:background="@drawable/shutter_button"/>
+
+        <Button
+            android:id="@+id/buttonPicture"
+            android:layout_centerInParent="true"
+            android:layout_height="64dp"
+            android:layout_width="64dp"
+            android:background="@drawable/picture_shutter_button"
+            android:scaleType="center"
+            android:visibility="invisible"
+            />
+
+        <ImageButton
+            android:id="@+id/imageButtonBackFront"
+            android:layout_alignParentBottom="true"
+            android:layout_height="48dp"
+            android:layout_width="48dp"
+            android:layout_centerVertical="true"
+            android:layout_margin="32dp"
+            android:background="@drawable/ic_front_back"
+                />
+
+            <ImageButton
+                    android:id="@+id/imageButtonChangePicture"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_above="@id/buttonVideoRecording"
+                    android:layout_margin="16dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/ic_swap_camera"
+                    />
+
+            <ImageButton
+                android:id="@+id/imageButtonChangeVideo"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_below="@id/buttonVideoRecording"
+                android:layout_margin="16dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ic_swap_movie"
+                />
+
+            <ImageButton
+                android:id="@+id/imageButtonChangeAspectWide"
+                android:layout_alignParentTop="true"
+                android:layout_height="64dp"
+                android:layout_width="36dp"
+                android:layout_margin="32dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ic_aspect_16x9"
+                />
+
+            <ImageButton
+                android:id="@+id/imageButtonChangeAspectStandard"
+                android:layout_alignParentTop="true"
+                android:layout_height="48dp"
+                android:layout_width="36dp"
+                android:layout_margin="32dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ic_aspect_4x3"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <ProgressBar android:id="@+id/progressBarLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        style="?android:attr/progressBarStyleLarge"
+        android:indeterminateDrawable="@drawable/progress"
+        android:indeterminate="true"
+        android:indeterminateBehavior="cycle"
+        >
+    </ProgressBar>
+
+    <include
+        layout="@layout/app_bar_navigation_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_navigation_drawer"
+        app:menu="@menu/activity_navigation_drawer_drawer" />
+
+</android.support.v4.widget.DrawerLayout>

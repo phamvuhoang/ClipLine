@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_submission_confirmation"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="jp.clipline.clwebwrapperapplication.SubmissionConfirmationActivity">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutHeader"
+        android:layout_height="80dp"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:background="#61B5Ab"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00_ダミーの文字列です"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="36sp"
+            android:textColor="@android:color/background_light"
+            android:textStyle="normal"
+            android:id="@+id/textViewToDoTitle" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="#61B5Ab"
+            android:id="@+id/imageButton" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:background="#61B5Ab"
+            android:id="@+id/imageButtonBack"
+            app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutBody"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/relativeLayoutBottom"
+        android:layout_below="@+id/relativeLayoutHeader"
+        android:background="#FFFFFF"
+        >
+
+        <TextView
+            android:text="お手本のように撮影しましょう"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/relativeLayoutPlayer"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/textView5" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutPlayer"
+            android:layout_height="320dp"
+            android:layout_width="320dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="#FFFFFF"
+            >
+
+            <VideoView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/videoView" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/imageView" />
+
+         </RelativeLayout>
+
+        <TextView
+            android:text="やり直す "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutPlayer"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/textViewBack" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutBottom"
+        android:layout_height="64dp"
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:background="#E8E8E8"
+        >
+
+        <ImageButton
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:srcCompat="@drawable/ic_sample_svg"
+            android:id="@+id/imageButton2"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            />
+
+        <TextView
+            android:layout_width="92dp"
+            android:layout_height="16dp"
+            android:text="撮る"
+            android:layout_toRightOf="@+id/imageButton2"
+            android:layout_centerVertical="true"
+            android:textSize="12sp"
+            android:textColor="#000000"
+            android:textStyle="normal"
+            android:id="@+id/textView6" />
+
+
+        <Button
+            android:text="見比べる"
+            android:layout_width="92dp"
+            android:layout_height="64dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="16dp"
+            android:id="@+id/buttonCompare" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
