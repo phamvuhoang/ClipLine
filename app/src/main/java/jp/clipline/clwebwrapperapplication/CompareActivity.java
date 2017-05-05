@@ -37,7 +37,9 @@ public class CompareActivity extends AppCompatActivity {
 
         Map<String, Object> currentTodoContent =  ((ClWebWrapperApplication)getApplication()).getCurrentTodoContent();
         TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);
-        textView.setText((String)currentTodoContent.get("title"));
+///// 20170505 TEMPORARY DELETE START
+        //textView.setText((String)currentTodoContent.get("title"));
+///// 20170505 TEMPORARY DELETE END
 
 /*
         Log.d(TAG,String.format("@@@ media_pre_signed_url => %s",(String)currentTodoContent.get("media_pre_signed_url")));

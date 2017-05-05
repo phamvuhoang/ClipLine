@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ClWebWrapperApplication.iml" filepath="$PROJECT_DIR$/ClWebWrapperApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ClipLine.iml" filepath="$PROJECT_DIR$/ClipLine.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
