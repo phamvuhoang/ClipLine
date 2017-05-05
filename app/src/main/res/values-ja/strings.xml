@@ -1,0 +1,48 @@
+<resources>
+  <string name="app_name">ガワアプリ</string>
+  <string name="action_settings">設定</string>
+  <string name="title_activity_login">ClipLine Wrapper</string>
+
+  <!-- Strings related to login -->
+  <string name="prompt_service_id">サービスID</string>
+  <string name="prompt_branch_id">店舗ID</string>
+  <string name="prompt_password">パスワード</string>
+  <string name="action_sign_in">ログイン</string>
+  <string name="action_sign_in_short">ログイン</string>
+  <string name="error_invalid_email">このメールアドレスは無効です</string>
+  <string name="error_invalid_password">このパスワードは短すぎます</string>
+  <string name="error_incorrect_password">このパスワードは間違っています</string>
+  <string name="error_field_required">この項目は必須です</string>
+  <string name="permission_rationale">"電子メールの完了を提供するには連絡先権限が必要です."
+    </string>
+  <string name="android_id_format">Android管理番号 : %s</string>
+  <string name="title_activity_terminal_first_use_screen_displayed">
+        TerminalFirstUseScreenDisplayedActivity
+    </string>
+
+
+  <string name="navigation_drawer_usage">プライバイシーポリシー</string>
+  <string name="navigation_drawer_terms_of_use">利用規約</string>
+  <string name="navigation_drawer_contact">問い合わせ</string>
+  <string name="external_file_import">外部ファイルインポート</string>
+  <string name="mail_template">
+    【こちらより↑の内容は編集せすそのままお送り下さい。】\n
+    ------------------------------------------------------------------------------------------------\n
+    以下に、問い合わせの内容を入力してください。\n
+    \n
+    </string>
+  <string name="find_authority_to_user">
+        シンプルカメラに必要なパーミッションを許可して下さい。
+    </string>
+
+  <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
+  <string name="navigation_drawer_open">Open navigation drawer</string>
+  <string name="navigation_drawer_close">Close navigation drawer</string>
+
+  <string name="compress_start">インポートするファイルを選択して下さい</string>
+  <string name="compress_completed">インポートが終了しました [%s]</string>
+  <string name="compress_canceled">インポートはキャンセルされました</string>
+  <string name="compress_failed">このファイルはインポートが出来ません</string>
+
+  <string name="terminal">端末初回利用画面です</string>
+</resources>
