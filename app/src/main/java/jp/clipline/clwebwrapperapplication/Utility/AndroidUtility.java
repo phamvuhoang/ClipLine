@@ -2,7 +2,6 @@ package jp.clipline.clwebwrapperapplication.Utility;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -15,7 +14,7 @@ import java.util.Map;
 
 public class AndroidUtility {
 
-    public static String getAndroidId(ContentResolver contentResolver){
+    public static String getAndroidId(ContentResolver contentResolver) {
         return Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID);
     }
 
@@ -61,7 +60,7 @@ public class AndroidUtility {
         editor.apply();
     }
 
-    public static ArrayList<String> getSettingPermissions(Context context){
+    public static ArrayList<String> getSettingPermissions(Context context) {
         ArrayList<String> list = new ArrayList<String>();
         PackageInfo packageInfo = null;
         try {
@@ -69,16 +68,16 @@ public class AndroidUtility {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        if(packageInfo == null || packageInfo.requestedPermissions == null) return list;
+        if (packageInfo == null || packageInfo.requestedPermissions == null) return list;
 
-        for(String permission : packageInfo.requestedPermissions){
+        for (String permission : packageInfo.requestedPermissions) {
             list.add(permission);
         }
         return list;
     }
 
     public static boolean hasSelfPermission(Context context, String permission) {
-        if(Build.VERSION.SDK_INT < 23) return true;
+        if (Build.VERSION.SDK_INT < 23) return true;
         return context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
     }
 }

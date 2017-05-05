@@ -1,45 +1,39 @@
 package jp.clipline.clwebwrapperapplication;
 
-import android.content.Context;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.SurfaceView;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.widget.MediaController;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
-
-import jp.clipline.clwebwrapperapplication.Utility.AndroidUtility;
 
 public class CompareActivity extends AppCompatActivity {
 
     private final static String TAG = "clwebwrapperapplication";
 
-    private String mTodoContentType = null ;
-    private Uri mTodoContentData = null ;
+    private String mTodoContentType = null;
+    private Uri mTodoContentData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare);
 
-        mTodoContentType = ((ClWebWrapperApplication)this.getApplication()).getTodoContentType() ;
-        mTodoContentData = ((ClWebWrapperApplication)this.getApplication()).getTodoContentData() ;
+        mTodoContentType = ((ClWebWrapperApplication) this.getApplication()).getTodoContentType();
+        mTodoContentData = ((ClWebWrapperApplication) this.getApplication()).getTodoContentData();
 
-        Map<String, Object> currentTodoContent =  ((ClWebWrapperApplication)getApplication()).getCurrentTodoContent();
+        Map<String, Object> currentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
         TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);
-///// 20170505 TEMPORARY DELETE START
-        //textView.setText((String)currentTodoContent.get("title"));
-///// 20170505 TEMPORARY DELETE END
+        ///// 20170504 MODIFY START
+
+        if (currentTodoContent != null && currentTodoContent.get("title") != null) {
+            textView.setText((String) currentTodoContent.get("title"));
+        } else {
+            //TODO NVTu contact a Hoang
+            textView.setText("");
+        }
+        ///// 20170504 MIDIFY END
 
 /*
         Log.d(TAG,String.format("@@@ media_pre_signed_url => %s",(String)currentTodoContent.get("media_pre_signed_url")));

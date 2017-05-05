@@ -4,9 +4,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceResponse;
@@ -69,10 +68,9 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
 
         mXWalkView.addJavascriptInterface(new NativeInterface(), "NativeInterface");
 
-        if(getIntent().getExtras()==null) {
+        if (getIntent().getExtras() == null) {
             mXWalkView.load(BASE_URL, null, extraHeaders);
-        }
-        else {
+        } else {
             String url = (String) getIntent().getExtras().get("BASE_URL");
             mXWalkView.load(String.format(url, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST), null, extraHeaders);
         }
@@ -101,12 +99,12 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
-        Log.d(TAG,"@@@ onRequestPermissionsResult : Start @@@");
+        Log.d(TAG, "@@@ onRequestPermissionsResult : Start @@@");
         if (requestCode == PERMISSION_REQUEST_CODE) {
 
             // 許可されたパーミッションがあるかを確認する
             boolean isSomethingGranted = false;
-            for(int grantResult : grantResults) {
+            for (int grantResult : grantResults) {
                 if (grantResult == PackageManager.PERMISSION_GRANTED) {
                     isSomethingGranted = true;
                     break;
@@ -121,7 +119,7 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
                 finish();
             }
         }
-        Log.d(TAG,"@@@ onRequestPermissionsResult : End @@@");
+        Log.d(TAG, "@@@ onRequestPermissionsResult : End @@@");
     }
 
     private class ResourceClient extends XWalkResourceClient {
@@ -144,7 +142,7 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
             // NativeInterface実装までの仮置き
             Pattern p = Pattern.compile("^.*\\/training\\/students\\/(\\d+)\\/todos\\/(\\d+)$");
             Matcher m = p.matcher(url);
-            if(m.matches()) {
+            if (m.matches()) {
 //                String studentId = m.toMatchResult().group(1);
 //                String todoId = m.toMatchResult().group(2);
 //                // 学習者のログインを反映する為
@@ -167,7 +165,7 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
             //if (url.indexOf(BASE_URL) >= 0) {
             // Log.d("CrossWalkActivity", String.format("@@@ onLoadFinished : [%s]", url));
             //}
-            return super.shouldInterceptLoadRequest(view,url);
+            return super.shouldInterceptLoadRequest(view, url);
         }
 
         // Location変更通知
@@ -222,7 +220,7 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Log.d("","");
+        Log.d("", "");
     }
 
     public class NativeInterface {
@@ -241,14 +239,14 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
         @JavascriptInterface
         public void studentToDo(String studentId, String categoryId, String todoContentId) {
             categoryId = "988";
-            ((ClWebWrapperApplication)getApplication()).setTodoParameters(studentId, categoryId, todoContentId);
+            ((ClWebWrapperApplication) getApplication()).setTodoParameters(studentId, categoryId, todoContentId);
             // 学習者のログインを反映する為
 //            XWalkCookieManager mCookieManager = new XWalkCookieManager();
             AndroidUtility.setCookie(getApplicationContext(), mCookieManager.getCookie(String.format("%s://%s", BuildConfig.API_PROTOCOL, BuildConfig.API_HOST)));
 
             Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
             startActivity(intent);
-            overridePendingTransition(0,0);
+            overridePendingTransition(0, 0);
         }
 
         // ex) NativeInterface.coachToDo(92680,988,15532);

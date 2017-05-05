@@ -18,6 +18,7 @@ import android.media.MediaRecorder;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.ParcelFileDescriptor;
@@ -28,7 +29,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -66,19 +66,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Future;
 
-import net.ypresto.androidtranscoder.MediaTranscoder;
-import net.ypresto.androidtranscoder.format.MediaFormatStrategyPresets;
-
 import jp.clipline.clwebwrapperapplication.Utility.CameraUtil;
 import jp.clipline.clwebwrapperapplication.Utility.ConstCameraActivity;
 import jp.clipline.clwebwrapperapplication.Utility.IntentParameters;
 
 public class CameraActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ConstCameraActivity, CompoundButton.OnCheckedChangeListener, View.OnTouchListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
-    private IntentParameters mIntentParameters ;
+    private IntentParameters mIntentParameters;
     private Camera mCamera;
     private SurfaceView mSurfaceViewPreview;
-    private RelativeLayout mRelativeLayoutPreview ;
+    private RelativeLayout mRelativeLayoutPreview;
     private boolean mIsRecording;
     private MediaRecorder mMediaRecorder;
     private Button mButtonVideo;
@@ -86,7 +83,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     private Button mButtonPicture;
     private long mButtonVideoLastClickTime = System.currentTimeMillis();
     private String mNextVideoAbsolutePath;
-    private ImageButton mImageButtonBackFront ;
+    private ImageButton mImageButtonBackFront;
     private ImageButton mImageButtonChangeAspectWide;
     private ImageButton mImageButtonChangeAspectStandard;
     private TextView mTextViewVideoRecordingTime;
@@ -104,10 +101,10 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     private int mLaptime;
     private HandlerThread mHandlerThreadTakePicture;
     private Handler mHandlerTakePicture;
-    private ScaleGestureDetector mScaleGestureDetector ;
-    private float mBeforeScale = 0.0f ;
+    private ScaleGestureDetector mScaleGestureDetector;
+    private float mBeforeScale = 0.0f;
     private Future<Void> mFuture;
-    private boolean mIsBackShooting = true ;
+    private boolean mIsBackShooting = true;
     private static final int REQUEST_CODE_PICK = 1;
     private ProgressBar mProgressBar;
 
@@ -118,16 +115,16 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     // 対応アスペクト比解像度リスト
     private static List<Camera.Size> mStandardAspectVideoSizeList = new ArrayList<>();
     private static List<Camera.Size> mStandardAspectPictureSizeList = new ArrayList<>();
-    private static Camera.Size mStandardAspectVideoSize = null ;
-    private static Camera.Size mStandardAspectPictureSize = null ;
+    private static Camera.Size mStandardAspectVideoSize = null;
+    private static Camera.Size mStandardAspectPictureSize = null;
 
     private static List<Camera.Size> mWideAspectVideoSizeList = new ArrayList<>();
     private static List<Camera.Size> mWideAspectPictureSizeList = new ArrayList<>();
-    private static Camera.Size mWideAspectVideoSize = null ;
-    private static Camera.Size mWideAspectPictureSize = null ;
+    private static Camera.Size mWideAspectVideoSize = null;
+    private static Camera.Size mWideAspectPictureSize = null;
 
-    private static Camera.Size mCurrentAspectVideoSize = null ;
-    private static Camera.Size mCurrentAspectPictureSize = null ;
+    private static Camera.Size mCurrentAspectVideoSize = null;
+    private static Camera.Size mCurrentAspectPictureSize = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,7 +137,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
 
         mIntentParameters = new IntentParameters(getIntent(), CameraUtil.isStandardAspectHardWare(getWindowManager()));
         mIntentParameters.printInfomation();
-        Log.d(TAG,String.format("IntentParameter : %s : %s, %s", mIntentParameters.isCallFromIntent()? "インテント起動":"", mIntentParameters.isAspectWide()? "ワイド":"スタンダード",mIntentParameters.isBackShooting()? "背面":"前面"));
+        Log.d(TAG, String.format("IntentParameter : %s : %s, %s", mIntentParameters.isCallFromIntent() ? "インテント起動" : "", mIntentParameters.isAspectWide() ? "ワイド" : "スタンダード", mIntentParameters.isBackShooting() ? "背面" : "前面"));
 
 //        if (Build.VERSION.SDK_INT >= 23) {
 //            if(activityRequestPermissions(PERMISSION_REQUEST_CODE)){
@@ -159,7 +156,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mRelativeLayoutPreview.addOnLayoutChangeListener(relativeLayoutListener);
 
         // mSurfaceViewPreview = new SurfaceView(this);
-        mSurfaceViewPreview = (SurfaceView) this.findViewById(R.id.surfaceView) ;
+        mSurfaceViewPreview = (SurfaceView) this.findViewById(R.id.surfaceView);
         mSurfaceViewPreview.getHolder().addCallback(this.mSurfaceHolderCallback);
         mSurfaceViewPreview.getHolder().setSizeFromLayout();
         mSurfaceViewPreview.setOnTouchListener(this);
@@ -180,7 +177,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mImageButtonChangeAspectWide.setOnClickListener(mImageButtonChangeAspectListener);
         mImageButtonChangeAspectStandard = (ImageButton) findViewById(R.id.imageButtonChangeAspectStandard);
         mImageButtonChangeAspectStandard.setOnClickListener(mImageButtonChangeAspectListener);
-        if ( mIntentParameters.isAspectWide() ) {
+        if (mIntentParameters.isAspectWide()) {
             mImageButtonChangeAspectStandard.setVisibility(View.INVISIBLE);
             mImageButtonChangeAspectWide.setVisibility(View.VISIBLE);
         } else {
@@ -203,7 +200,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mSeekBarBrightness = (SeekBar) findViewById(R.id.seekBarBrightness);
         mSeekBarBrightness.setOnSeekBarChangeListener(mSeekBarChangeListenerBrightness);
 
-        if(!isVideoMode()) {
+        if (!isVideoMode()) {
             changeToPicture();
         }
 
@@ -244,7 +241,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mImageButtonIcSettingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
+                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                 navigationView.setVisibility(View.VISIBLE);
 
                 DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -267,44 +264,44 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
-        Log.d(TAG,"onPause - Start");
+        Log.d(TAG, "onPause - Start");
         teardownCamera();
-        Log.d(TAG,"onPause - End");
+        Log.d(TAG, "onPause - End");
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        Log.d(TAG,"onResume - Start");
+        Log.d(TAG, "onResume - Start");
         setupCamera();
-        Log.d(TAG,"onResume - End");
+        Log.d(TAG, "onResume - End");
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        Log.d(TAG,"onCheckedChanged - Start");
+        Log.d(TAG, "onCheckedChanged - Start");
         try {
             mCamera.setPreviewDisplay(mSurfaceViewPreview.getHolder());
         } catch (IOException e) {
             Log.e(TAG, String.format("onCheckedChanged : message=%s, stacktrace=%s", e.getMessage(), e.getStackTrace().toString()));
         }
         mCamera.startPreview();
-        Log.d(TAG,"onCheckedChanged - End");
+        Log.d(TAG, "onCheckedChanged - End");
     }
 
     @Override
     public void finish() {
         super.finish();
-        Log.d(TAG,"finish - Start");
+        Log.d(TAG, "finish - Start");
         overridePendingTransition(0, 0);
-        Log.d(TAG,"finish - End");
+        Log.d(TAG, "finish - End");
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return mScaleGestureDetector.onTouchEvent(event) ;
+        return mScaleGestureDetector.onTouchEvent(event);
     }
 
     @Override
@@ -314,7 +311,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                 mProgressBar.setVisibility(View.VISIBLE);
                 final File file;
                 File outputDir = new File(CameraUtil.getVideoStorageDir("SimpleCamera").toString());
-                file = File.createTempFile("IMPORTED_CLIP_", ".mp4", outputDir );
+                file = File.createTempFile("IMPORTED_CLIP_", ".mp4", outputDir);
                 final ParcelFileDescriptor parcelFileDescriptor;
                 ContentResolver resolver = getContentResolver();
                 parcelFileDescriptor = resolver.openFileDescriptor(data.getData(), "r");
@@ -339,7 +336,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                         // Uri uri = FileProvider.getUriForFile(CameraActivity.this, FILE_PROVIDER_AUTHORITY, file);
                         //startActivity(new Intent(Intent.ACTION_VIEW).setDataAndType(uri, "video/mp4").setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION));
                         mProgressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(CameraActivity.this,String.format(getString(R.string.compress_completed),file.getAbsolutePath()),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CameraActivity.this, String.format(getString(R.string.compress_completed), file.getAbsolutePath()), Toast.LENGTH_SHORT).show();
 
                         CameraUtil.registVideoAndroidDB(file.getAbsolutePath(), CameraActivity.this.getApplicationContext());
                     }
@@ -362,8 +359,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                 mFuture = MediaTranscoder.getInstance().transcodeVideo(fileDescriptor, file.getAbsolutePath(),
                         MediaFormatStrategyPresets.createAndroid720pStrategy(8000 * 1000, 128 * 1000, 1), listener);
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             Log.e(TAG, String.format("onActivityResult : message=%s, stacktrace=%s", e.getMessage(), e.getStackTrace()[0]));
         }
     }
@@ -395,9 +391,9 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                 }
 
                 mButtonFocus.setVisibility(View.VISIBLE);
-                RelativeLayout.LayoutParams layoutParams =(RelativeLayout.LayoutParams) mButtonFocus.getLayoutParams();
-                layoutParams.topMargin = ((int)event.getY()) - (mButtonFocus.getHeight()/2) ;
-                layoutParams.leftMargin = (int)event.getX() - (mButtonFocus.getWidth()/2);
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) mButtonFocus.getLayoutParams();
+                layoutParams.topMargin = ((int) event.getY()) - (mButtonFocus.getHeight() / 2);
+                layoutParams.leftMargin = (int) event.getX() - (mButtonFocus.getWidth() / 2);
                 mButtonFocus.setLayoutParams(layoutParams);
                 mTimerHideFocus = new Timer();
                 mTimerHideFocus.schedule(new TimerTask() {
@@ -435,7 +431,8 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
 
         if (onTouchEvent(event)) {
             return true;
-        } ;
+        }
+        ;
 
         return false;
     }
@@ -447,7 +444,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
 
         outState.putString("SEEK_BAR_ZOOM_PROGRESS", Integer.toString(mSeekBarZoom.getProgress()));
         outState.putString("SEEK_BAR_BRIGHTNESS_PROGRESS", Integer.toString(mSeekBarBrightness.getProgress()));
-        outState.putString("IS_VIDEO_MODE", Boolean.toString(isVideoMode()) );
+        outState.putString("IS_VIDEO_MODE", Boolean.toString(isVideoMode()));
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -476,13 +473,13 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.setClassName("jp.clipline.clsimplecamera", "jp.clipline.clsimplecamera.DocumentDisplayActivity");
-            intent.putExtra("ASSETS_HTML_FILE","https://clipline.jp/service/privacy-policy");
+            intent.putExtra("ASSETS_HTML_FILE", "https://clipline.jp/service/privacy-policy");
             startActivity(intent);
         } else if (id == R.id.nav_terms_of_use) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.setClassName("jp.clipline.clsimplecamera", "jp.clipline.clsimplecamera.DocumentDisplayActivity");
-            intent.putExtra("ASSETS_HTML_FILE","https://clipline.jp/service/terms");
+            intent.putExtra("ASSETS_HTML_FILE", "https://clipline.jp/service/terms");
             startActivity(intent);
         } else if (id == R.id.nav_external_file_import) {
             Toast.makeText(CameraActivity.this, getString(R.string.compress_start), Toast.LENGTH_SHORT).show();
@@ -498,7 +495,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
     }
 
-    private void setOperation(boolean bool){
+    private void setOperation(boolean bool) {
         mImageButtonChangeVideo.setEnabled(bool);
         mImageButtonChangePicture.setEnabled(bool);
 
@@ -509,11 +506,13 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mImageViewOpenGallery.setEnabled(bool);
     }
 
-    private void disableOperation(){
+    private void disableOperation() {
         setOperation(false);
     }
 
-    private void enableOperation() { setOperation(true); }
+    private void enableOperation() {
+        setOperation(true);
+    }
 
     private void changeToVideo() {
         mImageButtonChangePicture.setVisibility(View.VISIBLE);
@@ -533,7 +532,9 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mIntentParameters.setIsVideo(false);
     }
 
-    private boolean isVideoMode() { return mIntentParameters.isVideo(); }
+    private boolean isVideoMode() {
+        return mIntentParameters.isVideo();
+    }
 
     private void applyThumbnailToGalleryButton() {
         SharedPreferences data = getSharedPreferences("settings", MODE_PRIVATE);
@@ -555,14 +556,14 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         }
     }
 
-    private String collectionTerminalInformation(){
+    private String collectionTerminalInformation() {
 
         teardownCamera();
 
         Point realScreenSize = CameraUtil.getRealScreenSize(getWindowManager());
-        String message ;
+        String message;
         StringBuilder messages = new StringBuilder();
-        message = String.format("%s(%d,%d) : %s端末\n", android.os.Build.MODEL, realScreenSize.x, realScreenSize.y, (CameraUtil.isStandardAspectHardWare(getWindowManager()))? "スタンダード":"ワイド");
+        message = String.format("%s(%d,%d) : %s端末\n", android.os.Build.MODEL, realScreenSize.x, realScreenSize.y, (CameraUtil.isStandardAspectHardWare(getWindowManager())) ? "スタンダード" : "ワイド");
         messages.append(message);
         message = String.format("APIレベル : %d\n", android.os.Build.VERSION.SDK_INT);
         messages.append(message);
@@ -571,28 +572,28 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         Camera.CameraInfo info = new Camera.CameraInfo();
         // closeCameraInstance();
         // FIXME : 為藤さんに相談
-        for(int i=0;i<Camera.getNumberOfCameras();i++) {
+        for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
             Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
             Camera.getCameraInfo(i, cameraInfo);
-            Camera camera = Camera.open( i );
+            Camera camera = Camera.open(i);
             Camera.Parameters parameters = camera.getParameters();
-            List<Camera.Size>supportedPictureSizes = parameters.getSupportedPictureSizes();
+            List<Camera.Size> supportedPictureSizes = parameters.getSupportedPictureSizes();
             for (Camera.Size size : supportedPictureSizes) {
-                message = String.format("カメラ%d : 写真解像度 : %dx%d\n", (i+1), size.width, size.height);
+                message = String.format("カメラ%d : 写真解像度 : %dx%d\n", (i + 1), size.width, size.height);
                 messages.append(message);
             }
             // http://stackoverflow.com/questions/14263521/android-getsupportedvideosizes-allways-returns-null
-            List<Camera.Size>supportedVideoSizes = parameters.getSupportedVideoSizes();
+            List<Camera.Size> supportedVideoSizes = parameters.getSupportedVideoSizes();
             if (supportedVideoSizes == null) {
                 supportedVideoSizes = parameters.getSupportedPreviewSizes();
             }
             for (Camera.Size size : supportedVideoSizes) {
-                message = String.format("カメラ%d : 動画解像度 : %dx%d\n", (i+1), size.width, size.height);
+                message = String.format("カメラ%d : 動画解像度 : %dx%d\n", (i + 1), size.width, size.height);
                 messages.append(message);
             }
-            List<Camera.Size>supportedPreviewSizes = parameters.getSupportedPreviewSizes();
+            List<Camera.Size> supportedPreviewSizes = parameters.getSupportedPreviewSizes();
             for (Camera.Size size : supportedPreviewSizes) {
-                message = String.format("カメラ%d : プレビュー解像度 : %dx%d\n", (i+1), size.width, size.height);
+                message = String.format("カメラ%d : プレビュー解像度 : %dx%d\n", (i + 1), size.width, size.height);
                 messages.append(message);
             }
             camera.release();
@@ -613,7 +614,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         parameters.setJpegQuality(JPEG_QUALITY);
         parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
         // Autoが選べるもののみAoutoFocusを適用
-        if(parameters.getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+        if (parameters.getSupportedFocusModes().contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         }
         mCamera.setParameters(parameters);
@@ -636,9 +637,8 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
             mMediaRecorder.setVideoFrameRate(FRAME_RATE); // 動画のフレームレートを指定
             if (mIntentParameters.isBackShooting()) {
                 mMediaRecorder.setOrientationHint(adjustDisplayOrientation());
-            }
-            else {
-                switch(adjustDisplayOrientation()) {
+            } else {
+                switch (adjustDisplayOrientation()) {
 //                        case 0:
 //                            matrix.setRotate(180);
 //                            break;
@@ -687,8 +687,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
             } catch (Exception e) {
                 Log.e(TAG, String.format("getCameraInstance(Camera is not available) -> Exception : message=%s, stacktrace=%s", e.getMessage(), e.getStackTrace().toString()));
             }
-        }
-        else {
+        } else {
             Log.e(TAG, String.format("setupCamera - already opend camera"));
         }
 
@@ -697,8 +696,8 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         Camera.Parameters parameters = mCamera.getParameters();
         parameters.setPictureSize(mCurrentAspectPictureSize.width, mCurrentAspectPictureSize.height);
         parameters.setPreviewSize(mCurrentAspectPictureSize.width, mCurrentAspectPictureSize.height);
-        Log.d(TAG,String.format("@@@ setPictureSize [%d, %d]", mCurrentAspectPictureSize.width, mCurrentAspectPictureSize.height));
-        Log.d(TAG,String.format("@@@ setPreviewSize [%d, %d]", mCurrentAspectPictureSize.width, mCurrentAspectPictureSize.height));
+        Log.d(TAG, String.format("@@@ setPictureSize [%d, %d]", mCurrentAspectPictureSize.width, mCurrentAspectPictureSize.height));
+        Log.d(TAG, String.format("@@@ setPreviewSize [%d, %d]", mCurrentAspectPictureSize.width, mCurrentAspectPictureSize.height));
         mSeekBarZoom.setMax(parameters.getMaxZoom());
         mSeekBarZoom.setProgress(parameters.getZoom());
         mSeekBarBrightness.setMax(parameters.getMaxExposureCompensation());
@@ -717,7 +716,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
 
     private void teardownCamera() {
         if (mCamera != null) {
-            Log.d(TAG,"teardownCamera - Release Camera");
+            Log.d(TAG, "teardownCamera - Release Camera");
             try {
                 mCamera.setPreviewCallback(null);
                 mCamera.stopPreview();
@@ -725,9 +724,8 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
             } finally {
                 mCamera = null;
             }
-        }
-        else {
-            Log.d(TAG,"teardownCamera - already released Camera");
+        } else {
+            Log.d(TAG, "teardownCamera - already released Camera");
         }
     }
 
@@ -752,24 +750,22 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mWideAspectVideoSizeList.clear();
         for (Camera.Size size : choices) {
             //
-            if ( isAvailableAspectRatioStandard(size.width, size.height) &&
+            if (isAvailableAspectRatioStandard(size.width, size.height) &&
                     (size.width >= profile_low.videoFrameWidth && size.height >= profile_low.videoFrameHeight) &&
-                    (size.width <= profile_high.videoFrameWidth && size.height <= profile_high.videoFrameHeight) ) {
+                    (size.width <= profile_high.videoFrameWidth && size.height <= profile_high.videoFrameHeight)) {
                 mStandardAspectVideoSizeList.add(size);
                 // Log.d(TAG, String.format("利用可能ビデオサイズ [%d, %d] スタンダード対象アスペクト比", size.width, size.height));
-            }
-            else if ( isAvailableAspectRatioWide(size.width, size.height) &&
+            } else if (isAvailableAspectRatioWide(size.width, size.height) &&
                     (size.width >= profile_low.videoFrameWidth && size.height >= profile_low.videoFrameHeight) &&
-                    (size.width <= profile_high.videoFrameWidth && size.height <= profile_high.videoFrameHeight) ) {
+                    (size.width <= profile_high.videoFrameWidth && size.height <= profile_high.videoFrameHeight)) {
                 mWideAspectVideoSizeList.add(size);
                 // Log.d(TAG, String.format("利用可能ビデオサイズ [%d, %d] ワイド対象アスペクト比", size.width, size.height));
-            }
-            else {
+            } else {
                 // Log.d(TAG, String.format("利用可能ビデオサイズ [%d, %d]", size.width, size.height));
             }
         }
-        Collections.sort( mStandardAspectVideoSizeList, CameraUtil.buildSizeComparative());
-        Collections.sort( mWideAspectVideoSizeList, CameraUtil.buildSizeComparative());
+        Collections.sort(mStandardAspectVideoSizeList, CameraUtil.buildSizeComparative());
+        Collections.sort(mWideAspectVideoSizeList, CameraUtil.buildSizeComparative());
     }
 
     private static void choosePictureSize(Camera.Size[] choices) {
@@ -778,20 +774,18 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mWideAspectPictureSizeList.clear();
         for (Camera.Size size : choices) {
             //
-            if ( isAvailableAspectRatioStandard(size.width, size.height) ) {
+            if (isAvailableAspectRatioStandard(size.width, size.height)) {
                 mStandardAspectPictureSizeList.add(size);
                 // Log.d(TAG, String.format("利用可能ピクチャーサイズ [%d, %d] スタンダード対象アスペクト比", size.width, size.height));
-            }
-            else if ( isAvailableAspectRatioWide(size.width, size.height) ) {
+            } else if (isAvailableAspectRatioWide(size.width, size.height)) {
                 mWideAspectPictureSizeList.add(size);
                 // Log.d(TAG, String.format("利用可能ピクチャーサイズ [%d, %d] ワイド対象アスペクト比", size.width, size.height));
-            }
-            else {
+            } else {
                 // Log.d(TAG, String.format("利用可能ピクチャーサイズ [%d, %d]", size.width, size.height));
             }
         }
-        Collections.sort( mStandardAspectPictureSizeList, CameraUtil.buildSizeComparative());
-        Collections.sort( mWideAspectPictureSizeList, CameraUtil.buildSizeComparative());
+        Collections.sort(mStandardAspectPictureSizeList, CameraUtil.buildSizeComparative());
+        Collections.sort(mWideAspectPictureSizeList, CameraUtil.buildSizeComparative());
     }
 
     // シャッターが押されたときに呼ばれるコールバック
@@ -823,7 +817,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     }
 
     private boolean isCameraWorking() {
-        return mIsRecording ; //|| mIsShutter ;
+        return mIsRecording; //|| mIsShutter ;
     }
 
     //　端末の向きに合わせてカメラの角度を調整する 
@@ -848,7 +842,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         }
         // 最終的なカメラの角度を計算する。 
         // 0〜360度に収まるように、360を足した上で、360で割った余りを計算する
-        Log.d(TAG,String.format("【FIXME】adjustDisplayOrientation カメラの角度 = %d",(info.orientation - degrees + 360) % 360));
+        Log.d(TAG, String.format("【FIXME】adjustDisplayOrientation カメラの角度 = %d", (info.orientation - degrees + 360) % 360));
         return (info.orientation - degrees + 360) % 360;
     }
 
@@ -883,10 +877,10 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         return result;
     }
 
-    private void _transferGalleryIntent(){
+    private void _transferGalleryIntent() {
         // ギャラリー表示
         // @see : http://androidkaihatu.blog.fc2.com/blog-entry-21.html
-        Intent intent ;
+        Intent intent;
         try {
             // for Honycomb
             intent = new Intent();
@@ -914,7 +908,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         }
     }
 
-    private void transferGalleryIntent(){
+    private void transferGalleryIntent() {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
 
@@ -923,8 +917,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
             String type = data.getString("lastCreatedFileType", null);
             if (type == null) {
                 intent.setData(Uri.parse("content://media/external/images/media"));
-            }
-            else {
+            } else {
                 intent.setDataAndType(Uri.fromFile(new File(filename)), (type == "Picture") ? "image/png" : "video/mp4");
             }
             startActivity(intent);
@@ -941,12 +934,12 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         if (mVideoSizeList == null) {
             mVideoSizeList = parameters.getSupportedPreviewSizes();
         }
-        Collections.sort( mVideoSizeList, CameraUtil.buildSizeComparative());
-        chooseVideoSize((Camera.Size[])mVideoSizeList.toArray(new Camera.Size[0]));
+        Collections.sort(mVideoSizeList, CameraUtil.buildSizeComparative());
+        chooseVideoSize((Camera.Size[]) mVideoSizeList.toArray(new Camera.Size[0]));
 
         mPictureSizeList = parameters.getSupportedPictureSizes();
-        Collections.sort( mPictureSizeList, CameraUtil.buildSizeComparative());
-        choosePictureSize((Camera.Size[])mPictureSizeList.toArray(new Camera.Size[0]));
+        Collections.sort(mPictureSizeList, CameraUtil.buildSizeComparative());
+        choosePictureSize((Camera.Size[]) mPictureSizeList.toArray(new Camera.Size[0]));
 
         List<Camera.Size> previewSizeList = parameters.getSupportedPreviewSizes();
 
@@ -965,9 +958,9 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mStandardAspectPictureSize = mStandardAspectPictureSizeList.get(0);
         mWideAspectPictureSize = mWideAspectPictureSizeList.get(0);
         Point sizeRealScreen = CameraUtil.getRealScreenSize(getWindowManager());
-        Iterator<Camera.Size> iterator = null ;
+        Iterator<Camera.Size> iterator = null;
         // リアルディスプレイ解像度以下で最も大きいものを利用
-        iterator = mStandardAspectPictureSizeList.iterator() ;
+        iterator = mStandardAspectPictureSizeList.iterator();
         while (iterator.hasNext()) {
             Camera.Size currentSize = iterator.next();
             if ((currentSize.width <= sizeRealScreen.x && currentSize.height <= sizeRealScreen.y)
@@ -976,7 +969,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
             }
         }
         Log.d(TAG, String.format("ピクチャーサイズ＠スタンダード [%d, %d]", mStandardAspectPictureSize.width, mStandardAspectPictureSize.height));
-        iterator = mWideAspectPictureSizeList.iterator() ;
+        iterator = mWideAspectPictureSizeList.iterator();
         while (iterator.hasNext()) {
             Camera.Size currentSize = iterator.next();
             if ((currentSize.width <= sizeRealScreen.x && currentSize.height <= sizeRealScreen.y)
@@ -986,8 +979,8 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         }
         Log.d(TAG, String.format("ピクチャーサイズ＠ワイド [%d, %d]", mWideAspectPictureSize.width, mWideAspectPictureSize.height));
 
-        mCurrentAspectVideoSize = (mIntentParameters.isAspectWide())? mWideAspectVideoSize:mStandardAspectVideoSize;
-        mCurrentAspectPictureSize = (mIntentParameters.isAspectWide())? mWideAspectPictureSize:mStandardAspectPictureSize;
+        mCurrentAspectVideoSize = (mIntentParameters.isAspectWide()) ? mWideAspectVideoSize : mStandardAspectVideoSize;
+        mCurrentAspectPictureSize = (mIntentParameters.isAspectWide()) ? mWideAspectPictureSize : mStandardAspectPictureSize;
     }
 
     private boolean activityRequestPermissions(int requestCode) {
@@ -1012,12 +1005,12 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
-        Log.d(TAG,"@@@ onRequestPermissionsResult : Start @@@");
+        Log.d(TAG, "@@@ onRequestPermissionsResult : Start @@@");
         if (requestCode == PERMISSION_REQUEST_CODE) {
 
             // 許可されたパーミッションがあるかを確認する
             boolean isSomethingGranted = false;
-            for(int grantResult : grantResults) {
+            for (int grantResult : grantResults) {
                 if (grantResult == PackageManager.PERMISSION_GRANTED) {
                     isSomethingGranted = true;
                     break;
@@ -1029,11 +1022,11 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                 //onUserLocationAvailable();
             } else {
                 // 設定を変更してもらえなかった場合、終了
-                Log.d(TAG,"@@@ onRequestPermissionsResult : Call Finish @@@");
+                Log.d(TAG, "@@@ onRequestPermissionsResult : Call Finish @@@");
                 finish();
             }
         }
-        Log.d(TAG,"@@@ onRequestPermissionsResult : End @@@");
+        Log.d(TAG, "@@@ onRequestPermissionsResult : End @@@");
     }
 
     private void holdSettingForGalleryButton(String filename, boolean isVideo) {
@@ -1050,11 +1043,9 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     /**
      * ピンチイン/アウトのListener
      */
-    private ScaleGestureDetector.SimpleOnScaleGestureListener mScaleGestureListener = new ScaleGestureDetector.SimpleOnScaleGestureListener()
-    {
+    private ScaleGestureDetector.SimpleOnScaleGestureListener mScaleGestureListener = new ScaleGestureDetector.SimpleOnScaleGestureListener() {
         @Override
-        public boolean onScale(ScaleGestureDetector detector)
-        {
+        public boolean onScale(ScaleGestureDetector detector) {
             if ((mBeforeScale != 0.0f) && ((mBeforeScale - detector.getScaleFactor()) != 0.0f)) {
                 float difference = -(mBeforeScale - detector.getScaleFactor());
                 Camera.Parameters parameters = mCamera.getParameters();
@@ -1063,8 +1054,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                         mSeekBarZoom.setProgress(mSeekBarZoom.getProgress() + 1);
                         parameters.setZoom(parameters.getZoom() + 1);
                     }
-                }
-                else {
+                } else {
                     if (mSeekBarZoom.getProgress() != 0) {
                         mSeekBarZoom.setProgress(mSeekBarZoom.getProgress() - 1);
                         parameters.setZoom(parameters.getZoom() - 1);
@@ -1085,7 +1075,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromTouch) {
-            if(mCamera != null) { // 縦横切替時のnullガード
+            if (mCamera != null) { // 縦横切替時のnullガード
                 Camera.Parameters parameters = mCamera.getParameters();
                 parameters.setZoom(progress);
                 mCamera.setParameters(parameters);
@@ -1105,7 +1095,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromTouch) {
-            if(mCamera != null) { // 縦横切替時のnullガード
+            if (mCamera != null) { // 縦横切替時のnullガード
                 Camera.Parameters parameters = mCamera.getParameters();
                 parameters.setExposureCompensation(progress);
                 mCamera.setParameters(parameters);
@@ -1121,8 +1111,8 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     private View.OnLayoutChangeListener relativeLayoutListener = new View.OnLayoutChangeListener() {
         @Override
         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-            Log.d(TAG, String.format( "@@@ View.OnLayoutChangeListener [%d,%d,%d,%d] [%d,%d,%d,%d]", left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom));
-            if( (left == oldLeft) && (top==oldTop) && (right==oldRight) && (bottom==oldBottom) ) {
+            Log.d(TAG, String.format("@@@ View.OnLayoutChangeListener [%d,%d,%d,%d] [%d,%d,%d,%d]", left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom));
+            if ((left == oldLeft) && (top == oldTop) && (right == oldRight) && (bottom == oldBottom)) {
                 return;
             }
             double ratioPicture;
@@ -1141,8 +1131,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                 mRelativeLayoutPreview.removeView(mSurfaceViewPreview);
                 mRelativeLayoutPreview.addView(mSurfaceViewPreview, w - dw, h - dh);
                 Log.d(TAG, String.format("画面サイズ 縦置き %s [%d, %d]", !mIntentParameters.isAspectWide() ? "標準" : "ワイド", w - dw, h - dh));
-            }
-            else {
+            } else {
                 int h = mRelativeLayoutPreview.getHeight();
                 int w = (int) (ratioPicture * (double) h);
                 int dw = 0;
@@ -1167,7 +1156,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
             intent.setAction("CameraSettingChange");
             mIntentParameters.apply(intent);
             startActivity(intent);
-            overridePendingTransition(0,0);
+            overridePendingTransition(0, 0);
 
             finish();
         }
@@ -1177,11 +1166,11 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         @Override
         public void onClick(View v) {
             mIntentParameters.setIsAspectWide(!mIntentParameters.isAspectWide());
-            Intent intent = new Intent( getApplicationContext(), CameraActivity.class);
+            Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
             intent.setAction("CameraSettingChange");
             mIntentParameters.apply(intent);
             startActivity(intent);
-            overridePendingTransition(0,0);
+            overridePendingTransition(0, 0);
 
             finish();
         }
@@ -1267,7 +1256,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                     mLaptime = 0;
                     mTextViewVideoRecordingTime.setText(String.format("%01d:%02d:%02d", 0, 0, 0));
 
-                    holdSettingForGalleryButton(mNextVideoAbsolutePath,true);
+                    holdSettingForGalleryButton(mNextVideoAbsolutePath, true);
 
                     applyThumbnailToGalleryButton();
 
@@ -1292,7 +1281,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                         Intent intent = new Intent();
                         ContentResolver contentResolver = getContentResolver();
                         // intent.setData();
-                        intent.setData( Uri.fromFile(new File(mNextVideoAbsolutePath)));
+                        intent.setData(Uri.fromFile(new File(mNextVideoAbsolutePath)));
                         setResult(RESULT_OK, intent);
 //                    }
 
@@ -1368,7 +1357,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                 if (mIntentParameters.isBackShooting()) {
                     matrix.setRotate(adjustDisplayOrientation());
                 } else {
-                    switch(adjustDisplayOrientation()) {
+                    switch (adjustDisplayOrientation()) {
                         case 0:
                             matrix.setRotate(0);
                             break;
@@ -1395,7 +1384,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                 String filename = CameraUtil.getPhotoFilePath();
                 mHandlerTakePicture.post(new PictureSaver(bytesData, filename, getApplicationContext()));
 
-                holdSettingForGalleryButton(filename,false);
+                holdSettingForGalleryButton(filename, false);
 
                 mImageViewOpenGallery.setImageBitmap(BitmapFactory.decodeByteArray(bytesData, 0, bytesData.length));
 
@@ -1406,7 +1395,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                 // ブラウザからの起動の場合終了する
                 if (mIntentParameters.isBrowserCalling()) {
                     Uri uri = mIntentParameters.getExtraOutput();
-                    if(uri != null) {
+                    if (uri != null) {
                         try {
                             // 出力ファイル指定がある場合には、出力
                             OutputStream outputStream = getContentResolver().openOutputStream(uri);

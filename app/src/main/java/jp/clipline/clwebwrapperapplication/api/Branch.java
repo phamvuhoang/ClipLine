@@ -20,7 +20,7 @@ public class Branch {
 
     private final static String SIGN_IN_URL = "%s://%s/v2/api/v1/branches/sign_in";
     private final static String SIGN_OUT_URL = "%s://%s/v2/api/v1/branches/sign_out";
-    private final static String SIGN_IN_WITH_IDFV_URL = "%s://%s/v2/api/v1/branches/sign_in_with_idfv" ;
+    private final static String SIGN_IN_WITH_IDFV_URL = "%s://%s/v2/api/v1/branches/sign_in_with_idfv";
 
     public static String signIn(String branchId, String serviceId, String password) throws IOException {
 
@@ -65,8 +65,8 @@ public class Branch {
         String message = null;
 
         // @FIXME : AndroidIDは、フォーマットとして通過できない為暫定処理
-        deviceId = "b8925c97db4db2f8" ;
-        deviceId = "156A3A67-D0FB-41A7-B1C5-1BDFE743F595" ;
+        deviceId = "b8925c97db4db2f8";
+        deviceId = "156A3A67-D0FB-41A7-B1C5-1BDFE743F595";
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("branch_id", branchId)
@@ -86,11 +86,10 @@ public class Branch {
             Gson gson = new Gson();
             String body = response.body().string();
             HashMap<String, Object> fields = gson.fromJson(body, HashMap.class);
-            if(((Boolean)fields.get("success")).booleanValue()) {
+            if (((Boolean) fields.get("success")).booleanValue()) {
                 response.close();
                 return null;
-            }
-            else {
+            } else {
                 message = (String) fields.get("message");
                 response.close();
                 return message;

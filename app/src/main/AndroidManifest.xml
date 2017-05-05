@@ -51,11 +51,10 @@
         <activity
             android:name=".SubmissionConfirmationActivity"
             android:screenOrientation="landscape" />
-        />
+
         <activity
             android:name=".CompareActivity"
-            android:screenOrientation="landscape"
-         />
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

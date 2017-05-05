@@ -1,24 +1,15 @@
 package jp.clipline.clwebwrapperapplication.api;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import jp.clipline.clwebwrapperapplication.BuildConfig;
-import jp.clipline.clwebwrapperapplication.Utility.AndroidUtility;
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.FormBody;
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class ToDo {
@@ -71,7 +62,7 @@ public class ToDo {
                     ArrayList<Map<String, Object>> todo_contents = (ArrayList<Map<String, Object>>) todo.get("todo_contents");
                     for (Map<String, Object> todo_content : todo_contents) {
                         if (Integer.parseInt(todoContentId) == Double.valueOf((double) todo_content.get("id")).intValue()) {
-                            current_todo_content = todo_content ;
+                            current_todo_content = todo_content;
                         }
                     }
                 }
@@ -82,7 +73,7 @@ public class ToDo {
 
         response.close();
 
-        return current_todo_content ;
+        return current_todo_content;
     }
 
 //    private static CookieJar cookieJar = new CookieJar() {

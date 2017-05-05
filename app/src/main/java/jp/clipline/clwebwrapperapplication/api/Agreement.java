@@ -1,10 +1,6 @@
 package jp.clipline.clwebwrapperapplication.api;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,7 +27,7 @@ public class Agreement {
             System.out.println("postJSONRequest response.body : " + response.body().string());
             Gson gson = new Gson();
             HashMap<String, Object> fields = gson.fromJson(response.body().string(), HashMap.class);
-            contentBody = (String)fields.get("body") ;
+            contentBody = (String) fields.get("body");
         }
         response.close();
 
