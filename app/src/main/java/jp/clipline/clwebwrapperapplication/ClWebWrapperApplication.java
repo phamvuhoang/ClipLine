@@ -7,17 +7,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 // ((ClWebWrapperApplication)this.getApplication())
-public class ClWebWrapperApplication  extends Application {
+public class ClWebWrapperApplication extends Application {
 
     // ------------------------------------------------------------------------------------------ //
-    private Map<String, Object> currentTodoContent = null ;
+    private Map<String, Object> currentTodoContent = null;
 
     public void setCurrentTodoContent(Map<String, Object> _currentTodoContent) {
-        this.currentTodoContent = _currentTodoContent ;
+        this.currentTodoContent = _currentTodoContent;
     }
 
     public Map<String, Object> getCurrentTodoContent() {
-        return this.currentTodoContent ;
+        return this.currentTodoContent;
     }
 
     // ------------------------------------------------------------------------------------------ //

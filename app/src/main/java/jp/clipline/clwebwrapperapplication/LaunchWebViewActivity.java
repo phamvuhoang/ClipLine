@@ -1,14 +1,12 @@
 package jp.clipline.clwebwrapperapplication;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -38,7 +36,7 @@ public class LaunchWebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch_web_view);
 
-        WebView mWebView = (WebView)findViewById(R.id.web_view);
+        WebView mWebView = (WebView) findViewById(R.id.web_view);
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setMediaPlaybackRequiresUserGesture(false);
         mWebView.getSettings().setAllowFileAccess(true);
@@ -53,7 +51,7 @@ public class LaunchWebViewActivity extends AppCompatActivity {
         mWebView.setWebViewClient(new CustomWebViewClient());
         mWebView.setWebChromeClient(new CustomWebChromeClient());
         // ChromeでのRemoteDebugを有効にする
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             mWebView.setWebContentsDebuggingEnabled(true);
         }
         mWebView.loadUrl(BASE_URL);
@@ -62,7 +60,8 @@ public class LaunchWebViewActivity extends AppCompatActivity {
         activityRequestPermissions(PERMISSION_REQUEST_CODE);
     }
 
-    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode != INPUT_FILE_REQUEST_CODE) {
             super.onActivityResult(requestCode, resultCode, data);
             return;
@@ -79,7 +78,7 @@ public class LaunchWebViewActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 String dataString = data.getDataString();
                 if (dataString != null) {
-                    results = new Uri[] { Uri.parse(dataString) };
+                    results = new Uri[]{Uri.parse(dataString)};
                 }
             }
 
@@ -104,8 +103,7 @@ public class LaunchWebViewActivity extends AppCompatActivity {
         }
     }
 
-    private class CustomWebViewClient extends WebViewClient
-    {
+    private class CustomWebViewClient extends WebViewClient {
         @Override
         public void onLoadResource(WebView view, String url) {
             Log.d("WebViewActivity", String.format("@@@ onLoadResource : [%s]", url));
@@ -135,8 +133,7 @@ public class LaunchWebViewActivity extends AppCompatActivity {
         }
 
         @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url)
-        {
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Toast.makeText(getApplicationContext(), "shouldOverrideUrlLoading", Toast.LENGTH_SHORT).show();
             Log.d("WebViewActivity", String.format("@@@ shouldOverrideUrlLoading : [%s]", url));
 
@@ -192,10 +189,10 @@ public class LaunchWebViewActivity extends AppCompatActivity {
 //                startActivityForResult(intent, INPUT_FILE_REQUEST_CODE);
 //            }
 //            else {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("image/png");
-                startActivityForResult(intent, INPUT_FILE_REQUEST_CODE);
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/png");
+            startActivityForResult(intent, INPUT_FILE_REQUEST_CODE);
 //            }
 
             return true;
@@ -223,12 +220,12 @@ public class LaunchWebViewActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
-        Log.d(TAG,"@@@ onRequestPermissionsResult : Start @@@");
+        Log.d(TAG, "@@@ onRequestPermissionsResult : Start @@@");
         if (requestCode == PERMISSION_REQUEST_CODE) {
 
             // 許可されたパーミッションがあるかを確認する
             boolean isSomethingGranted = false;
-            for(int grantResult : grantResults) {
+            for (int grantResult : grantResults) {
                 if (grantResult == PackageManager.PERMISSION_GRANTED) {
                     isSomethingGranted = true;
                     break;
@@ -243,7 +240,7 @@ public class LaunchWebViewActivity extends AppCompatActivity {
                 finish();
             }
         }
-        Log.d(TAG,"@@@ onRequestPermissionsResult : End @@@");
+        Log.d(TAG, "@@@ onRequestPermissionsResult : End @@@");
     }
 
 }

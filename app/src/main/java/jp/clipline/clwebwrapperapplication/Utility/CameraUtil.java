@@ -96,7 +96,7 @@ public class CameraUtil {
 
     // リアルな画面解像度を取得します
     // @see : http://stackoverflow.com/questions/27797549/how-to-get-nexus-7flo-real-screen-resolution-programmatically
-    public static Point getRealScreenSize(Activity activity){
+    public static Point getRealScreenSize(Activity activity) {
         int width = 0;
         int height = 0;
         final DisplayMetrics metrics = new DisplayMetrics();
@@ -110,11 +110,11 @@ public class CameraUtil {
 
                 width = metrics.widthPixels;
                 height = metrics.heightPixels;
-                Log.i("ZYStudio", "with and height:"+width+"|"+height);
+                Log.i("ZYStudio", "with and height:" + width + "|" + height);
             } else {
                 mGetRawH = Display.class.getMethod("getRawHeight");
                 mGetRawW = Display.class.getMethod("getRawWidth");
-                Log.i("ZYStudio", "rawW and rawH:"+mGetRawW+"|"+mGetRawH);
+                Log.i("ZYStudio", "rawW and rawH:" + mGetRawW + "|" + mGetRawH);
                 try {
                     width = (Integer) mGetRawW.invoke(display);
                     height = (Integer) mGetRawH.invoke(display);
@@ -136,7 +136,7 @@ public class CameraUtil {
         return new Point(width, height);
     }
 
-    public static ArrayList<String> getSettingPermissions(Context context){
+    public static ArrayList<String> getSettingPermissions(Context context) {
         ArrayList<String> list = new ArrayList<String>();
         PackageInfo packageInfo = null;
         try {
@@ -144,16 +144,16 @@ public class CameraUtil {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        if(packageInfo == null || packageInfo.requestedPermissions == null) return list;
+        if (packageInfo == null || packageInfo.requestedPermissions == null) return list;
 
-        for(String permission : packageInfo.requestedPermissions){
+        for (String permission : packageInfo.requestedPermissions) {
             list.add(permission);
         }
         return list;
     }
 
     public static boolean hasSelfPermission(Context context, String permission) {
-        if(Build.VERSION.SDK_INT < 23) return true;
+        if (Build.VERSION.SDK_INT < 23) return true;
         return context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
     }
 
@@ -172,7 +172,7 @@ public class CameraUtil {
 
     // リアルな画面解像度を取得します
     // @see : http://stackoverflow.com/questions/27797549/how-to-get-nexus-7flo-real-screen-resolution-programmatically
-    public static Point getRealScreenSize(WindowManager windowManager){
+    public static Point getRealScreenSize(WindowManager windowManager) {
         int width = 0;
         int height = 0;
         final DisplayMetrics metrics = new DisplayMetrics();
@@ -186,11 +186,11 @@ public class CameraUtil {
 
                 width = metrics.widthPixels;
                 height = metrics.heightPixels;
-                Log.i("ZYStudio", "with and height:"+width+"|"+height);
+                Log.i("ZYStudio", "with and height:" + width + "|" + height);
             } else {
                 mGetRawH = Display.class.getMethod("getRawHeight");
                 mGetRawW = Display.class.getMethod("getRawWidth");
-                Log.i("ZYStudio", "rawW and rawH:"+mGetRawW+"|"+mGetRawH);
+                Log.i("ZYStudio", "rawW and rawH:" + mGetRawW + "|" + mGetRawH);
                 try {
                     width = (Integer) mGetRawW.invoke(display);
                     height = (Integer) mGetRawH.invoke(display);

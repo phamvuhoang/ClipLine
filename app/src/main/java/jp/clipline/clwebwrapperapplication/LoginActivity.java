@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         TextView androidId = (TextView) findViewById(R.id.androidId);
         androidId.setText(String.format(getString(R.string.android_id_format), AndroidUtility.getAndroidId(getContentResolver())));
 
-        androidId.setText( String.format("[%s] %s", BuildConfig.ANDROID_ENV, androidId.getText()));
+        androidId.setText(String.format("[%s] %s", BuildConfig.ANDROID_ENV, androidId.getText()));
     }
 
     private void populateAutoComplete() {
@@ -352,10 +352,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 //if(AndroidUtility.isTerminalFirstUseScreenDisplayed(getApplicationContext())){
-                    AndroidUtility.setCookie(getApplicationContext(), mCookie);
-                    Intent intent = new Intent(getApplicationContext(), TerminalFirstUseScreenDisplayedActivity.class);
-                    startActivity(intent);
-                    finish();
+                AndroidUtility.setCookie(getApplicationContext(), mCookie);
+                Intent intent = new Intent(getApplicationContext(), TerminalFirstUseScreenDisplayedActivity.class);
+                startActivity(intent);
+                finish();
                 //}
                 //else {
                 //    Intent intent = new Intent(getApplicationContext(), LaunchWebViewActivity.class);

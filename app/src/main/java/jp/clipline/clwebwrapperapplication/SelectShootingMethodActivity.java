@@ -1,42 +1,24 @@
 package jp.clipline.clwebwrapperapplication;
 
-import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
-import android.support.design.widget.Snackbar;
-import android.support.v4.provider.DocumentFile;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.Map;
 
 import jp.clipline.clwebwrapperapplication.Utility.AndroidUtility;
 import jp.clipline.clwebwrapperapplication.Utility.CameraUtil;
-import jp.clipline.clwebwrapperapplication.Utility.IntentParameters;
-import jp.clipline.clwebwrapperapplication.api.Branch;
 import jp.clipline.clwebwrapperapplication.api.ToDo;
-
-import static android.R.attr.grantUriPermissions;
-import static android.R.attr.type;
 
 public class SelectShootingMethodActivity extends AppCompatActivity {
 
@@ -52,38 +34,38 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_shooting_method);
 
-        TextView textView ;
-        ImageButton imageButton ;
+        TextView textView;
+        ImageButton imageButton;
 
-        textView = (TextView)findViewById(R.id.textViewTakePicture);
+        textView = (TextView) findViewById(R.id.textViewTakePicture);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent( getApplicationContext(), CameraActivity.class);
+                Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
                 intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
                 String file_name = System.currentTimeMillis() + ".png";
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.Images.Media.TITLE, file_name);
                 values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
-                uriPicture = Uri.fromFile(new File(CameraUtil.getPhotoFilePath())) ;
+                uriPicture = Uri.fromFile(new File(CameraUtil.getPhotoFilePath()));
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, uriPicture);
                 startActivityForResult(intent, REQUEST_CODE_PICTURE_CAPTURE);
-                overridePendingTransition(0,0);
+                overridePendingTransition(0, 0);
             }
         });
 
-        textView = (TextView)findViewById(R.id.textViewTakeMovie);
+        textView = (TextView) findViewById(R.id.textViewTakeMovie);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent( getApplicationContext(), CameraActivity.class);
+                Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
                 intent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
                 startActivityForResult(intent, REQUEST_CODE_VIDEO_CAPTURE);
-                overridePendingTransition(0,0);
+                overridePendingTransition(0, 0);
             }
         });
 
-        textView = (TextView)findViewById(R.id.textViewSelectPicture);
+        textView = (TextView) findViewById(R.id.textViewSelectPicture);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,7 +76,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
             }
         });
 
-        textView = (TextView)findViewById(R.id.textViewSelectMovie);
+        textView = (TextView) findViewById(R.id.textViewSelectMovie);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,12 +89,12 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
             }
         });
 
-        imageButton = (ImageButton)findViewById(R.id.imageButtonBack);
+        imageButton = (ImageButton) findViewById(R.id.imageButtonBack);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-                intent.putExtra("BASE_URL","%s://%s/training/students/92694/todos?type=caetgory&category_id=988");
+                intent.putExtra("BASE_URL", "%s://%s/training/students/92694/todos?type=caetgory&category_id=988");
                 startActivity(intent);
                 finish();
             }
@@ -123,11 +105,10 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
         String categoryId = todoParameters.get("categoryId");
         String todoContentId = todoParameters.get("todoContentId");
         new GetTodoInformationTask().execute(AndroidUtility.getCookie(getApplicationContext()), studentId, categoryId, todoContentId);
-        Log.d("","");
+        Log.d("", "");
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_PICTURE_CAPTURE) {
                 Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
@@ -168,12 +149,12 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Log.d("","");
+        Log.d("", "");
     }
 
     public class GetTodoInformationTask extends AsyncTask<String, Void, Boolean> {
 
-        Map<String, Object> todoContent = null ;
+        Map<String, Object> todoContent = null;
 
         GetTodoInformationTask() {
         }
@@ -196,10 +177,18 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final Boolean success) {
             if (success) {
-                ((ClWebWrapperApplication)getApplication()).setCurrentTodoContent(todoContent);
-
+                ((ClWebWrapperApplication) getApplication()).setCurrentTodoContent(todoContent);
+                ///// 20170504 MODIFY START
                 TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);
-                textView.setText((String)todoContent.get("title"));
+                if (todoContent != null && todoContent.get("title") != null) {
+                    textView.setText((String) todoContent.get("title"));
+                } else {
+                    //TODO NVTu contact a Hoang
+                    textView.setText("");
+                }
+                ///// 20170504 MIDIFY END
+
+
             }
         }
 
