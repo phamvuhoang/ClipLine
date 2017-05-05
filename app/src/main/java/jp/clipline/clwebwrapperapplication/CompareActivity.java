@@ -88,8 +88,9 @@ public class CompareActivity extends AppCompatActivity {
         videoView.setVideoURI(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8"));
         videoView.start();
 
-        videoView = (VideoView) findViewById(R.id.videoViewMine);
-        videoView.setVideoURI(mTodoContentData);
-        videoView.start();
+        VideoView videoViews = (VideoView) findViewById(R.id.videoViewMine);
+//        videoView.setMediaController(new MediaController(this));
+        videoViews.setVideoURI(mTodoContentData);
+        videoViews.start();
     }
 }

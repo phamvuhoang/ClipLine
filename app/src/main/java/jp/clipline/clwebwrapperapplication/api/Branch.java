@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 
 import jp.clipline.clwebwrapperapplication.BuildConfig;
 import okhttp3.FormBody;
@@ -32,9 +33,13 @@ public class Branch {
                 .add("password", password)
                 .build();
 
+        String language = Locale.getDefault().toString();
+
         Request request = new Request.Builder()
                 .url(String.format(SIGN_IN_URL, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST))
                 .post(requestBody)
+                .addHeader("Content-Type","application/x-www-form-urlencoded")
+                .addHeader("Accept-Language",language)
                 .build();
 
         Response response = new OkHttpClient().newCall(request).execute();
