@@ -82,12 +82,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
 
         Map<String, Object> currentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
         textView = (TextView) findViewById(R.id.textViewToDoTitle);
-<<<<<<< HEAD
-///// 20170505 TEMPORARY DELETE START
-        //textView.setText((String)currentTodoContent.get("title"));
-///// 20170505 TEMPORARY DELETE END
-=======
-
         ///// 20170504 MODIFY START
 
         if (currentTodoContent != null && currentTodoContent.get("title") != null) {
@@ -97,6 +91,5 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
             textView.setText("");
         }
         ///// 20170504 MIDIFY END
->>>>>>> d082d1b94cc0d5dd9404bd3c57ccc10e71ce56fb
     }
 }
