@@ -32,16 +32,20 @@ public class Branch {
                 .add("service_id", serviceId)
                 .add("password", password)
                 .build();
+        ///// 20170504 ADD START
 
         String language = Locale.getDefault().toString();
+        ///// 20170504 ADD END
+
+        ///// 20170504 MODIFY START
 
         Request request = new Request.Builder()
                 .url(String.format(SIGN_IN_URL, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST))
                 .post(requestBody)
-                .addHeader("Content-Type","application/x-www-form-urlencoded")
-                .addHeader("Accept-Language",language)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .addHeader("Accept-Language", language)
                 .build();
-
+        ///// 20170504 MIDIFY END
         Response response = new OkHttpClient().newCall(request).execute();
         if (response.isSuccessful()) {
             Log.d(TAG, String.format("Sign In : Cookie = %s", response.headers().get("Set-Cookie")));
