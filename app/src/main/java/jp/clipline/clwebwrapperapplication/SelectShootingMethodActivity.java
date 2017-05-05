@@ -178,15 +178,15 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
         protected void onPostExecute(final Boolean success) {
             if (success) {
                 ((ClWebWrapperApplication) getApplication()).setCurrentTodoContent(todoContent);
-                ///// 20170504 MODIFY START
+
+                ///// 20170505 MODIFY START
                 TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);
                 if (todoContent != null && todoContent.get("title") != null) {
                     textView.setText((String) todoContent.get("title"));
                 } else {
-                    //TODO NVTu contact a Hoang
                     textView.setText("");
                 }
-                ///// 20170504 MIDIFY END
+                ///// 20170505 MODIFY END
 
 
             }

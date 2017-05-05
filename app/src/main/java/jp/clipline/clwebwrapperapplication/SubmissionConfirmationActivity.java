@@ -82,14 +82,13 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
 
         Map<String, Object> currentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
         textView = (TextView) findViewById(R.id.textViewToDoTitle);
-        ///// 20170504 MODIFY START
 
+        ///// 20170505 MODIFY START
         if (currentTodoContent != null && currentTodoContent.get("title") != null) {
             textView.setText((String) currentTodoContent.get("title"));
         } else {
-            //TODO NVTu contact a Hoang
             textView.setText("");
         }
-        ///// 20170504 MIDIFY END
+        ///// 20170505 MODIFY END
     }
 }

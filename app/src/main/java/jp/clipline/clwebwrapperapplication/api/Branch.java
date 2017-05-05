@@ -33,6 +33,7 @@ public class Branch {
                 .add("password", password)
                 .build();
 
+        ///// 20170505 MODIFY START
         String language = Locale.getDefault().toString();
 
         Request request = new Request.Builder()
@@ -41,6 +42,7 @@ public class Branch {
                 .addHeader("Content-Type","application/x-www-form-urlencoded")
                 .addHeader("Accept-Language",language)
                 .build();
+        ///// 20170505 MODIFY START
 
         Response response = new OkHttpClient().newCall(request).execute();
         if (response.isSuccessful()) {

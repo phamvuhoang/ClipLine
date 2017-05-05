@@ -25,15 +25,14 @@ public class CompareActivity extends AppCompatActivity {
 
         Map<String, Object> currentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
         TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);
-        ///// 20170504 MODIFY START
 
+        ///// 20170505 MODIFY START
         if (currentTodoContent != null && currentTodoContent.get("title") != null) {
             textView.setText((String) currentTodoContent.get("title"));
         } else {
-            //TODO NVTu contact a Hoang
             textView.setText("");
         }
-        ///// 20170504 MIDIFY END
+        ///// 20170505 MODIFY END
 
 /*
         Log.d(TAG,String.format("@@@ media_pre_signed_url => %s",(String)currentTodoContent.get("media_pre_signed_url")));
@@ -87,9 +86,9 @@ public class CompareActivity extends AppCompatActivity {
         videoView.setVideoURI(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8"));
         videoView.start();
 
-        VideoView videoViews = (VideoView) findViewById(R.id.videoViewMine);
+        VideoView videoViewMine = (VideoView) findViewById(R.id.videoViewMine);
 //        videoView.setMediaController(new MediaController(this));
-        videoViews.setVideoURI(mTodoContentData);
-        videoViews.start();
+        videoViewMine.setVideoURI(mTodoContentData);
+        videoViewMine.start();
     }
 }
