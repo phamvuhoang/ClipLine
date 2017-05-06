@@ -131,13 +131,13 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
         mTextViewFooterCompare = (TextView) findViewById(R.id.textViewFooterCompare);
 
         // Firstly, hide the status, after getting result from api, then depend on the flags to process the view/hide
-        mLinearLayoutFooterStatus.setVisibility(View.INVISIBLE);
-        mImageViewFooterView.setVisibility(View.INVISIBLE);
-        mTextViewFooterView.setVisibility(View.INVISIBLE);
-        mImageViewFooterShoot.setVisibility(View.INVISIBLE);
-        mTextViewFooterShoot.setVisibility(View.INVISIBLE);
-        mImageViewFooterCompare.setVisibility(View.INVISIBLE);
-        mTextViewFooterCompare.setVisibility(View.INVISIBLE);
+        mLinearLayoutFooterStatus.setVisibility(View.GONE);
+        mImageViewFooterView.setVisibility(View.GONE);
+        mTextViewFooterView.setVisibility(View.GONE);
+        mImageViewFooterShoot.setVisibility(View.GONE);
+        mTextViewFooterShoot.setVisibility(View.GONE);
+        mImageViewFooterCompare.setVisibility(View.GONE);
+        mTextViewFooterCompare.setVisibility(View.GONE);
 
         imageButton = (ImageButton) findViewById(R.id.imageButtonTodoClose);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -354,6 +354,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
                             && ((boolean)todoContent.get("has_report_action"))) {
 
                         // 表示
+                        mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
                         mImageViewFooterShoot.setVisibility(View.VISIBLE);
                         mTextViewFooterShoot.setVisibility(View.VISIBLE);
                     }
@@ -363,6 +364,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
                             && ((boolean)todoContent.get("has_my_report_play_action"))) {
 
                         // 表示
+                        mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
                         mImageViewFooterCompare.setVisibility(View.INVISIBLE);
                         mTextViewFooterCompare.setVisibility(View.INVISIBLE);
                     }

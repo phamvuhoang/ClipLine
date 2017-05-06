@@ -46,7 +46,7 @@
 
   <string name="terminal">端末初回利用画面です</string>
 
-  <string name="title_activity_select_shooting_method">00_ダミーの文字列です</string>
+  <string name="title_activity_select_shooting_method">ロード中．．．</string>
   <string name="select_shooting_method_back">お手本を見る</string>
   <string name="select_shooting_method_prompt">お手本のように撮影しましょう</string>
   <string name="select_shooting_method_take_picture">写真をとる</string>

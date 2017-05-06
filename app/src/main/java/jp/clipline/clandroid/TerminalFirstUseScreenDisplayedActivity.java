@@ -47,18 +47,18 @@ public class TerminalFirstUseScreenDisplayedActivity extends AppCompatActivity {
         protected void onPostExecute(final Boolean success) {
             if (success) {
                 if(message==null) {
+/*
                     Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                     startActivity(intent);
                     finish();
+*/
 
                     ///// 20170505 TEMPORARY ADD START Bypass LaunchCrossWalkActivity
-/*
                     ((ClWebWrapperApplication)getApplication()).setTodoParameters("92795", "988", "15682");
 
                     Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
                     startActivity(intent);
                     finish();
-*/
                     ///// 20170505 TEMPORARY ADD END
                 }
                 else {
