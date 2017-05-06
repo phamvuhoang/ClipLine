@@ -10,7 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +33,18 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
     private static int REQUEST_CODE_SELECT_FILE = 5; ///// 20170506 ADD
 
     private Uri uriPicture = null;
+
+    ///// 20170506 ADD START
+    private LinearLayout mLinearLayoutFooterStatus;
+    private ImageView mImageViewFooterView;
+    private TextView mTextViewFooterView;
+    private TextView mTextViewFooterViewSeparate;
+    private ImageView mImageViewFooterShoot;
+    private TextView mTextViewFooterShoot;
+    private TextView mTextViewFooterShootSeparate;
+    private ImageView mImageViewFooterCompare;
+    private TextView mTextViewFooterCompare;
+    ///// 20170506 ADD END
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +121,45 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
                     .setAction(Intent.ACTION_GET_CONTENT);
 
             startActivityForResult(Intent.createChooser(intent, "Select a file"), REQUEST_CODE_SELECT_FILE);
+            }
+        });
+
+        mLinearLayoutFooterStatus = (LinearLayout) findViewById(R.id.linearLayoutFooterStatus);
+        mImageViewFooterView = (ImageView) findViewById(R.id.imageViewFooterView);
+        mTextViewFooterView = (TextView) findViewById(R.id.textViewFooterView);
+        mTextViewFooterViewSeparate = (TextView) findViewById(R.id.textViewFooterViewSeparate);
+        mImageViewFooterShoot = (ImageView) findViewById(R.id.imageViewFooterShoot);
+        mTextViewFooterShoot = (TextView) findViewById(R.id.textViewFooterShoot);
+        mTextViewFooterShootSeparate = (TextView) findViewById(R.id.textViewFooterShootSeparate);
+        mImageViewFooterCompare = (ImageView) findViewById(R.id.imageViewFooterCompare);
+        mTextViewFooterCompare = (TextView) findViewById(R.id.textViewFooterCompare);
+
+        // Firstly, hide the status, after getting result from api, then depend on the flags to process the view/hide
+        mLinearLayoutFooterStatus.setVisibility(View.INVISIBLE);
+        mImageViewFooterView.setVisibility(View.INVISIBLE);
+        mTextViewFooterView.setVisibility(View.INVISIBLE);
+        mTextViewFooterViewSeparate.setVisibility(View.INVISIBLE);
+        mImageViewFooterShoot.setVisibility(View.INVISIBLE);
+        mTextViewFooterShoot.setVisibility(View.INVISIBLE);
+        mTextViewFooterShootSeparate.setVisibility(View.INVISIBLE);
+        mImageViewFooterCompare.setVisibility(View.INVISIBLE);
+        mTextViewFooterCompare.setVisibility(View.INVISIBLE);
+
+        imageButton = (ImageButton) findViewById(R.id.imageButtonTodoClose);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 一覧へ戻る
+                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                String studentId = todoParameters.get("studentId");
+                String categoryId = todoParameters.get("categoryId");
+                String todoContentId = todoParameters.get("todoContentId");
+                String url = "%s://%s/training/#/students/" + studentId
+                        + "/todos?type=category";
+                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                intent.putExtra("BASE_URL", url);
+                startActivity(intent);
+                finish();
             }
         });
         ///// 20170506 ADD END
@@ -248,7 +303,54 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
                 }
                 ///// 20170505 MODIFY END
 
+                ///// 20170506 ADD START
+                boolean hasPlayAction = false;
+                if (todoContent != null && todoContent.get("has_play_action") != null) {
+                    hasPlayAction = (boolean) todoContent.get("has_play_action");
 
+                    // Only when has_play_action is true, then all status will be visible
+                    if (hasPlayAction) {
+                        mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
+                        mImageViewFooterView.setVisibility(View.VISIBLE);
+                        mTextViewFooterView.setVisibility(View.VISIBLE);
+                        // TODO 点灯
+                        if ((todoContent.get("is_play_action_cleared") != null)
+                                && ((boolean)todoContent.get("is_play_action_cleared"))) {
+
+                        }
+
+                        // Check has_report_action
+                        boolean hasReportAction = false;
+                        if ((todoContent.get("has_report_action") != null)
+                                && ((boolean)todoContent.get("has_report_action"))) {
+                            // Separation from View status should be visible
+                            mTextViewFooterViewSeparate.setVisibility(View.VISIBLE);
+
+                            // 表示
+                            mImageViewFooterShoot.setVisibility(View.VISIBLE);
+                            mTextViewFooterShoot.setVisibility(View.VISIBLE);
+
+                            // Save the status to decide weather separator should be visible or not
+                            hasReportAction = true;
+                        }
+
+                        // check has_my_report_play_action
+                        if ((todoContent.get("has_my_report_play_action") != null)
+                                && ((boolean)todoContent.get("has_my_report_play_action"))) {
+                            // Separation from View status should be visible for sure
+                            mTextViewFooterViewSeparate.setVisibility(View.VISIBLE);
+                            // One separator more
+                            if (hasReportAction) {
+                                mTextViewFooterShootSeparate.setVisibility(View.VISIBLE);
+                            }
+
+                            // 表示
+                            mImageViewFooterCompare.setVisibility(View.INVISIBLE);
+                            mTextViewFooterCompare.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                }
+                ///// 20170506 ADD END
             }
         }
 

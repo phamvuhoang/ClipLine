@@ -153,6 +153,7 @@
         >
 
         <LinearLayout
+            android:id="@+id/linearLayoutFooterStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -167,12 +168,14 @@
                 android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/imageViewFooterView"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         app:srcCompat="@drawable/ic_sample_svg"
                         />
 
                     <TextView
+                        android:id="@+id/textViewFooterView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/footer_view"
@@ -184,6 +187,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/textViewFooterViewSeparate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" -------- "
@@ -202,12 +206,14 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/imageViewFooterShoot"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     app:srcCompat="@drawable/ic_sample_svg"
                     />
 
                 <TextView
+                    android:id="@+id/textViewFooterShoot"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/footer_shoot"
@@ -220,6 +226,7 @@
 
 
             <TextView
+                android:id="@+id/textViewFooterShootSeparate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" -------- "
@@ -238,12 +245,14 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/imageViewFooterCompare"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     app:srcCompat="@drawable/ic_sample_svg"
                     />
 
                 <TextView
+                    android:id="@+id/textViewFooterCompare"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/footer_compare"

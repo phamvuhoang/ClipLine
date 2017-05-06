@@ -54,7 +54,7 @@ public class TerminalFirstUseScreenDisplayedActivity extends AppCompatActivity {
 */
 
                     ///// 20170505 TEMPORARY ADD START Bypass LaunchCrossWalkActivity
-                    ((ClWebWrapperApplication)getApplication()).setTodoParameters("92795", "988", "15797");
+                    ((ClWebWrapperApplication)getApplication()).setTodoParameters("92795", "988", "15682");
 
                     Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
                     startActivity(intent);
