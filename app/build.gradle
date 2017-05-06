@@ -69,6 +69,7 @@ dependencies {
     // pdf viewer
     compile 'tv.loilo.pdf:pdfcompat:2.0.0'
 
+    compile 'com.squareup.picasso:picasso:2.5.2'
     // // compile 'com.google.android.exoplayer:exoplayer:r2.2.0'
 
     // // http://qiita.com/heki1224/items/1357d5e0eab9aff7f4f6
