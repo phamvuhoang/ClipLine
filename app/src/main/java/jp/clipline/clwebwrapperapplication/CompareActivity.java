@@ -241,6 +241,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
+    ///// 20170506 ADD START
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -259,4 +260,5 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+    ///// 20170506 ADD END
 }
