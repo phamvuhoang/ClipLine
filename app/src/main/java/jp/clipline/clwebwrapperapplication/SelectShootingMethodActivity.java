@@ -39,10 +39,8 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
     private LinearLayout mLinearLayoutFooterStatus;
     private ImageView mImageViewFooterView;
     private TextView mTextViewFooterView;
-    private TextView mTextViewFooterViewSeparate;
     private ImageView mImageViewFooterShoot;
     private TextView mTextViewFooterShoot;
-    private TextView mTextViewFooterShootSeparate;
     private ImageView mImageViewFooterCompare;
     private TextView mTextViewFooterCompare;
     ///// 20170506 ADD END
@@ -129,10 +127,8 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
         mLinearLayoutFooterStatus = (LinearLayout) findViewById(R.id.linearLayoutFooterStatus);
         mImageViewFooterView = (ImageView) findViewById(R.id.imageViewFooterView);
         mTextViewFooterView = (TextView) findViewById(R.id.textViewFooterView);
-        mTextViewFooterViewSeparate = (TextView) findViewById(R.id.textViewFooterViewSeparate);
         mImageViewFooterShoot = (ImageView) findViewById(R.id.imageViewFooterShoot);
         mTextViewFooterShoot = (TextView) findViewById(R.id.textViewFooterShoot);
-        mTextViewFooterShootSeparate = (TextView) findViewById(R.id.textViewFooterShootSeparate);
         mImageViewFooterCompare = (ImageView) findViewById(R.id.imageViewFooterCompare);
         mTextViewFooterCompare = (TextView) findViewById(R.id.textViewFooterCompare);
 
@@ -140,10 +136,8 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
         mLinearLayoutFooterStatus.setVisibility(View.INVISIBLE);
         mImageViewFooterView.setVisibility(View.INVISIBLE);
         mTextViewFooterView.setVisibility(View.INVISIBLE);
-        mTextViewFooterViewSeparate.setVisibility(View.INVISIBLE);
         mImageViewFooterShoot.setVisibility(View.INVISIBLE);
         mTextViewFooterShoot.setVisibility(View.INVISIBLE);
-        mTextViewFooterShootSeparate.setVisibility(View.INVISIBLE);
         mImageViewFooterCompare.setVisibility(View.INVISIBLE);
         mTextViewFooterCompare.setVisibility(View.INVISIBLE);
 
@@ -339,50 +333,40 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
                 ///// 20170505 MODIFY END
 
                 ///// 20170506 ADD START
-                boolean hasPlayAction = false;
-                if (todoContent != null && todoContent.get("has_play_action") != null) {
-                    hasPlayAction = (boolean) todoContent.get("has_play_action");
+                if (todoContent != null) {
+                    boolean hasPlayAction = false;
+                    if (todoContent.get("has_play_action") != null) {
+                        hasPlayAction = (boolean) todoContent.get("has_play_action");
 
-                    // Only when has_play_action is true, then all status will be visible
-                    if (hasPlayAction) {
-                        mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
-                        mImageViewFooterView.setVisibility(View.VISIBLE);
-                        mTextViewFooterView.setVisibility(View.VISIBLE);
-                        // TODO 点灯
-                        if ((todoContent.get("is_play_action_cleared") != null)
-                                && ((boolean)todoContent.get("is_play_action_cleared"))) {
+                        // Only when has_play_action is true, then all status will be visible
+                        if (hasPlayAction) {
+                            mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
+                            mImageViewFooterView.setVisibility(View.VISIBLE);
+                            mTextViewFooterView.setVisibility(View.VISIBLE);
+                            // TODO 点灯
+                            if ((todoContent.get("is_play_action_cleared") != null)
+                                    && ((boolean) todoContent.get("is_play_action_cleared"))) {
 
-                        }
-
-                        // Check has_report_action
-                        boolean hasReportAction = false;
-                        if ((todoContent.get("has_report_action") != null)
-                                && ((boolean)todoContent.get("has_report_action"))) {
-                            // Separation from View status should be visible
-                            mTextViewFooterViewSeparate.setVisibility(View.VISIBLE);
-
-                            // 表示
-                            mImageViewFooterShoot.setVisibility(View.VISIBLE);
-                            mTextViewFooterShoot.setVisibility(View.VISIBLE);
-
-                            // Save the status to decide weather separator should be visible or not
-                            hasReportAction = true;
-                        }
-
-                        // check has_my_report_play_action
-                        if ((todoContent.get("has_my_report_play_action") != null)
-                                && ((boolean)todoContent.get("has_my_report_play_action"))) {
-                            // Separation from View status should be visible for sure
-                            mTextViewFooterViewSeparate.setVisibility(View.VISIBLE);
-                            // One separator more
-                            if (hasReportAction) {
-                                mTextViewFooterShootSeparate.setVisibility(View.VISIBLE);
                             }
-
-                            // 表示
-                            mImageViewFooterCompare.setVisibility(View.INVISIBLE);
-                            mTextViewFooterCompare.setVisibility(View.INVISIBLE);
                         }
+                    }
+
+                    // Check has_report_action
+                    if ((todoContent.get("has_report_action") != null)
+                            && ((boolean)todoContent.get("has_report_action"))) {
+
+                        // 表示
+                        mImageViewFooterShoot.setVisibility(View.VISIBLE);
+                        mTextViewFooterShoot.setVisibility(View.VISIBLE);
+                    }
+
+                    // check has_my_report_play_action
+                    if ((todoContent.get("has_my_report_play_action") != null)
+                            && ((boolean)todoContent.get("has_my_report_play_action"))) {
+
+                        // 表示
+                        mImageViewFooterCompare.setVisibility(View.INVISIBLE);
+                        mTextViewFooterCompare.setVisibility(View.INVISIBLE);
                     }
                 }
                 ///// 20170506 ADD END
