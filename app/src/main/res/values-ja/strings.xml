@@ -45,4 +45,14 @@
   <string name="compress_failed">このファイルはインポートが出来ません</string>
 
   <string name="terminal">端末初回利用画面です</string>
+
+  <string name="title_activity_select_shooting_method">00_ダミーの文字列です</string>
+  <string name="select_shooting_method_back">お手本を見る</string>
+  <string name="select_shooting_method_prompt">お手本のように撮影しましょう</string>
+  <string name="select_shooting_method_take_picture">写真をとる</string>
+  <string name="select_shooting_method_take_video">動画をとる</string>
+  <string name="select_shooting_method_select_camera_roll">カメラロールから選ぶ</string>
+  <string name="select_shooting_method_compare">見比べる</string>
+  <string name="select_shooting_method_submit">この内容で提出</string>
+
 </resources>

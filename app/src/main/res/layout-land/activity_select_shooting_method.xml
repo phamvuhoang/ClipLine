@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="00_ダミーの文字列です"
+            android:text="@string/title_activity_select_shooting_method"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:textSize="36sp"
@@ -37,6 +37,18 @@
             app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
             android:background="#61B5Ab"
             android:id="@+id/imageButtonTodoClose"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:text="@string/select_shooting_method_back"
+            android:layout_centerVertical="true"
+            android:textSize="30sp"
+            android:textColor="@android:color/background_light"
+            android:textStyle="normal"
+            android:id="@+id/textViewTodoBack"
             />
 
         <ImageButton
@@ -64,7 +76,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="動画を撮影する"
+            android:text="@string/select_shooting_method_take_video"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="60dp"
@@ -77,7 +89,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="写真を撮る"
+            android:text="@string/select_shooting_method_take_picture"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="60dp"
@@ -145,16 +157,29 @@
             android:textStyle="normal"
             />
 
-        <Button
-            android:id="@+id/buttonToCompare"
-            android:text="見比べる"
-            android:enabled="false"
-            android:layout_width="92dp"
-            android:layout_height="64dp"
-            android:layout_alignParentRight="true"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginRight="16dp"
-            />
+            android:layout_alignParentRight="true">
+
+                <Button
+                    android:id="@+id/buttonToCompare"
+                    android:text="@string/select_shooting_method_compare"
+                    android:enabled="false"
+                    android:layout_width="92dp"
+                    android:layout_height="64dp"
+                    />
+
+                <Button
+                    android:id="@+id/buttonSubmit"
+                    android:text="@string/select_shooting_method_submit"
+                    android:enabled="false"
+                    android:layout_width="92dp"
+                    android:layout_height="64dp"
+                    />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

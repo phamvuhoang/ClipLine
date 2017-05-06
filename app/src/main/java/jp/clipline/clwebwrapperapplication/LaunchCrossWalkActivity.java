@@ -57,7 +57,9 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
 //        mCookieManager = new XWalkCookieManager();
         mCookieManager.setAcceptCookie(true);
         mCookieManager.setAcceptFileSchemeCookies(true);
-        mCookieManager.removeAllCookie();
+        ///// 20170506 DELETE START
+        //mCookieManager.removeAllCookie();
+        ///// 20170506 DELETE END
         // @see : https://cliplinedev.slack.com/archives/multiplatform/p1485911439000053
         // String cookie = String.format("X-ClipLine-AppType=android; %s", AndroidUtility.getCookie(getApplicationContext()));
         String cookie = String.format("%s", AndroidUtility.getCookie(getApplicationContext()));

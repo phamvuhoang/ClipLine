@@ -93,8 +93,22 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ///// 20170506 ADD START
+                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                String studentId = todoParameters.get("studentId");
+                String categoryId = todoParameters.get("categoryId");
+                String todoContentId = todoParameters.get("todoContentId");
+/*
+                String url = "%s://%s/training/#/students/" + studentId
+                        + "/todos?type=caetgory&category_id=" + categoryId;
+*/
+                String url = "%s://%s/training/#/students/" + studentId
+                        + "/todos/" + todoContentId;
+                ///// 20170506 ADD END
                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-                intent.putExtra("BASE_URL", "%s://%s/training/students/92694/todos?type=caetgory&category_id=988");
+                ///// 20170506 MODIFY START
+                intent.putExtra("BASE_URL", url);
+                ///// 20170506 MODIFY END
                 startActivity(intent);
                 finish();
             }
