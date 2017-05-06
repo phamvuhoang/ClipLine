@@ -2,22 +2,26 @@ package jp.clipline.clandroid;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import java.net.URISyntaxException;
 import java.util.Map;
+
+import jp.clipline.clandroid.Utility.AndroidUtility;
 
 public class SubmissionConfirmationActivity extends AppCompatActivity {
 
     private String mTodoContentType = null;
     private Uri mTodoContentData = null;
+    private WebView mWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,19 +37,33 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.imageView);
         VideoView videoView = (VideoView) findViewById(R.id.videoView);
-
+        ///// 20170506 MODIFY START
+        mWebView = (WebView) findViewById(R.id.webView);
         if (mTodoContentType.equals("image/png")) {
             // 画像が撮影or選択された場合
             imageView.setImageURI(mTodoContentData);
-            videoView.setVisibility(View.INVISIBLE);
+            videoView.setVisibility(View.GONE);
+            mWebView.setVisibility(View.GONE);
         } else if (mTodoContentType.equals("video/mp4")) {
             // 動画が撮影or選択された場合
             videoView.setVideoURI(mTodoContentData);
             videoView.start();
-            imageView.setVisibility(View.INVISIBLE);
+            imageView.setVisibility(View.GONE);
+            mWebView.setVisibility(View.GONE);
         } else {
-            Log.d("", "");
+            try {
+                String path = "file:///" + AndroidUtility.getFilePath(this, mTodoContentData);
+                mWebView.getSettings().setJavaScriptEnabled(true);
+                mWebView.loadUrl(path);
+                mWebView.setVisibility(View.VISIBLE);
+                videoView.setVisibility(View.GONE);
+                imageView.setVisibility(View.GONE);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+
         }
+        ///// 20170506 MODIFY START
 
         // 戻るボタン
         imageButton = (ImageButton) findViewById(R.id.imageButtonBack);
