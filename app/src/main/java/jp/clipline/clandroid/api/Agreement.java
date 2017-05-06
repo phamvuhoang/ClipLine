@@ -1,11 +1,11 @@
-package jp.clipline.clwebwrapperapplication.api;
+package jp.clipline.clandroid.api;
 
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.HashMap;
 
-import jp.clipline.clwebwrapperapplication.BuildConfig;
+import jp.clipline.clandroid.BuildConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

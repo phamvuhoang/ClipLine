@@ -1,4 +1,4 @@
-package jp.clipline.clwebwrapperapplication;
+package jp.clipline.clandroid;
 
 import android.os.Bundle;
 import android.provider.Settings;

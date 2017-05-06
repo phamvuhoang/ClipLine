@@ -1,4 +1,4 @@
-package jp.clipline.clwebwrapperapplication;
+package jp.clipline.clandroid;
 
 import android.content.Context;
 
@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import jp.clipline.clwebwrapperapplication.Utility.CameraUtil;
+import jp.clipline.clandroid.Utility.CameraUtil;
 
 /**
  * 非同期的に写真を保存するためのRunnableクラス

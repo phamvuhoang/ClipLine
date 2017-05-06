@@ -1,4 +1,4 @@
-package jp.clipline.clwebwrapperapplication;
+package jp.clipline.clandroid;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jp.clipline.clwebwrapperapplication.Utility.AndroidUtility;
+import jp.clipline.clandroid.Utility.AndroidUtility;
 
 public class LaunchCrossWalkActivity extends AppCompatActivity {
 

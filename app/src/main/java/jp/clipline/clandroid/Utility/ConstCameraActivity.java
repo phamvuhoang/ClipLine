@@ -1,4 +1,4 @@
-package jp.clipline.clwebwrapperapplication.Utility;
+package jp.clipline.clandroid.Utility;
 
 public interface ConstCameraActivity {
     public static final String TAG = "SimpleCamera";

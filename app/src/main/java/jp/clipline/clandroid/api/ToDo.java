@@ -1,4 +1,4 @@
-package jp.clipline.clwebwrapperapplication.api;
+package jp.clipline.clandroid.api;
 
 import com.google.gson.Gson;
 
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import jp.clipline.clwebwrapperapplication.BuildConfig;
+import jp.clipline.clandroid.BuildConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

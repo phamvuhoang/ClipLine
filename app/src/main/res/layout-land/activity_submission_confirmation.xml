@@ -5,7 +5,7 @@
     android:id="@+id/activity_submission_confirmation"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="jp.clipline.clwebwrapperapplication.SubmissionConfirmationActivity">
+    tools:context="jp.clipline.clandroid.SubmissionConfirmationActivity">
 
     <RelativeLayout
         android:id="@+id/relativeLayoutHeader"

@@ -1,4 +1,4 @@
-package jp.clipline.clwebwrapperapplication;
+package jp.clipline.clandroid;
 
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
@@ -66,9 +66,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Future;
 
-import jp.clipline.clwebwrapperapplication.Utility.CameraUtil;
-import jp.clipline.clwebwrapperapplication.Utility.ConstCameraActivity;
-import jp.clipline.clwebwrapperapplication.Utility.IntentParameters;
+import jp.clipline.clandroid.Utility.CameraUtil;
+import jp.clipline.clandroid.Utility.ConstCameraActivity;
+import jp.clipline.clandroid.Utility.IntentParameters;
 
 public class CameraActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ConstCameraActivity, CompoundButton.OnCheckedChangeListener, View.OnTouchListener, ActivityCompat.OnRequestPermissionsResultCallback {
 

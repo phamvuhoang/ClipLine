@@ -1,12 +1,10 @@
-package jp.clipline.clwebwrapperapplication.Utility;
+package jp.clipline.clandroid.Utility;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import java.net.URI;
 import java.util.Set;
 
 public class IntentParameters {

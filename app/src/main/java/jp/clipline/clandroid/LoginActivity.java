@@ -1,4 +1,4 @@
-package jp.clipline.clwebwrapperapplication;
+package jp.clipline.clandroid;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -35,8 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import jp.clipline.clwebwrapperapplication.Utility.AndroidUtility;
-import jp.clipline.clwebwrapperapplication.api.Branch;
+import jp.clipline.clandroid.Utility.AndroidUtility;
+import jp.clipline.clandroid.api.Branch;
 
 import static android.Manifest.permission.READ_CONTACTS;
 

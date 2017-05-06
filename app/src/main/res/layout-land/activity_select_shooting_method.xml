@@ -6,7 +6,7 @@
     android:id="@+id/activity_select_shooting_method"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="jp.clipline.clwebwrapperapplication.SelectShootingMethodActivity">
+    tools:context="jp.clipline.clandroid.SelectShootingMethodActivity">
 
     <RelativeLayout
         android:id="@+id/relativeLayoutHeader"

@@ -1,4 +1,4 @@
-package jp.clipline.clwebwrapperapplication;
+package jp.clipline.clandroid;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import jp.clipline.clwebwrapperapplication.Utility.AndroidUtility;
+import jp.clipline.clandroid.Utility.AndroidUtility;
 
 public class LaunchWebViewActivity extends AppCompatActivity {
 

@@ -5,7 +5,7 @@
     android:id="@+id/activity_compare"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="jp.clipline.clwebwrapperapplication.CompareActivity">
+    tools:context="jp.clipline.clandroid.CompareActivity">
 
     <RelativeLayout
         android:id="@+id/relativeLayoutHeader"

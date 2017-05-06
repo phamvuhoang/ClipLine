@@ -1,4 +1,4 @@
-package jp.clipline.clwebwrapperapplication.api;
+package jp.clipline.clandroid.api;
 
 import android.util.Log;
 
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 
-import jp.clipline.clwebwrapperapplication.BuildConfig;
+import jp.clipline.clandroid.BuildConfig;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

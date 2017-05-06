@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="jp.clipline.clwebwrapperapplication.TerminalFirstUseScreenDisplayedActivity">
+    tools:context="jp.clipline.clandroid.TerminalFirstUseScreenDisplayedActivity">
 
     <include layout="@layout/content_terminal_first_use_screen_displayed" />
 

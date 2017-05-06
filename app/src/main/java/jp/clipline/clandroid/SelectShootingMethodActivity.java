@@ -1,4 +1,4 @@
-package jp.clipline.clwebwrapperapplication;
+package jp.clipline.clandroid;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -15,15 +15,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import jp.clipline.clwebwrapperapplication.Utility.AndroidUtility;
-import jp.clipline.clwebwrapperapplication.Utility.CameraUtil;
-import jp.clipline.clwebwrapperapplication.api.ToDo;
+import jp.clipline.clandroid.Utility.AndroidUtility;
+import jp.clipline.clandroid.Utility.CameraUtil;
+import jp.clipline.clandroid.api.ToDo;
 
 public class SelectShootingMethodActivity extends AppCompatActivity {
 

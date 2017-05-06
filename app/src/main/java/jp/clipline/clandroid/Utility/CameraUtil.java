@@ -1,4 +1,4 @@
-package jp.clipline.clwebwrapperapplication.Utility;
+package jp.clipline.clandroid.Utility;
 
 import android.app.Activity;
 import android.content.ContentResolver;

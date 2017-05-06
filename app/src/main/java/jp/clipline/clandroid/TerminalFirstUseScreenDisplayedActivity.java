@@ -1,4 +1,4 @@
-package jp.clipline.clwebwrapperapplication;
+package jp.clipline.clandroid;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,8 +10,8 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.Map;
 
-import jp.clipline.clwebwrapperapplication.Utility.AndroidUtility;
-import jp.clipline.clwebwrapperapplication.api.Branch;
+import jp.clipline.clandroid.Utility.AndroidUtility;
+import jp.clipline.clandroid.api.Branch;
 
 public class TerminalFirstUseScreenDisplayedActivity extends AppCompatActivity {
 

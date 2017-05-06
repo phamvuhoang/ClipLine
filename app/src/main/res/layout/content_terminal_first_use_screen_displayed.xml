@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="jp.clipline.clwebwrapperapplication.TerminalFirstUseScreenDisplayedActivity"
+    tools:context="jp.clipline.clandroid.TerminalFirstUseScreenDisplayedActivity"
     tools:showIn="@layout/activity_terminal_first_use_screen_displayed">
 
     <TextView

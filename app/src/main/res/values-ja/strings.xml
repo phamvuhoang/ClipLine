@@ -1,7 +1,7 @@
 <resources>
   <string name="app_name">ガワアプリ</string>
   <string name="action_settings">設定</string>
-  <string name="title_activity_login">ClipLine Wrapper</string>
+  <string name="title_activity_login">ClipLine</string>
 
   <!-- Strings related to login -->
   <string name="prompt_service_id">サービスID</string>
