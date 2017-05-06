@@ -102,6 +102,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/select_shooting_method_select_camera_roll"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="60dp"
+            android:layout_marginBottom="180dp"
+            android:textSize="12sp"
+            android:textColor="#000000"
+            android:textStyle="normal"
+            android:id="@+id/textViewSelectCameraRoll" />
+<!--
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="動画ファイルを選ぶ"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
@@ -124,6 +138,7 @@
             android:textColor="#000000"
             android:textStyle="normal"
             android:id="@+id/textViewSelectPicture" />
+-->
 
     </RelativeLayout>
 
@@ -134,49 +149,136 @@
         android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
         android:background="#E8E8E8"
+        android:padding="10dp"
         >
-
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            app:srcCompat="@drawable/ic_sample_svg"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="92dp"
-            android:layout_height="16dp"
-            android:text="撮る"
-            android:layout_toRightOf="@+id/imageButton2"
-            android:layout_centerVertical="true"
-            android:textSize="12sp"
-            android:textColor="#000000"
-            android:textStyle="normal"
-            />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentRight="true">
+            android:layout_alignParentLeft="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        app:srcCompat="@drawable/ic_sample_svg"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/footer_view"
+                        android:textSize="12sp"
+                        android:textColor="#61B5Ab"
+                        android:textStyle="normal"
+                        />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" -------- "
+                android:textSize="12sp"
+                android:textColor="#61B5Ab"
+                android:textStyle="normal"
+                android:layout_marginTop="5dp"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    app:srcCompat="@drawable/ic_sample_svg"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/footer_shoot"
+                    android:textSize="12sp"
+                    android:textColor="#000000"
+                    android:textStyle="normal"
+                    />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" -------- "
+                android:textSize="12sp"
+                android:textColor="#000000"
+                android:textStyle="normal"
+                android:layout_marginTop="5dp"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    app:srcCompat="@drawable/ic_sample_svg"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/footer_compare"
+                    android:textSize="12sp"
+                    android:textColor="#000000"
+                    android:textStyle="normal"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true">
 
                 <Button
                     android:id="@+id/buttonToCompare"
                     android:text="@string/select_shooting_method_compare"
                     android:enabled="false"
-                    android:layout_width="92dp"
-                    android:layout_height="64dp"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     />
 
                 <Button
                     android:id="@+id/buttonSubmit"
                     android:text="@string/select_shooting_method_submit"
                     android:enabled="false"
-                    android:layout_width="92dp"
-                    android:layout_height="64dp"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     />
 
         </LinearLayout>

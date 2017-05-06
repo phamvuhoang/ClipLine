@@ -26,6 +26,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
     private static int REQUEST_CODE_VIDEO_CAPTURE = 2;
     private static int REQUEST_CODE_PICTURE_SELECTOR = 3;
     private static int REQUEST_CODE_VIDEO_SELECTOR = 4;
+    private static int REQUEST_CODE_SELECT_FILE = 5; ///// 20170506 ADD
 
     private Uri uriPicture = null;
 
@@ -65,6 +66,8 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
             }
         });
 
+        ///// 20170506 DELETE START
+/*
         textView = (TextView) findViewById(R.id.textViewSelectPicture);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,9 +88,26 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
 //                photoPickerIntent.setType("video/mp4");
 //                startActivityForResult(photoPickerIntent, REQUEST_CODE_VIDEO_SELECTOR);
 
-                startActivityForResult(new Intent(Intent.ACTION_GET_CONTENT).setType("video/*"), REQUEST_CODE_VIDEO_SELECTOR);
+                startActivityForResult(new Intent(Intent.ACTION_GET_CONTENT).setType("video*/
+/*"), REQUEST_CODE_VIDEO_SELECTOR);
             }
         });
+*/
+        ///// 20170506 DELETE END
+
+        ///// 20170506 ADD START
+        textView = (TextView) findViewById(R.id.textViewSelectCameraRoll);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            Intent intent = new Intent()
+                    .setType("image/png")
+                    .setAction(Intent.ACTION_GET_CONTENT);
+
+            startActivityForResult(Intent.createChooser(intent, "Select a file"), REQUEST_CODE_SELECT_FILE);
+            }
+        });
+        ///// 20170506 ADD END
 
         imageButton = (ImageButton) findViewById(R.id.imageButtonBack);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +160,8 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
                 return;
             }
 
+            ///// 20170506 DELETE START
+/*
             if (requestCode == REQUEST_CODE_PICTURE_SELECTOR) {
                 Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
                 ((ClWebWrapperApplication) this.getApplication()).setTodoContent(data.getData(), "image/png");
@@ -155,6 +177,30 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
                 finish();
                 return;
             }
+*/
+            ///// 20170506 DELETE START
+
+            ///// 20170506 ADD START
+            if (requestCode == REQUEST_CODE_SELECT_FILE) {
+                Uri selectedMediaUri = data.getData();
+                String contentType = "image/png";
+                if (selectedMediaUri.toString().contains("images")) {
+                    contentType = "image/png";
+                } else  if (selectedMediaUri.toString().contains("video")) {
+                    contentType = "video/mp4";
+                } else {
+
+                }
+
+                Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+                ((ClWebWrapperApplication) this.getApplication()).setTodoContent(data.getData(), contentType);
+                startActivity(intent);
+                finish();
+                return;
+            }
+            ///// 20170506 ADD END
+
+
         }
 
 

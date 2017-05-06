@@ -55,4 +55,8 @@
   <string name="select_shooting_method_compare">見比べる</string>
   <string name="select_shooting_method_submit">この内容で提出</string>
 
+  <string name="footer_view">見る</string>
+  <string name="footer_shoot">撮影</string>
+  <string name="footer_compare">比べる</string>
+
 </resources>
