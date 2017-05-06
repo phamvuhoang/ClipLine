@@ -9,41 +9,40 @@
 
     <RelativeLayout
         android:id="@+id/relativeLayoutHeader"
-        android:layout_height="80dp"
         android:layout_width="match_parent"
+        android:layout_height="80dp"
         android:layout_alignParentTop="true"
-        android:background="#61B5Ab"
-        >
+        android:background="#61B5Ab">
 
         <TextView
+            android:id="@+id/textViewToDoTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="00_ダミーの文字列です"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:textSize="36sp"
+            android:text="00_ダミーの文字列です"
             android:textColor="@android:color/background_light"
-            android:textStyle="normal"
-            android:id="@+id/textViewToDoTitle" />
+            android:textSize="36sp"
+            android:textStyle="normal" />
 
         <ImageButton
+            android:id="@+id/imageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"
             android:layout_centerVertical="true"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+            android:layout_marginRight="16dp"
             android:background="#61B5Ab"
-            android:id="@+id/imageButton" />
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
         <ImageButton
+            android:id="@+id/imageButtonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="16dp"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
             android:background="#61B5Ab"
-            android:id="@+id/imageButtonBack"
             app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
     </RelativeLayout>
@@ -52,133 +51,177 @@
         android:id="@+id/centerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_centerInParent="true"
-        />
+        android:layout_centerInParent="true" />
 
     <RelativeLayout
-        android:id="@+id/relativeLayoutBodyLeft"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/relativeLayoutBottom"
         android:layout_below="@+id/relativeLayoutHeader"
-        android:layout_alignRight="@+id/centerView"
-        android:background="#FFFFFF"
-        >
+        android:orientation="vertical">
 
-        <TextView
-            android:text="お手本のように撮影しましょう"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/relativeLayoutPlayer"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/textView5" />
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_above="@+id/linearLayout">
 
-        <RelativeLayout
-            android:id="@+id/relativeLayoutPreviewLeft"
-            android:layout_height="320dp"
-            android:layout_width="320dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="#FFFFFF"
-            >
+            <RelativeLayout
+                android:id="@+id/relativeLayoutBodyLeft"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignRight="@+id/centerView"
+                android:layout_weight="0.5"
+                android:background="#FFFFFF">
 
-            <VideoView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:id="@+id/videoViewExample"
-                />
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/relativeLayoutPlayer"
+                    android:layout_centerHorizontal="true"
+                    android:text="お手本のように撮影しましょう" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:visibility="invisible"
-                android:id="@+id/imageViewExample" />
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutPreviewLeft"
+                    android:layout_width="320dp"
+                    android:layout_height="320dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="#FFFFFF">
+                    <WebView
+                        android:id="@+id/webViewContent"
+                        android:layout_width="match_parent"
+                        android:foregroundGravity="center"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="gone"
+                        android:layout_centerVertical="true" />
 
-        </RelativeLayout>
+                    <VideoView
+                        android:id="@+id/videoViewContent"
+                        android:layout_width="match_parent"
+                        android:visibility="gone"
+                        android:foregroundGravity="center"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true" />
 
-        <TextView
-            android:text="やり直す "
-            android:layout_width="wrap_content"
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/textViewBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/relativeLayoutPlayer"
+                    android:layout_centerHorizontal="true"
+                    android:text="やり直す " />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutBodyRight"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/relativeLayoutBottom"
+                android:layout_alignLeft="@+id/centerView"
+                android:layout_below="@+id/relativeLayoutHeader"
+                android:layout_weight="0.5"
+                android:background="#FFFFFF">
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutPreviewRight"
+                    android:layout_width="320dp"
+                    android:layout_height="320dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="#FFFFFF">
+
+                    <WebView
+                        android:id="@+id/webViewMine"
+                        android:layout_width="match_parent"
+                        android:visibility="gone"
+                        android:foregroundGravity="center"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true" />
+                    <VideoView
+                        android:id="@+id/videoViewMine"
+                        android:layout_width="match_parent"
+                        android:visibility="gone"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/relativeLayoutPlayer"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/textViewBack" />
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:id="@+id/linearLayout">
+
+            <TextView
+                android:id="@+id/backScreen"
+                android:text="@string/text_back"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/buttonStartAllVideo"
+                android:text="@string/button_start_video"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/relativeLayoutBodyRight"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:layout_above="@+id/relativeLayoutBottom"
-        android:layout_below="@+id/relativeLayoutHeader"
-        android:layout_alignLeft="@+id/centerView"
-        android:background="#FFFFFF"
-        >
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutPreviewRight"
-            android:layout_height="320dp"
-            android:layout_width="320dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="#FFFFFF"
-            >
-
-            <VideoView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:id="@+id/videoViewMine"
-                />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/relativeLayoutBottom"
-        android:layout_height="64dp"
         android:layout_width="match_parent"
-        android:layout_centerInParent="true"
+        android:layout_height="64dp"
         android:layout_alignParentBottom="true"
-        android:background="#E8E8E8"
-        >
+        android:layout_centerInParent="true"
+        android:background="#E8E8E8">
 
         <ImageButton
+            android:id="@+id/imageButton2"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            app:srcCompat="@drawable/ic_sample_svg"
-            android:id="@+id/imageButton2"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            />
+            app:srcCompat="@drawable/ic_sample_svg" />
 
         <TextView
+            android:id="@+id/textView6"
             android:layout_width="92dp"
             android:layout_height="16dp"
-            android:text="撮る"
-            android:layout_toRightOf="@+id/imageButton2"
             android:layout_centerVertical="true"
-            android:textSize="12sp"
+            android:layout_toRightOf="@+id/imageButton2"
+            android:text="撮る"
             android:textColor="#000000"
-            android:textStyle="normal"
-            android:id="@+id/textView6" />
+            android:textSize="12sp"
+            android:textStyle="normal" />
 
         <Button
-            android:text="見比べる"
-            android:enabled="false"
+            android:id="@+id/button"
             android:layout_width="92dp"
             android:layout_height="64dp"
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_marginRight="16dp"
-            android:id="@+id/button" />
+            android:enabled="false"
+            android:text="見比べる" />
 
     </RelativeLayout>
 

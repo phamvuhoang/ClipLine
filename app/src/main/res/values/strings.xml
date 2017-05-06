@@ -45,4 +45,10 @@
     <string name="compress_canceled">インポートはキャンセルされました</string>
     <string name="compress_failed">このファイルはインポートが出来ません</string>
 
+    <string name="terminal">It is the terminal first use screen</string>
+
+    //screen CompareActivity
+    <string name="text_back">やり直す</string>
+    <string name="button_start_video">同時に見比べる</string>
+
 </resources>

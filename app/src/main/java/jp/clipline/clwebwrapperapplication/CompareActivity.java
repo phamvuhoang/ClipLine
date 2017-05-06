@@ -1,24 +1,64 @@
 package jp.clipline.clwebwrapperapplication;
 
+import android.annotation.SuppressLint;
+import android.content.ContentUris;
+import android.content.Context;
+import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import java.net.URISyntaxException;
 import java.util.Map;
 
-public class CompareActivity extends AppCompatActivity {
+public class CompareActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final static String TAG = "clwebwrapperapplication";
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 99999;
 
     private String mTodoContentType = null;
     private Uri mTodoContentData = null;
+    private WebView mWebViewContent;
+    private WebView mWebViewMine;
+
+    private Button mStartAllVideo;
+
+    private VideoView mVideoViewContent;
+    private VideoView mVideoViewMine;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare);
+
+        ///// 20170506 ADD START
+
+        mWebViewContent = (WebView) findViewById(R.id.webViewContent);
+        mWebViewMine = (WebView) findViewById(R.id.webViewMine);
+
+        mVideoViewContent = (VideoView) findViewById(R.id.videoViewContent);
+        mVideoViewMine = (VideoView) findViewById(R.id.videoViewMine);
+
+        mStartAllVideo = (Button) findViewById(R.id.buttonStartAllVideo);
+        mStartAllVideo.setOnClickListener(this);
+
+
+        mWebViewContent.getSettings().setJavaScriptEnabled(true);
+        mWebViewMine.getSettings().setJavaScriptEnabled(true);
 
         mTodoContentType = ((ClWebWrapperApplication) this.getApplication()).getTodoContentType();
         mTodoContentData = ((ClWebWrapperApplication) this.getApplication()).getTodoContentData();
@@ -26,13 +66,59 @@ public class CompareActivity extends AppCompatActivity {
         Map<String, Object> currentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
         TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);
 
-        ///// 20170505 MODIFY START
+
         if (currentTodoContent != null && currentTodoContent.get("title") != null) {
             textView.setText((String) currentTodoContent.get("title"));
         } else {
             textView.setText("");
         }
-        ///// 20170505 MODIFY END
+        try {
+
+            String path = "file:///" + getFilePath(this, mTodoContentData);
+            if (mTodoContentType.equals("image/png")) {
+                ImageView imageView = new ImageView(this);
+                imageView.setImageURI(mTodoContentData);
+                mWebViewMine.addView(imageView);
+                mWebViewMine.setVisibility(View.VISIBLE);
+            } else if (mTodoContentType.equals("video/mp4")) {
+                Log.e("path uri video : ", path);
+                mVideoViewMine.setVideoPath(path);
+                mVideoViewMine.setMediaController(new MediaController(this));
+                mVideoViewMine.setVisibility(View.VISIBLE);
+                mVideoViewMine.seekTo(100);
+            }
+
+            if (currentTodoContent != null) {
+                boolean isVideo = (boolean) currentTodoContent.get("is_video");
+                boolean isImage = (boolean) currentTodoContent.get("is_image");
+                boolean isPdf = (boolean) currentTodoContent.get("is_pdf");
+
+                if (isVideo) {
+                    mVideoViewContent.setVideoPath((String) currentTodoContent.get("pre_signed_standard_mp4_url"));
+                    mVideoViewContent.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            mp.seekTo(100);
+                        }
+                    });
+
+                    mVideoViewContent.setMediaController(new MediaController(this));
+                    mVideoViewContent.setVisibility(View.VISIBLE);
+                } else if (isImage) { //TODO contact (media_thumb_pre_signed_url)
+                    mWebViewContent.loadUrl(String.valueOf(currentTodoContent.get("media_thumb_pre_signed_url")));
+                    mWebViewContent.setVisibility(View.VISIBLE);
+                } else if (isPdf) {
+                    mWebViewContent.loadUrl(String.valueOf(currentTodoContent.get("media_thumb_pre_signed_url")));
+                    mWebViewContent.setVisibility(View.VISIBLE);
+                }
+            }
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        ///// 20170506 ADD END
+
 
 /*
         Log.d(TAG,String.format("@@@ media_pre_signed_url => %s",(String)currentTodoContent.get("media_pre_signed_url")));
@@ -82,12 +168,91 @@ public class CompareActivity extends AppCompatActivity {
         // videoView.setVideoURI(uri);
         // videoView.setVideoURI(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8"));
 */
-        VideoView videoView = (VideoView) findViewById(R.id.videoViewExample);
-        videoView.setVideoURI(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8"));
-        videoView.start();
+//        VideoView videoView = (VideoView) findViewById(R.id.videoViewExample);
+//        videoView.setVideoURI(Uri.parse("http://devimages.apple.com/iphone/samples/bipbop/gear1/prog_index.m3u8"));
+//        videoView.start();
+//
+//        Log.e("CompareActivity", mTodoContentType);
+//        videoView = (VideoView) findViewById(R.id.videoViewMine);
+//        videoView.setVideoURI(mTodoContentData);
+//        videoView.start();
+    }
 
-        videoView = (VideoView) findViewById(R.id.videoViewMine);
-        videoView.setVideoURI(mTodoContentData);
-        videoView.start();
+    @SuppressLint("NewApi")
+    public static String getFilePath(Context context, Uri uri) throws URISyntaxException {
+        String selection = null;
+        String[] selectionArgs = null;
+        // Uri is different in versions after KITKAT (Android 4.4), we need to
+        if (Build.VERSION.SDK_INT >= 19 && DocumentsContract.isDocumentUri(context.getApplicationContext(), uri)) {
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                return Environment.getExternalStorageDirectory() + "/" + split[1];
+            } else if (isDownloadsDocument(uri)) {
+                final String id = DocumentsContract.getDocumentId(uri);
+                uri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+            } else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                if ("image".equals(type)) {
+                    uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+                selection = "_id=?";
+                selectionArgs = new String[]{
+                        split[1]
+                };
+            }
+        }
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            String[] projection = {
+                    MediaStore.Images.Media.DATA
+            };
+            Cursor cursor = null;
+            try {
+                cursor = context.getContentResolver()
+                        .query(uri, projection, selection, selectionArgs, null);
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(column_index);
+                }
+            } catch (Exception e) {
+            }
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
+    }
+
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.buttonStartAllVideo:
+                mVideoViewContent.requestFocus();
+                mVideoViewContent.start();
+                mVideoViewMine.start();
+                break;
+            case R.id.backScreen:
+                break;
+            default:
+                break;
+        }
     }
 }

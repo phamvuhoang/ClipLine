@@ -674,6 +674,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     }
 
     private void setupCamera() {
+        releaseCameraAndPreview();
         int cameraFacing = Camera.CameraInfo.CAMERA_FACING_BACK;
 
         if (Camera.getNumberOfCameras() > 1 && !mIsBackShooting) { // カメラが一個以上で、背面以外選択時はフロント
@@ -714,6 +715,12 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mRelativeLayoutPreview.requestLayout();
     }
 
+    private void releaseCameraAndPreview() {
+        if (mCamera != null) {
+            mCamera.release();
+            mCamera = null;
+        }
+    }
     private void teardownCamera() {
         if (mCamera != null) {
             Log.d(TAG, "teardownCamera - Release Camera");
