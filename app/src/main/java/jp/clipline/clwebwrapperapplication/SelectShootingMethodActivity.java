@@ -2,6 +2,7 @@ package jp.clipline.clwebwrapperapplication;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -117,10 +118,11 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
             Intent intent = new Intent()
-                    .setType("image/png")
-                    .setAction(Intent.ACTION_GET_CONTENT);
+                    .setType("image/png|image/jpg|application/pdf|video/mp4")
+                    .setAction(Intent.ACTION_PICK);
 
-            startActivityForResult(Intent.createChooser(intent, "Select a file"), REQUEST_CODE_SELECT_FILE);
+                startActivityForResult(Intent.createChooser(intent, "Select a file"), REQUEST_CODE_SELECT_FILE);
+                //startActivityForResult(intent, REQUEST_CODE_SELECT_FILE);
             }
         });
 
@@ -155,7 +157,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
                 String categoryId = todoParameters.get("categoryId");
                 String todoContentId = todoParameters.get("todoContentId");
                 String url = "%s://%s/training/#/students/" + studentId
-                        + "/todos?type=category";
+                        + "/todos?type=updates"; // TODO type=updates/repeat???
                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                 intent.putExtra("BASE_URL", url);
                 startActivity(intent);
@@ -237,11 +239,44 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
 
             ///// 20170506 ADD START
             if (requestCode == REQUEST_CODE_SELECT_FILE) {
+/*
                 Uri selectedMediaUri = data.getData();
+                String path = selectedMediaUri.getPath();
                 String contentType = "image/png";
-                if (selectedMediaUri.toString().contains("images")) {
+                if (path.contains("images")) {
                     contentType = "image/png";
-                } else  if (selectedMediaUri.toString().contains("video")) {
+                } else  if (path.contains("video")) {
+                    contentType = "video/mp4";
+                } else {
+
+                }
+*/
+                // Get the Uri of the selected file
+                Uri uri = data.getData();
+                String uriString = uri.toString();
+                File myFile = new File(uriString);
+                String path = myFile.getAbsolutePath();
+                String displayName = null;
+
+                if (uriString.startsWith("content://")) {
+                    Cursor cursor = null;
+                    try {
+                        cursor = getContentResolver().query(uri, null, null, null, null);
+                        if (cursor != null && cursor.moveToFirst()) {
+                            displayName = cursor.getString(cursor.getColumnIndex(
+                                    android.provider.OpenableColumns.DISPLAY_NAME));
+                        }
+                    } finally {
+                        cursor.close();
+                    }
+                } else if (uriString.startsWith("file://")) {
+                    displayName = myFile.getName();
+                }
+
+                String contentType = "image/png";
+                if (displayName.endsWith("pdf")) {
+                    contentType = "application/pdf";
+                } else  if (displayName.endsWith("mp4")) {
                     contentType = "video/mp4";
                 } else {
 
