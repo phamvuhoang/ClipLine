@@ -3,6 +3,7 @@ package jp.clipline.clwebwrapperapplication;
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -21,6 +22,8 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.squareup.picasso.Picasso;
+
 import java.net.URISyntaxException;
 import java.util.Map;
 
@@ -35,6 +38,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
     private WebView mWebViewMine;
 
     private Button mStartAllVideo;
+    private TextView mBackScreen;
 
     private VideoView mVideoViewContent;
     private VideoView mVideoViewMine;
@@ -52,10 +56,10 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 
         mVideoViewContent = (VideoView) findViewById(R.id.videoViewContent);
         mVideoViewMine = (VideoView) findViewById(R.id.videoViewMine);
-
+        mBackScreen = (TextView) findViewById(R.id.backScreen);
+        mBackScreen.setOnClickListener(this);
         mStartAllVideo = (Button) findViewById(R.id.buttonStartAllVideo);
         mStartAllVideo.setOnClickListener(this);
-
 
         mWebViewContent.getSettings().setJavaScriptEnabled(true);
         mWebViewMine.getSettings().setJavaScriptEnabled(true);
@@ -66,22 +70,20 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         Map<String, Object> currentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
         TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);
 
-
         if (currentTodoContent != null && currentTodoContent.get("title") != null) {
             textView.setText((String) currentTodoContent.get("title"));
         } else {
             textView.setText("");
         }
         try {
-
             String path = "file:///" + getFilePath(this, mTodoContentData);
+            Log.e("path uri video : ", path);
             if (mTodoContentType.equals("image/png")) {
                 ImageView imageView = new ImageView(this);
-                imageView.setImageURI(mTodoContentData);
+                Picasso.with(this).load(path).into(imageView);
                 mWebViewMine.addView(imageView);
                 mWebViewMine.setVisibility(View.VISIBLE);
             } else if (mTodoContentType.equals("video/mp4")) {
-                Log.e("path uri video : ", path);
                 mVideoViewMine.setVideoPath(path);
                 mVideoViewMine.setMediaController(new MediaController(this));
                 mVideoViewMine.setVisibility(View.VISIBLE);
@@ -101,8 +103,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                             mp.seekTo(100);
                         }
                     });
-
-                    mVideoViewContent.setMediaController(new MediaController(this));
                     mVideoViewContent.setVisibility(View.VISIBLE);
                 } else if (isImage) { //TODO contact (media_thumb_pre_signed_url)
                     mWebViewContent.loadUrl(String.valueOf(currentTodoContent.get("media_thumb_pre_signed_url")));
@@ -241,18 +241,24 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
+    ///// 20170506 ADD START
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonStartAllVideo:
-                mVideoViewContent.requestFocus();
+                mVideoViewContent.setMediaController(new MediaController(this));
                 mVideoViewContent.start();
                 mVideoViewMine.start();
                 break;
             case R.id.backScreen:
+                Intent intent = new Intent(CompareActivity.this, SelectShootingMethodActivity.class);
+                startActivity(intent);
+                finish();
+
                 break;
             default:
                 break;
         }
     }
+    ///// 20170506 ADD END
 }

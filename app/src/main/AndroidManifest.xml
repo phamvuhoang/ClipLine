@@ -57,8 +57,7 @@
             android:screenOrientation="landscape" />
 
         <activity
-            android:name=".CompareActivity"
-            android:screenOrientation="landscape" />
+            android:name=".CompareActivity"/>
     </application>
 
 </manifest>
