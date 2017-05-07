@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.api.MediaKey;
+import jp.clipline.clandroid.api.Report;
 
 public class SubmissionConfirmationActivity extends AppCompatActivity {
 
@@ -314,7 +316,9 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Get media key to send file to S3 and send report
+     */
     public class GetMediaKeyTask extends AsyncTask<String, Void, Boolean> {
 
         Map<String, Object> mediaKey = null;
@@ -337,6 +341,63 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final Boolean success) {
             if (success) {
+                // TODO send file to S3???
+
+                if ((mediaKey != null)
+                        && (mediaKey.get("object_key") != null)) {
+                    Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                    String todoContentId = todoParameters.get("todoContentId");
+
+                    String objectKey = (String)mediaKey.get("object_key");
+                    String contentType = "video/mp4";
+                    String mediaURLInDevice = "//content:/....";
+                    String mediaDuration = "10:00";
+                    String takenAt = "2016-05-07 10:11:12";
+
+                    // Call report API
+                    new SendReportTask().execute(AndroidUtility.getCookie(getApplicationContext()),
+                            objectKey, contentType, mediaURLInDevice, mediaDuration, takenAt, todoContentId);
+
+                }
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+        }
+    }
+
+
+    public class SendReportTask extends AsyncTask<String, Void, Boolean> {
+
+        Map<String, Object> reponseData = null;
+
+        SendReportTask() {
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                String cookie = params[0];
+                String mediaKey = params[1];
+                String contentType = params[2];
+                String mediaURLInDevice = params[3];
+                String mediaDuration = params[4];
+                String takenAt = params[5];
+                String todoContentId = params[6];
+
+                reponseData = Report.sendStudentReport(cookie, mediaKey, contentType, mediaURLInDevice, mediaDuration, takenAt, todoContentId);
+
+                return Boolean.TRUE;
+            } catch (IOException e) {
+                return Boolean.FALSE;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if (success) {
+                Log.i("reponse:", reponseData.toString());
             }
         }
 
