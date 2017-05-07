@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -39,21 +40,7 @@ public class MediaKey {
         if (response.isSuccessful()) {
             String body = response.body().string();
 
-            List<Map<String, Object>> subCategories = new ArrayList<>();
-            subCategories = gson.fromJson(body, subCategories.getClass());
-/*
-            for (Map<String, Object> subCategory : subCategories) {
-                ArrayList<Map<String, Object>> todos = (ArrayList<Map<String, Object>>) subCategory.get("todos");
-                for (Map<String, Object> todo : todos) {
-                    ArrayList<Map<String, Object>> todo_contents = (ArrayList<Map<String, Object>>) todo.get("todo_contents");
-                    for (Map<String, Object> todo_content : todo_contents) {
-                        if (Integer.parseInt(todoContentId) == Double.valueOf((double) todo_content.get("id")).intValue()) {
-                            current_todo_content = todo_content;
-                        }
-                    }
-                }
-            }
-*/
+            mediaKeyContent = gson.fromJson(body, Map.class);
         } else {
             throw new IOException(String.format("MediaKey#getMediaKey : failed [%d]", response.code()));
         }
