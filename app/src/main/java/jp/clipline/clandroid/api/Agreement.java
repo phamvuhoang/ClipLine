@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 
 import jp.clipline.clandroid.BuildConfig;
 import okhttp3.OkHttpClient;
@@ -17,8 +18,13 @@ public class Agreement {
 
     public static String get() throws IOException {
         String contentBody = null;
+
+        String language = Locale.getDefault().toString();
+
         Request request = new Request.Builder()
                 .url(String.format(SHOW_URL, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST))
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .addHeader("Accept-Language", language)
                 .get()
                 .build();
 

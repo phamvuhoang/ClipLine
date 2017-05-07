@@ -2,6 +2,7 @@ package jp.clipline.clandroid;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,11 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Map;
-import java.util.Objects;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
+import jp.clipline.clandroid.api.MediaKey;
 
 public class SubmissionConfirmationActivity extends AppCompatActivity {
 
@@ -217,7 +219,9 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
         mButtonSummit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // First, get media key
+                // On post execute, upload file to S3 and call report submit api
+                new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
             }
         });
 
@@ -292,6 +296,9 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
             hasMyReportPlayAction = ((boolean)todoContent.get("has_my_report_play_action"));
         }
 
+        ///// 20170507 TEMPORARY ADD to test submit button
+        hasMyReportPlayAction = false;
+
         // TODO 見比べる有???
         if (hasMyReportPlayAction) {
             mButtonCompareToModel.setVisibility(View.GONE);
@@ -305,4 +312,37 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
             mButtonCompare.setVisibility(View.GONE);
         }
     }
+
+
+
+    public class GetMediaKeyTask extends AsyncTask<String, Void, Boolean> {
+
+        Map<String, Object> mediaKey = null;
+
+        GetMediaKeyTask() {
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                String cookie = params[0];
+
+                mediaKey = MediaKey.getMediaKeyContent(cookie);
+                return Boolean.TRUE;
+            } catch (IOException e) {
+                return Boolean.FALSE;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if (success) {
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+        }
+    }
+
 }

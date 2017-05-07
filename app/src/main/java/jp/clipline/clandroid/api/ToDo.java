@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import jp.clipline.clandroid.BuildConfig;
@@ -44,9 +45,13 @@ public class ToDo {
         Gson gson = new Gson();
         Map<String, Object> current_todo_content = null;
 
+        String language = Locale.getDefault().toString();
+
         Request request = new Request.Builder()
                 .url(String.format(STUDENT_TODO_CATEGORIES_URL, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST, categoryId))
                 .addHeader("Cookie", cookie)
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .addHeader("Accept-Language", language)
                 .get()
                 .build();
 
