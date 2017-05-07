@@ -183,6 +183,26 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
             }
         });
 
+        ///// 20170507 ADD START
+        textView = (TextView) findViewById(R.id.textViewTodoBack);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                String studentId = todoParameters.get("studentId");
+                String categoryId = todoParameters.get("categoryId");
+                String todoContentId = todoParameters.get("todoContentId");
+                String url = "%s://%s/training/#/students/" + studentId
+                        + "/todos/" + todoContentId;
+
+                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                intent.putExtra("BASE_URL", url);
+                startActivity(intent);
+                finish();
+            }
+        });
+        ///// 20170507 ADD END
+
         Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
         String studentId = todoParameters.get("studentId");
         String categoryId = todoParameters.get("categoryId");
