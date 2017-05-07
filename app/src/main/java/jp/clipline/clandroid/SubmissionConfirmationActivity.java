@@ -9,11 +9,13 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.Objects;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
 
@@ -22,6 +24,16 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
     private String mTodoContentType = null;
     private Uri mTodoContentData = null;
     private WebView mWebView;
+
+    ///// 20170507 ADD START
+    private LinearLayout mLinearLayoutFooterStatus;
+    private ImageView mImageViewFooterView;
+    private TextView mTextViewFooterView;
+    private ImageView mImageViewFooterShoot;
+    private TextView mTextViewFooterShoot;
+    private ImageView mImageViewFooterCompare;
+    private TextView mTextViewFooterCompare;
+    ///// 20170507 ADD END
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +153,25 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        mLinearLayoutFooterStatus = (LinearLayout) findViewById(R.id.linearLayoutFooterStatus);
+        mImageViewFooterView = (ImageView) findViewById(R.id.imageViewFooterView);
+        mTextViewFooterView = (TextView) findViewById(R.id.textViewFooterView);
+        mImageViewFooterShoot = (ImageView) findViewById(R.id.imageViewFooterShoot);
+        mTextViewFooterShoot = (TextView) findViewById(R.id.textViewFooterShoot);
+        mImageViewFooterCompare = (ImageView) findViewById(R.id.imageViewFooterCompare);
+        mTextViewFooterCompare = (TextView) findViewById(R.id.textViewFooterCompare);
+
+        // Firstly, hide the status, after getting result from api, then depend on the flags to process the view/hide
+        mLinearLayoutFooterStatus.setVisibility(View.GONE);
+        mImageViewFooterView.setVisibility(View.GONE);
+        mTextViewFooterView.setVisibility(View.GONE);
+        mImageViewFooterShoot.setVisibility(View.GONE);
+        mTextViewFooterShoot.setVisibility(View.GONE);
+        mImageViewFooterCompare.setVisibility(View.GONE);
+        mTextViewFooterCompare.setVisibility(View.GONE);
+
+        updateStatus();
         ///// 20170507 ADD END
 
         // 見比べる : ToCompare
@@ -164,5 +195,52 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
             textView.setText("");
         }
         ///// 20170505 MODIFY END
+    }
+
+    /**
+     * Update footer icons based on return from server
+     */
+    private void updateStatus() {
+        Map<String, Object> todoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
+
+        if (todoContent != null) {
+            boolean hasPlayAction = false;
+            if (todoContent.get("has_play_action") != null) {
+                hasPlayAction = (boolean) todoContent.get("has_play_action");
+
+                // Only when has_play_action is true, then all status will be visible
+                if (hasPlayAction) {
+                    mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
+                    mImageViewFooterView.setVisibility(View.VISIBLE);
+                    mTextViewFooterView.setVisibility(View.VISIBLE);
+                    // TODO 点灯
+                    if ((todoContent.get("is_play_action_cleared") != null)
+                            && ((boolean) todoContent.get("is_play_action_cleared"))) {
+
+                    }
+                }
+            }
+
+            // Check has_report_action
+            if ((todoContent.get("has_report_action") != null)
+                    && ((boolean)todoContent.get("has_report_action"))) {
+
+                // 表示
+                mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
+                mImageViewFooterShoot.setVisibility(View.VISIBLE);
+                mTextViewFooterShoot.setVisibility(View.VISIBLE);
+            }
+
+            // check has_my_report_play_action
+            if ((todoContent.get("has_my_report_play_action") != null)
+                    && ((boolean)todoContent.get("has_my_report_play_action"))) {
+
+                // 表示
+                mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
+                mImageViewFooterCompare.setVisibility(View.INVISIBLE);
+                mTextViewFooterCompare.setVisibility(View.INVISIBLE);
+            }
+        }
+
     }
 }
