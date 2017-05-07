@@ -18,11 +18,11 @@
             android:id="@+id/textViewToDoTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="50dp"
             android:layout_centerVertical="true"
-            android:text="00_ダミーの文字列です"
+            android:text="@string/title_activity_compare"
             android:textColor="@android:color/background_light"
-            android:textSize="36sp"
+            android:textSize="30sp"
             android:textStyle="normal" />
 
         <ImageButton
@@ -73,14 +73,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:background="#FFFFFF">
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/relativeLayoutPlayer"
-                    android:layout_centerHorizontal="true"
-                    android:text="お手本のように撮影しましょう" />
 
                 <RelativeLayout
                     android:id="@+id/relativeLayoutPreviewLeft"
@@ -161,7 +153,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/text_back" />
+                android:text="@string/try_again" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -174,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/margin_left"
-                    android:text="@string/button_start_video" />
+                    android:text="@string/compare_switch_video" />
 
                 <Button
                     android:id="@+id/buttonStartAllVideo"
@@ -182,8 +174,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="center"
+                    android:background="#33CC66"
+                    android:textColor="#FFFFFF"
                     android:layout_marginRight="@dimen/margin_right"
-                    android:text="@string/button_start_video" />
+                    android:text="@string/compare_start_video" />
             </RelativeLayout>
 
 
@@ -198,36 +192,83 @@
         android:layout_height="64dp"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:background="#E8E8E8">
+        android:background="#E8E8E8"
+        android:padding="10dp">
 
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            app:srcCompat="@drawable/ic_sample_svg" />
+        <LinearLayout
+            android:id="@+id/linearLayoutFooterStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentLeft="true">
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="92dp"
-            android:layout_height="16dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/imageButton2"
-            android:text="撮る"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            android:textStyle="normal" />
+            <ImageView
+                android:id="@+id/imageViewFooterView"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                app:srcCompat="@drawable/ic_sample_svg"
+                />
+
+            <TextView
+                android:id="@+id/textViewFooterView"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/footer_view"
+                android:textSize="12sp"
+                android:textColor="#61B5Ab"
+                android:textStyle="normal"
+                />
+
+            <ImageView
+                android:id="@+id/imageViewFooterShoot"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                app:srcCompat="@drawable/ic_sample_svg"
+                />
+
+            <TextView
+                android:id="@+id/textViewFooterShoot"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/footer_shoot"
+                android:textSize="12sp"
+                android:textColor="#61B5Ab"
+                android:textStyle="normal"
+                />
+
+            <ImageView
+                android:id="@+id/imageViewFooterCompare"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                app:srcCompat="@drawable/ic_sample_svg"
+                />
+
+            <TextView
+                android:id="@+id/textViewFooterCompare"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/footer_compare"
+                android:textSize="12sp"
+                android:textColor="#61B5Ab"
+                android:textStyle="normal"
+                />
+
+        </LinearLayout>
 
         <Button
-            android:id="@+id/button"
-            android:layout_width="92dp"
-            android:layout_height="64dp"
+            android:text="@string/select_shooting_method_submit"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_marginRight="16dp"
-            android:enabled="false"
-            android:text="見比べる" />
+            android:textColor="#FFFFFF"
+            android:background="#33CC66"
+            android:id="@+id/buttonSubmit" />
 
     </RelativeLayout>
 

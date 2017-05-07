@@ -65,4 +65,8 @@
     <string name="submission_confirmation_save_local">端末に保存する</string>
     <string name="submission_confirmation_compare_with_model">お手本と見比べる</string>
 
+    <string name="title_activity_compare">ロード中．．．</string>
+    <string name="compare_start_video">同時に見比べる</string>
+    <string name="compare_switch_video">切り替え</string>
+
 </resources>

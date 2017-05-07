@@ -349,6 +349,8 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
                     String todoContentId = todoParameters.get("todoContentId");
 
                     String objectKey = (String)mediaKey.get("object_key");
+
+                    // TODO change to right value
                     String contentType = "video/mp4";
                     String mediaURLInDevice = "//content:/....";
                     String mediaDuration = "10:00";

@@ -63,7 +63,12 @@
 
     <string name="try_again">Try again</string>
 
-    <string name="title_activity_submission_confirmation">Loading</string>
+    <string name="title_activity_submission_confirmation">Loading...</string>
     <string name="submission_confirmation_save_local">Save local</string>
     <string name="submission_confirmation_compare_with_model">Compare with Model</string>
+
+    <string name="title_activity_compare">Loading...</string>
+    <string name="compare_start_video">Start both videos</string>
+    <string name="compare_switch_video">Switch videos</string>
+
 </resources>
