@@ -385,8 +385,8 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
 
                         // 表示
                         mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
-                        mImageViewFooterCompare.setVisibility(View.INVISIBLE);
-                        mTextViewFooterCompare.setVisibility(View.INVISIBLE);
+                        mImageViewFooterCompare.setVisibility(View.VISIBLE);
+                        mTextViewFooterCompare.setVisibility(View.VISIBLE);
                     }
                 }
                 ///// 20170506 ADD END

@@ -73,9 +73,9 @@
         android:layout_below="@+id/relativeLayoutHeader"
         android:layout_centerInParent="true"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginLeft="150dp"
+        android:layout_marginRight="150dp"
+        android:layout_marginBottom="150dp"
         android:background="#FFFFFF"
         >
 

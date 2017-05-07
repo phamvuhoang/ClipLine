@@ -33,6 +33,10 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
     private TextView mTextViewFooterShoot;
     private ImageView mImageViewFooterCompare;
     private TextView mTextViewFooterCompare;
+
+    private Button mButtonCompareToModel;
+    private Button mButtonCompare;
+    private Button mButtonSummit;
     ///// 20170507 ADD END
 
     @Override
@@ -154,6 +158,18 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
             }
         });
 
+        // やり直す: back to SelectShooting
+        textView = (TextView) findViewById(R.id.textViewBack);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        // Statuses on Footer
         mLinearLayoutFooterStatus = (LinearLayout) findViewById(R.id.linearLayoutFooterStatus);
         mImageViewFooterView = (ImageView) findViewById(R.id.imageViewFooterView);
         mTextViewFooterView = (TextView) findViewById(R.id.textViewFooterView);
@@ -172,11 +188,22 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
         mTextViewFooterCompare.setVisibility(View.GONE);
 
         updateStatus();
+
+        // お手本を見比べる
+        mButtonCompareToModel = (Button) findViewById(R.id.buttonCompareWithModel);
+        mButtonCompareToModel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         ///// 20170507 ADD END
 
         // 見比べる : ToCompare
-        Button button = (Button) findViewById(R.id.buttonCompare);
-        button.setOnClickListener(new View.OnClickListener() {
+        mButtonCompare = (Button) findViewById(R.id.buttonCompare);
+        mButtonCompare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
@@ -184,6 +211,18 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        // この内容で提出
+        mButtonSummit = (Button) findViewById(R.id.buttonSubmit);
+        mButtonSummit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        // 見比べる有／無によりボタン表示／非表示設定
+        updateButtonVisible();
 
         Map<String, Object> currentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
         textView = (TextView) findViewById(R.id.textViewToDoTitle);
@@ -237,10 +276,33 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
 
                 // 表示
                 mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
-                mImageViewFooterCompare.setVisibility(View.INVISIBLE);
-                mTextViewFooterCompare.setVisibility(View.INVISIBLE);
+                mImageViewFooterCompare.setVisibility(View.VISIBLE);
+                mTextViewFooterCompare.setVisibility(View.VISIBLE);
             }
         }
+    }
 
+    private void updateButtonVisible() {
+        Map<String, Object> todoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
+
+        boolean hasMyReportPlayAction = false;
+
+        if ((todoContent != null)
+                && (todoContent.get("has_my_report_play_action") != null)) {
+            hasMyReportPlayAction = ((boolean)todoContent.get("has_my_report_play_action"));
+        }
+
+        // TODO 見比べる有???
+        if (hasMyReportPlayAction) {
+            mButtonCompareToModel.setVisibility(View.GONE);
+            mButtonSummit.setVisibility(View.GONE);
+
+            mButtonCompare.setVisibility(View.VISIBLE);
+        } else {
+            mButtonCompareToModel.setVisibility(View.VISIBLE);
+            mButtonSummit.setVisibility(View.VISIBLE);
+
+            mButtonCompare.setVisibility(View.GONE);
+        }
     }
 }

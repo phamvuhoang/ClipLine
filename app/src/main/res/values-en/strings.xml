@@ -64,5 +64,6 @@
     <string name="try_again">Try again</string>
 
     <string name="title_activity_submission_confirmation">Loading</string>
-    <string name="submission_confirmation_save_local"></string>
+    <string name="submission_confirmation_save_local">Save local</string>
+    <string name="submission_confirmation_compare_with_model">Compare with Model</string>
 </resources>
