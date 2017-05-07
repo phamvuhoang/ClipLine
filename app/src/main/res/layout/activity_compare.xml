@@ -60,12 +60,12 @@
         android:layout_below="@+id/relativeLayoutHeader"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/linearLayout"
             android:orientation="horizontal"
-            android:weightSum="1"
-            android:layout_above="@+id/linearLayout">
+            android:weightSum="1">
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutBodyLeft"
@@ -89,97 +89,104 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:background="#FFFFFF">
+
+
+
+                    <RelativeLayout
+                        android:id="@+id/relativeLayoutBodyRight"
+                        android:layout_width="250dp"
+                        android:layout_height="250dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:focusable="true"
+                        android:forceHasOverlappingRendering="false">
+
+
+                        <WebView
+                            android:id="@+id/webViewMine"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:foregroundGravity="center"
+                            android:visibility="gone" />
+
+                        <VideoView
+                            android:id="@+id/videoViewMine"
+                            android:layout_width="250dp"
+                            android:layout_height="250dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:visibility="gone" />
+
+
+                    </RelativeLayout>
+
                     <WebView
                         android:id="@+id/webViewContent"
                         android:layout_width="match_parent"
-                        android:foregroundGravity="center"
                         android:layout_height="match_parent"
                         android:layout_centerHorizontal="true"
-                        android:visibility="gone"
-                        android:layout_centerVertical="true" />
+                        android:layout_centerVertical="true"
+                        android:foregroundGravity="center"
+                        android:visibility="gone" />
 
                     <VideoView
                         android:id="@+id/videoViewContent"
                         android:layout_width="match_parent"
-                        android:visibility="gone"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
                         android:foregroundGravity="center"
-                        android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true" />
+                        android:visibility="gone" />
 
-
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/textViewBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/relativeLayoutPlayer"
-                    android:layout_centerHorizontal="true"
-                    android:text="やり直す " />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/relativeLayoutBodyRight"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:background="#FFFFFF">
-
-                <RelativeLayout
-                    android:id="@+id/relativeLayoutPreviewRight"
-                    android:layout_width="320dp"
-                    android:layout_height="320dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:background="#FFFFFF">
-
-                    <WebView
-                        android:id="@+id/webViewMine"
-                        android:layout_width="match_parent"
-                        android:visibility="gone"
-                        android:foregroundGravity="center"
-                        android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true" />
-                    <VideoView
-                        android:id="@+id/videoViewMine"
-                        android:layout_width="match_parent"
-                        android:visibility="gone"
-                        android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true" />
 
                 </RelativeLayout>
 
             </RelativeLayout>
 
-        </RelativeLayout>
+        </FrameLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:orientation="vertical"
-            android:id="@+id/linearLayout">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/backScreen"
-                android:text="@string/text_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content" />
+                android:text="@string/text_back" />
 
-            <Button
-                android:id="@+id/buttonStartAllVideo"
-                android:text="@string/button_start_video"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <Button
+                    android:id="@+id/buttonSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/margin_left"
+                    android:text="@string/button_start_video" />
+
+                <Button
+                    android:id="@+id/buttonStartAllVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/margin_right"
+                    android:text="@string/button_start_video" />
+            </RelativeLayout>
+
+
         </LinearLayout>
 
     </RelativeLayout>

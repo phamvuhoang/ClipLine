@@ -61,7 +61,7 @@
     <string name="footer_shoot">Shoot</string>
     <string name="footer_compare">Compare</string>
 
-    <string name="try_again">やり直す</string>
+    <string name="try_again">Try again</string>
 
     <string name="title_activity_submission_confirmation">Loading</string>
     <string name="submission_confirmation_save_local"></string>

@@ -111,14 +111,6 @@
 
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/textViewBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/relativeLayoutPlayer"
-                    android:layout_centerHorizontal="true"
-                    android:text="やり直す " />
-
             </RelativeLayout>
 
             <RelativeLayout
@@ -176,6 +168,14 @@
                 android:layout_width="wrap_content"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/buttonSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/margin_left"
+                android:text="@string/button_start_video" />
 
             <Button
                 android:id="@+id/buttonStartAllVideo"

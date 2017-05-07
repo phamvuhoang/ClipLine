@@ -1,22 +1,14 @@
 package jp.clipline.clandroid;
 
-import android.annotation.SuppressLint;
-import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -26,6 +18,9 @@ import com.squareup.picasso.Picasso;
 
 import java.net.URISyntaxException;
 import java.util.Map;
+
+import jp.clipline.clandroid.Utility.AndroidUtility;
+
 
 public class CompareActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,11 +32,17 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
     private WebView mWebViewContent;
     private WebView mWebViewMine;
 
-    private Button mStartAllVideo;
+    private Button mButtonStartAllVideo;
+    private Button mButtonSwitch;
     private TextView mBackScreen;
+    private ImageButton mButtonClose;
+    private ImageButton mButtonBack;
 
     private VideoView mVideoViewContent;
     private VideoView mVideoViewMine;
+    private String mPath;
+    private Map<String, Object> mCurrentTodoContent;
+    private boolean mIsCheckSwitch = true;
 
 
     @Override
@@ -49,7 +50,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare);
 
-        ///// 20170506 ADD START
+        ///// 20170507 ADD START
 
         mWebViewContent = (WebView) findViewById(R.id.webViewContent);
         mWebViewMine = (WebView) findViewById(R.id.webViewMine);
@@ -57,9 +58,16 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         mVideoViewContent = (VideoView) findViewById(R.id.videoViewContent);
         mVideoViewMine = (VideoView) findViewById(R.id.videoViewMine);
         mBackScreen = (TextView) findViewById(R.id.backScreen);
+        mButtonStartAllVideo = (Button) findViewById(R.id.buttonStartAllVideo);
+        mButtonSwitch = (Button) findViewById(R.id.buttonSwitch);
+        mButtonClose = (ImageButton) findViewById(R.id.imageButton);
+        mButtonBack = (ImageButton) findViewById(R.id.imageButtonBack);
+
         mBackScreen.setOnClickListener(this);
-        mStartAllVideo = (Button) findViewById(R.id.buttonStartAllVideo);
-        mStartAllVideo.setOnClickListener(this);
+        mButtonStartAllVideo.setOnClickListener(this);
+        mButtonSwitch.setOnClickListener(this);
+        mButtonClose.setOnClickListener(this);
+        mButtonBack.setOnClickListener(this);
 
         mWebViewContent.getSettings().setJavaScriptEnabled(true);
         mWebViewMine.getSettings().setJavaScriptEnabled(true);
@@ -67,36 +75,36 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         mTodoContentType = ((ClWebWrapperApplication) this.getApplication()).getTodoContentType();
         mTodoContentData = ((ClWebWrapperApplication) this.getApplication()).getTodoContentData();
 
-        Map<String, Object> currentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
+        mCurrentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
         TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);
 
-        if (currentTodoContent != null && currentTodoContent.get("title") != null) {
-            textView.setText((String) currentTodoContent.get("title"));
+        mIsCheckSwitch = true;
+        if (mCurrentTodoContent != null && mCurrentTodoContent.get("title") != null) {
+            textView.setText((String) mCurrentTodoContent.get("title"));
         } else {
             textView.setText("");
         }
         try {
-            String path = "file:///" + getFilePath(this, mTodoContentData);
-            Log.e("path uri video : ", path);
+            mPath = "file:///" + AndroidUtility.getFilePath(this, mTodoContentData);
             if (mTodoContentType.equals("image/png")) {
                 ImageView imageView = new ImageView(this);
-                Picasso.with(this).load(path).into(imageView);
+                Picasso.with(this).load(mPath).into(imageView);
                 mWebViewMine.addView(imageView);
                 mWebViewMine.setVisibility(View.VISIBLE);
             } else if (mTodoContentType.equals("video/mp4")) {
-                mVideoViewMine.setVideoPath(path);
+                mVideoViewMine.setVideoPath(mPath);
                 mVideoViewMine.setMediaController(new MediaController(this));
                 mVideoViewMine.setVisibility(View.VISIBLE);
                 mVideoViewMine.seekTo(100);
             }
 
-            if (currentTodoContent != null) {
-                boolean isVideo = (boolean) currentTodoContent.get("is_video");
-                boolean isImage = (boolean) currentTodoContent.get("is_image");
-                boolean isPdf = (boolean) currentTodoContent.get("is_pdf");
+            if (mCurrentTodoContent != null) {
+                boolean isVideo = (boolean) mCurrentTodoContent.get("is_video");
+                boolean isImage = (boolean) mCurrentTodoContent.get("is_image");
+                boolean isPdf = (boolean) mCurrentTodoContent.get("is_pdf");
 
                 if (isVideo) {
-                    mVideoViewContent.setVideoPath((String) currentTodoContent.get("pre_signed_standard_mp4_url"));
+                    mVideoViewContent.setVideoPath((String) mCurrentTodoContent.get("pre_signed_standard_mp4_url"));
                     mVideoViewContent.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
@@ -105,10 +113,10 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                     });
                     mVideoViewContent.setVisibility(View.VISIBLE);
                 } else if (isImage) { //TODO contact (media_thumb_pre_signed_url)
-                    mWebViewContent.loadUrl(String.valueOf(currentTodoContent.get("media_thumb_pre_signed_url")));
+                    mWebViewContent.loadUrl(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")));
                     mWebViewContent.setVisibility(View.VISIBLE);
                 } else if (isPdf) {
-                    mWebViewContent.loadUrl(String.valueOf(currentTodoContent.get("media_thumb_pre_signed_url")));
+                    mWebViewContent.loadUrl(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")));
                     mWebViewContent.setVisibility(View.VISIBLE);
                 }
             }
@@ -117,7 +125,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
             e.printStackTrace();
         }
 
-        ///// 20170506 ADD END
+        ///// 20170507 ADD END
 
 
 /*
@@ -178,72 +186,15 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //        videoView.start();
     }
 
-    @SuppressLint("NewApi")
-    public static String getFilePath(Context context, Uri uri) throws URISyntaxException {
-        String selection = null;
-        String[] selectionArgs = null;
-        // Uri is different in versions after KITKAT (Android 4.4), we need to
-        if (Build.VERSION.SDK_INT >= 19 && DocumentsContract.isDocumentUri(context.getApplicationContext(), uri)) {
-            if (isExternalStorageDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                return Environment.getExternalStorageDirectory() + "/" + split[1];
-            } else if (isDownloadsDocument(uri)) {
-                final String id = DocumentsContract.getDocumentId(uri);
-                uri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-            } else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-                if ("image".equals(type)) {
-                    uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-                selection = "_id=?";
-                selectionArgs = new String[]{
-                        split[1]
-                };
-            }
-        }
-        if ("content".equalsIgnoreCase(uri.getScheme())) {
-            String[] projection = {
-                    MediaStore.Images.Media.DATA
-            };
-            Cursor cursor = null;
-            try {
-                cursor = context.getContentResolver()
-                        .query(uri, projection, selection, selectionArgs, null);
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                if (cursor.moveToFirst()) {
-                    return cursor.getString(column_index);
-                }
-            } catch (Exception e) {
-            }
-        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-        return null;
-    }
-
-    public static boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri.getAuthority());
-    }
-
-    public static boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
-    }
-
-    public static boolean isMediaDocument(Uri uri) {
-        return "com.android.providers.media.documents".equals(uri.getAuthority());
-    }
-
-    ///// 20170506 ADD START
+    ///// 20170507 ADD START
     @Override
     public void onClick(View v) {
+        Intent intent;
+        Map<String, String> todoParameters;
+        String studentId;
+        String categoryId;
+        String todoContentId;
+        String url;
         switch (v.getId()) {
             case R.id.buttonStartAllVideo:
                 mVideoViewContent.setMediaController(new MediaController(this));
@@ -251,14 +202,57 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                 mVideoViewMine.start();
                 break;
             case R.id.backScreen:
-                Intent intent = new Intent(CompareActivity.this, SelectShootingMethodActivity.class);
+                intent = new Intent(CompareActivity.this, SelectShootingMethodActivity.class);
                 startActivity(intent);
                 finish();
 
+                break;
+            case R.id.buttonSwitch:
+                if (mIsCheckSwitch) {
+                    mVideoViewContent.setVideoPath(mPath);
+                    mVideoViewMine.setVideoPath(String.valueOf(mCurrentTodoContent.get("pre_signed_standard_mp4_url")));
+                    mIsCheckSwitch = false;
+                } else {
+                    mVideoViewContent.setVideoPath(String.valueOf(mCurrentTodoContent.get("pre_signed_standard_mp4_url")));
+                    mVideoViewMine.setVideoPath(mPath);
+                    mIsCheckSwitch = true;
+                }
+                mVideoViewContent.start();
+                mVideoViewMine.start();
+
+                break;
+            case R.id.imageButton:
+                todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                studentId = todoParameters.get("studentId");
+                categoryId = todoParameters.get("categoryId");
+                todoContentId = todoParameters.get("todoContentId");
+                url = "%s://%s/training/#/students/" + studentId
+                        + "/todos?type=updates"; // TODO type=updates/repeat???
+                intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                intent.putExtra("BASE_URL", url);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.imageButtonBack:
+
+                todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                studentId = todoParameters.get("studentId");
+                categoryId = todoParameters.get("categoryId");
+                todoContentId = todoParameters.get("todoContentId");
+/*
+                String url = "%s://%s/training/#/students/" + studentId
+                        + "/todos?type=caetgory&category_id=" + categoryId;
+*/
+                url = "%s://%s/training/#/students/" + studentId
+                        + "/todos/" + todoContentId;
+                intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                intent.putExtra("BASE_URL", url);
+                startActivity(intent);
+                finish();
                 break;
             default:
                 break;
         }
     }
-    ///// 20170506 ADD END
+    ///// 20170507 ADD END
 }
