@@ -6,6 +6,7 @@
     android:id="@+id/activity_select_shooting_method"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F0F0F0"
     tools:context="jp.clipline.clandroid.SelectShootingMethodActivity">
 
     <RelativeLayout
@@ -71,32 +72,51 @@
         android:layout_above="@+id/relativeLayoutBottom"
         android:layout_below="@+id/relativeLayoutHeader"
         android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="100dp"
+        android:background="#FFFFFF"
         >
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="@string/select_shooting_method_prompt"
+            android:layout_alignParentTop="true"
+            android:textSize="12sp"
+            android:background="#D3D3D3"
+            android:gravity="center_vertical"
+            />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="50dp"
             android:text="@string/select_shooting_method_take_video"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="120dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="70dp"
             android:textSize="12sp"
             android:textColor="#000000"
             android:textStyle="normal"
+            android:background="#669966"
+            android:gravity="center"
             android:id="@+id/textViewTakeMovie" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
             android:text="@string/select_shooting_method_take_picture"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="60dp"
-            android:layout_marginTop="120dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="70dp"
             android:textSize="12sp"
             android:textColor="#000000"
             android:textStyle="normal"
+            android:background="#669966"
+            android:gravity="center"
             android:id="@+id/textViewTakePicture" />
 
         <TextView
@@ -105,8 +125,7 @@
             android:text="@string/select_shooting_method_select_camera_roll"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="60dp"
-            android:layout_marginBottom="180dp"
+            android:layout_marginBottom="100dp"
             android:textSize="12sp"
             android:textColor="#000000"
             android:textStyle="normal"
@@ -229,7 +248,8 @@
                     android:enabled="false"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
+                    android:gravity="center"
+                    android:background="#FFFFFF"
                     />
 
                 <Button
@@ -238,7 +258,9 @@
                     android:enabled="false"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
+                    android:gravity="center"
+                    android:background="#606060"
+
                     />
 
         </LinearLayout>
