@@ -7,8 +7,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceResponse;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.xwalk.core.JavascriptInterface;
@@ -37,13 +39,20 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
     public static int INPUT_FILE_REQUEST_CODE = 2;
     private ValueCallback<Uri> mUploadMessage;
 
+    ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch_cross_walk);
 
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBarLaunchCrossWalk);
+        mProgressBar.setVisibility(View.VISIBLE);
+
         mXWalkView = (XWalkView) findViewById(R.id.xwalkWebView);
+
+        mXWalkView.setVisibility(View.GONE);
+
         mXWalkView.setResourceClient(new ResourceClient(mXWalkView));
         XWalkPreferences.setValue(XWalkPreferences.REMOTE_DEBUGGING, true);
 
@@ -139,6 +148,8 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
 
         @Override
         public void onLoadFinished(XWalkView view, String url) {
+            mProgressBar.setVisibility(View.GONE);
+            mXWalkView.setVisibility(View.VISIBLE);
             //if (url.indexOf(BASE_URL) >= 0) {
             // Log.d("CrossWalkActivity", String.format("@@@ onLoadFinished : [%s]", url));
             // NativeInterface実装までの仮置き
@@ -248,7 +259,8 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
             startActivity(intent);
-            overridePendingTransition(0, 0);
+
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
 
         // ex) NativeInterface.coachToDo(92680,988,15532);

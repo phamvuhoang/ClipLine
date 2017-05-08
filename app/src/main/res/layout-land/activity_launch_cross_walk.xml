@@ -6,13 +6,31 @@
     android:layout_height="match_parent"
     tools:context="jp.clipline.clandroid.LaunchCrossWalkActivity">
 
+    <RelativeLayout
+        android:id="@+id/relativeLayoutHeader"
+        android:layout_height="80dp"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:background="#61B5Ab"
+        >
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBarLaunchCrossWalk"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:layout_gravity="center_vertical|center_horizontal" />
+
     <!-- XWalkViewを追加 -->
     <org.xwalk.core.XWalkView
         android:id="@+id/xwalkWebView"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#000000"
+        android:background="#66FFFFFF"
         />
 
 </RelativeLayout>

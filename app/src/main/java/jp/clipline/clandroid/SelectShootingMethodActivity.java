@@ -221,10 +221,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 String studentId = todoParameters.get("studentId");
                 String categoryId = todoParameters.get("categoryId");
                 String todoContentId = todoParameters.get("todoContentId");
-/*
-                String url = "%s://%s/training/#/students/" + studentId
-                        + "/todos?type=caetgory&category_id=" + categoryId;
-*/
                 String url = "%s://%s/training/#/students/" + studentId
                         + "/todos/" + todoContentId;
                 ///// 20170506 ADD END
