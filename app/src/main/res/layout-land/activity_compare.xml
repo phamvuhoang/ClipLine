@@ -268,4 +268,55 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/relativeLayoutOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="#66000000"
+            android:id="@+id/imageButtonReportSentClose" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="150dp"
+            android:text="@string/report_sent"
+            android:textSize="35sp"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:text="@string/report_sent_back"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="300dp"
+            android:layout_marginLeft="100dp"
+            android:textColor="#808080"
+            android:background="#FFFFFF"
+            android:id="@+id/buttonReportSentBack" />
+
+        <Button
+            android:text="@string/report_sent_input_comment"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="300dp"
+            android:layout_marginRight="100dp"
+            android:textColor="#808080"
+            android:background="#FFFFFF"
+            android:id="@+id/buttonReportSentInputComment" />
+
+    </RelativeLayout>
+
 </RelativeLayout>

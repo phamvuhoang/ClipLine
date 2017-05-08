@@ -71,4 +71,8 @@
     <string name="compare_start_video">Start both videos</string>
     <string name="compare_switch_video">Switch videos</string>
 
+    <string name="report_sent">Report was sent</string>
+    <string name="report_sent_back">Back</string>
+    <string name="report_sent_input_comment">Input Comment</string>
+
 </resources>

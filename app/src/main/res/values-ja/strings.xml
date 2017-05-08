@@ -69,4 +69,8 @@
     <string name="compare_start_video">同時に見比べる</string>
     <string name="compare_switch_video">切り替え</string>
 
+    <string name="report_sent">レポートを送りました</string>
+    <string name="report_sent_back">もどる</string>
+    <string name="report_sent_input_comment">コメントを入れる</string>
+
 </resources>

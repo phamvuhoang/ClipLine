@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -41,6 +42,8 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
     private Button mButtonCompareToModel;
     private Button mButtonCompare;
     private Button mButtonSummit;
+
+    private RelativeLayout mRelativeLayoutOverlay;
     ///// 20170507 ADD END
 
     @Override
@@ -54,6 +57,57 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
         ImageButton imageButton;
         ImageView imageView;
         TextView textView;
+
+        ///// 20160508 ADD START
+        // レポート完成画面
+        mRelativeLayoutOverlay = (RelativeLayout) findViewById(R.id.relativeLayoutOverlay);
+        mRelativeLayoutOverlay.setVisibility(View.GONE);
+
+        imageButton = (ImageButton) findViewById(R.id.imageButtonReportSentClose);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRelativeLayoutOverlay.setVisibility(View.GONE);
+            }
+        });
+
+        // レポート完成：もどるボタン
+        Button button = (Button) findViewById(R.id.buttonReportSentBack);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                String studentId = todoParameters.get("studentId");
+                String categoryId = todoParameters.get("categoryId");
+                String todoContentId = todoParameters.get("todoContentId");
+                String url = "%s://%s/training/#/students/" + studentId
+                        + "/todos?type=updates"; // TODO type=updates/repeat???
+                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                intent.putExtra("BASE_URL", url);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        // レポート完成：コメントを入れるボタン
+        button = (Button) findViewById(R.id.buttonReportSentInputComment);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                String studentId = todoParameters.get("studentId");
+                String categoryId = todoParameters.get("categoryId");
+                String todoContentId = todoParameters.get("todoContentId");
+                String url = "%s://%s/training/#/students/" + studentId
+                        + "/todos/" + todoContentId;
+
+                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                intent.putExtra("BASE_URL", url);
+                startActivity(intent);
+                finish();
+            }
+        });
+        ///// 20160508 ADD END
 
         imageView = (ImageView) findViewById(R.id.imageView);
         VideoView videoView = (VideoView) findViewById(R.id.videoView);
@@ -401,6 +455,9 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
             if (success) {
                 Log.i("reponse:", reponseData.toString());
             }
+
+            // TODO Just show complete screen for now, need to modify later
+            mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
         }
 
         @Override
