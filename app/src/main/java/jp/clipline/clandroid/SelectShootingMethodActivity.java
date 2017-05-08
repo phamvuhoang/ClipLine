@@ -1,6 +1,7 @@
 package jp.clipline.clandroid;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -21,9 +22,10 @@ import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.CameraUtil;
+import jp.clipline.clandroid.Utility.FileChooser;
 import jp.clipline.clandroid.api.ToDo;
 
-public class SelectShootingMethodActivity extends AppCompatActivity {
+public class SelectShootingMethodActivity extends AppCompatActivity /*implements FileChooser.FileSelectedListener*/ {
 
     private static int REQUEST_CODE_PICTURE_CAPTURE = 1;
     private static int REQUEST_CODE_VIDEO_CAPTURE = 2;
@@ -113,12 +115,64 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+/*
             Intent intent = new Intent()
                     .setType("image/png|image/jpg|application/pdf|video/mp4")
                     .setAction(Intent.ACTION_PICK);
 
                 startActivityForResult(Intent.createChooser(intent, "Select a file"), REQUEST_CODE_SELECT_FILE);
+*/
                 //startActivityForResult(intent, REQUEST_CODE_SELECT_FILE);
+                FileChooser fileChooser = new FileChooser(SelectShootingMethodActivity.this);
+                fileChooser.setFileListener(new FileChooser.FileSelectedListener() {
+                    @Override
+                    public void fileSelected(File file) {
+                        Log.i("selected file: ", file.getAbsolutePath());
+                        // Get the Uri of the selected file
+                        Uri uri = Uri.fromFile(file);
+                        String uriString = uri.toString();
+                        File myFile = new File(uriString);
+                        String path = myFile.getAbsolutePath();
+                        String displayName = null;
+
+                        if (uriString.startsWith("content://")) {
+                            Cursor cursor = null;
+                            try {
+                                cursor = getContentResolver().query(uri, null, null, null, null);
+                                if (cursor != null && cursor.moveToFirst()) {
+                                    displayName = cursor.getString(cursor.getColumnIndex(
+                                            android.provider.OpenableColumns.DISPLAY_NAME));
+                                }
+                            } finally {
+                                cursor.close();
+                            }
+                        } else if (uriString.startsWith("file://")) {
+                            displayName = myFile.getName();
+                        }
+
+                        String contentType = "";
+                        if (displayName.toLowerCase().endsWith("pdf")) {
+                            contentType = "application/pdf";
+                        } else  if (displayName.toLowerCase().endsWith("mp4")) {
+                            contentType = "video/mp4";
+                        }  else if (displayName.toLowerCase().endsWith("png") || displayName.toLowerCase().endsWith("jpg")) {
+                            contentType = "image/png";
+                        } else {
+                            return;
+                        }
+
+                        Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+                        ((ClWebWrapperApplication) getApplication()).setTodoContent(uri/*data.getData()*/, contentType);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+                fileChooser.showDialog();
+/*
+                FileChooser fileChooser = new FileChooser(getParent());
+                fileChooser.setExtension("image/png|image/jpg|application/pdf|video/mp4");
+                fileChooser.showDialog();
+*/
             }
         });
 
@@ -371,7 +425,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
 
                     // Check has_report_action
                     if ((todoContent.get("has_report_action") != null)
-                            && ((boolean)todoContent.get("has_report_action"))) {
+                            && ((boolean) todoContent.get("has_report_action"))) {
 
                         // 表示
                         mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
@@ -381,7 +435,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity {
 
                     // check has_my_report_play_action
                     if ((todoContent.get("has_my_report_play_action") != null)
-                            && ((boolean)todoContent.get("has_my_report_play_action"))) {
+                            && ((boolean) todoContent.get("has_my_report_play_action"))) {
 
                         // 表示
                         mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
