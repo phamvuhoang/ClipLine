@@ -257,6 +257,9 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
                 startActivity(intent);
+
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
                 finish();
             }
         });
@@ -269,6 +272,9 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
                 startActivity(intent);
+
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
                 finish();
             }
         });

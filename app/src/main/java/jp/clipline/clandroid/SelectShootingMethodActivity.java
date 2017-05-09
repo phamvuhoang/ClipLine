@@ -82,7 +82,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 uriPicture = Uri.fromFile(new File(CameraUtil.getPhotoFilePath()));
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, uriPicture);
                 startActivityForResult(intent, REQUEST_CODE_PICTURE_CAPTURE);
-                overridePendingTransition(0, 0);
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });
 
@@ -93,7 +93,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
                 intent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
                 startActivityForResult(intent, REQUEST_CODE_VIDEO_CAPTURE);
-                overridePendingTransition(0, 0);
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });
 
@@ -301,6 +301,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                     Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
                     ((ClWebWrapperApplication) getApplication()).setTodoContent(path, "image/png");
                     startActivity(intent);
+                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                     finish();
                     return;
                 }
@@ -310,6 +311,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                     Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
                     ((ClWebWrapperApplication) this.getApplication()).setTodoContent(pathVideo, "video/mp4");
                     startActivity(intent);
+                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                     finish();
                     return;
                 }
@@ -369,6 +371,9 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                     Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
                     ((ClWebWrapperApplication) this.getApplication()).setTodoContent(pathFile, contentType);
                     startActivity(intent);
+
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
                     finish();
                     return;
                 }
