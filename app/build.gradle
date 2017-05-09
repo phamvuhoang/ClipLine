@@ -72,6 +72,9 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     // // compile 'com.google.android.exoplayer:exoplayer:r2.2.0'
 
+    //compressor video
+    compile 'com.yovenny.VideoCompress:videocompress:1.0.0'
+
     // // http://qiita.com/heki1224/items/1357d5e0eab9aff7f4f6
     // //compile 'jp.satorufujiwara:exoplayer-textureview:0.6.9'
     // //compile 'com.google.android.exoplayer:exoplayer:r1.5.11'

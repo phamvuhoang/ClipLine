@@ -20,6 +20,7 @@ import android.widget.VideoView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -142,9 +143,12 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 
         mWebViewContent.getSettings().setJavaScriptEnabled(true);
         mWebViewMine.getSettings().setJavaScriptEnabled(true);
-
+        ///// 20170509 MODIFY START
         mTodoContentType = ((ClWebWrapperApplication) this.getApplication()).getTodoContentType();
-        mTodoContentData = ((ClWebWrapperApplication) this.getApplication()).getTodoContentData();
+        File file = new File(((ClWebWrapperApplication) this.getApplication()).getTodoContentData());
+        Uri uriFile = Uri.fromFile(file);
+        mTodoContentData = uriFile;
+        ///// 20170509 MODIFY END
 
         mCurrentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
         TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);

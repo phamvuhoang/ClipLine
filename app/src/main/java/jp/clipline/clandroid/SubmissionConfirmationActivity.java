@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -50,10 +51,12 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submission_confirmation);
-
+        ///// 20170509 MODIFY START
         mTodoContentType = ((ClWebWrapperApplication) this.getApplication()).getTodoContentType();
-        mTodoContentData = ((ClWebWrapperApplication) this.getApplication()).getTodoContentData();
-
+        File file = new File(((ClWebWrapperApplication) this.getApplication()).getTodoContentData());
+        Uri uriFile = Uri.fromFile(file);
+        mTodoContentData = uriFile;
+        ///// 20170509 MODIFY START
         ImageButton imageButton;
         ImageView imageView;
         TextView textView;
@@ -322,7 +325,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
 
             // Check has_report_action
             if ((todoContent.get("has_report_action") != null)
-                    && ((boolean)todoContent.get("has_report_action"))) {
+                    && ((boolean) todoContent.get("has_report_action"))) {
 
                 // 表示
                 mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
@@ -332,7 +335,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
 
             // check has_my_report_play_action
             if ((todoContent.get("has_my_report_play_action") != null)
-                    && ((boolean)todoContent.get("has_my_report_play_action"))) {
+                    && ((boolean) todoContent.get("has_my_report_play_action"))) {
 
                 // 表示
                 mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
@@ -349,7 +352,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
 
         if ((todoContent != null)
                 && (todoContent.get("has_my_report_play_action") != null)) {
-            hasMyReportPlayAction = ((boolean)todoContent.get("has_my_report_play_action"));
+            hasMyReportPlayAction = ((boolean) todoContent.get("has_my_report_play_action"));
         }
 
         ///// 20170507 TEMPORARY ADD to test submit button
@@ -402,7 +405,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity {
                     Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
                     String todoContentId = todoParameters.get("todoContentId");
 
-                    String objectKey = (String)mediaKey.get("object_key");
+                    String objectKey = (String) mediaKey.get("object_key");
 
                     // TODO change to right value
                     String contentType = "video/mp4";

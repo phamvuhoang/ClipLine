@@ -1,12 +1,12 @@
 package jp.clipline.clandroid;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,16 +14,25 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.yovenny.videocompress.MediaController;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.CameraUtil;
 import jp.clipline.clandroid.Utility.FileChooser;
 import jp.clipline.clandroid.api.ToDo;
+
+import static jp.clipline.clandroid.R.id.progressBar;
 
 public class SelectShootingMethodActivity extends AppCompatActivity /*implements FileChooser.FileSelectedListener*/ {
 
@@ -44,11 +53,18 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
     private ImageView mImageViewFooterCompare;
     private TextView mTextViewFooterCompare;
     ///// 20170506 ADD END
+    ///// 20170509 ADD START
+    private ProgressBar mProgressBar;
+    public final String APP_DIR = "Clipline";
+    public final String COMPRESSED_VIDEOS_DIR = "/Compressed Videos/";
+    private String mOutPathVideoSelect;
+    ///// 20170509 ADD END
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_shooting_method);
+        mProgressBar = (ProgressBar) findViewById(progressBar);
 
         TextView textView;
         ImageButton imageButton;
@@ -127,44 +143,59 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 fileChooser.setFileListener(new FileChooser.FileSelectedListener() {
                     @Override
                     public void fileSelected(File file) {
-                        Log.i("selected file: ", file.getAbsolutePath());
-                        // Get the Uri of the selected file
-                        Uri uri = Uri.fromFile(file);
-                        String uriString = uri.toString();
-                        File myFile = new File(uriString);
-                        String path = myFile.getAbsolutePath();
-                        String displayName = null;
+                        ///// 20170509 MODIFY START
+                        try {
+                            Log.i("selected file: ", file.getAbsolutePath());
+                            // Get the Uri of the selected file
+                            Uri uri = Uri.fromFile(file);
+                            String uriString = uri.toString();
+                            File myFile = new File(uriString);
+                            String path = myFile.getAbsolutePath();
+                            String displayName = null;
 
-                        if (uriString.startsWith("content://")) {
-                            Cursor cursor = null;
-                            try {
-                                cursor = getContentResolver().query(uri, null, null, null, null);
-                                if (cursor != null && cursor.moveToFirst()) {
-                                    displayName = cursor.getString(cursor.getColumnIndex(
-                                            android.provider.OpenableColumns.DISPLAY_NAME));
+                            if (uriString.startsWith("content://")) {
+                                Cursor cursor = null;
+                                try {
+                                    cursor = getContentResolver().query(uri, null, null, null, null);
+                                    if (cursor != null && cursor.moveToFirst()) {
+                                        displayName = cursor.getString(cursor.getColumnIndex(
+                                                android.provider.OpenableColumns.DISPLAY_NAME));
+                                    }
+                                } finally {
+                                    cursor.close();
                                 }
-                            } finally {
-                                cursor.close();
+                            } else if (uriString.startsWith("file://")) {
+                                displayName = myFile.getName();
                             }
-                        } else if (uriString.startsWith("file://")) {
-                            displayName = myFile.getName();
-                        }
 
-                        String contentType = "";
-                        if (displayName.toLowerCase().endsWith("pdf")) {
-                            contentType = "application/pdf";
-                        } else  if (displayName.toLowerCase().endsWith("mp4")) {
-                            contentType = "video/mp4";
-                        }  else if (displayName.toLowerCase().endsWith("png") || displayName.toLowerCase().endsWith("jpg")) {
-                            contentType = "image/png";
-                        } else {
-                            return;
-                        }
+                            String contentType = "";
+                            String pathfile = AndroidUtility.getFilePath(SelectShootingMethodActivity.this, uri);
+                            if (displayName.toLowerCase().endsWith("pdf")) {
+                                contentType = "application/pdf";
+                            } else if (displayName.toLowerCase().endsWith("mp4")) {
+                                contentType = "video/mp4";
+                                CreateCompressDir();
+                                mOutPathVideoSelect = Environment.getExternalStorageDirectory()
+                                        + File.separator
+                                        + APP_DIR
+                                        + COMPRESSED_VIDEOS_DIR
+                                        + "VIDEO_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date()) + ".mp4";
+                                new VideoCompressor().execute(pathfile, mOutPathVideoSelect, contentType);
+                                return;
+                            } else if (displayName.toLowerCase().endsWith("png") || displayName.toLowerCase().endsWith("jpg")) {
+                                contentType = "image/png";
+                            } else {
+                                return;
+                            }
 
-                        Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
-                        ((ClWebWrapperApplication) getApplication()).setTodoContent(uri/*data.getData()*/, contentType);
-                        startActivity(intent);
-                        finish();
+                            Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+                            ((ClWebWrapperApplication) getApplication()).setTodoContent(pathfile/*data.getData()*/, contentType);
+                            startActivity(intent);
+                            finish();
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        }
+                        ///// 20170509 MIDIFY END
                     }
                 });
                 fileChooser.showDialog();
@@ -263,21 +294,89 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_CODE_PICTURE_CAPTURE) {
-                Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
-                ((ClWebWrapperApplication) this.getApplication()).setTodoContent(uriPicture, "image/png");
-                startActivity(intent);
-                finish();
-                return;
-            }
+            try {
+                ///// 20170509 MODIFY START
+                if (requestCode == REQUEST_CODE_PICTURE_CAPTURE) {
+                    String path = AndroidUtility.getFilePath(this, uriPicture);
+                    Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+                    ((ClWebWrapperApplication) getApplication()).setTodoContent(path, "image/png");
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
 
-            if (requestCode == REQUEST_CODE_VIDEO_CAPTURE) {
-                Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
-                ((ClWebWrapperApplication) this.getApplication()).setTodoContent(data.getData(), "video/mp4");
-                startActivity(intent);
-                finish();
-                return;
+                if (requestCode == REQUEST_CODE_VIDEO_CAPTURE) {
+                    String pathVideo = AndroidUtility.getFilePath(this, data.getData());
+                    Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+                    ((ClWebWrapperApplication) this.getApplication()).setTodoContent(pathVideo, "video/mp4");
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
+                if (requestCode == REQUEST_CODE_SELECT_FILE) {
+/*
+                Uri selectedMediaUri = data.getData();
+                String path = selectedMediaUri.getPath();
+                String contentType = "image/png";
+                if (path.contains("images")) {
+                    contentType = "image/png";
+                } else  if (path.contains("video")) {
+                    contentType = "video/mp4";
+                } else {
+
+                }
+*/
+                    // Get the Uri of the selected file
+                    String pathFile = AndroidUtility.getFilePath(this, data.getData());
+                    Uri uri = data.getData();
+                    String uriString = uri.toString();
+                    File myFile = new File(uriString);
+                    String path = myFile.getAbsolutePath();
+                    String displayName = null;
+
+                    if (uriString.startsWith("content://")) {
+                        Cursor cursor = null;
+                        try {
+                            cursor = getContentResolver().query(uri, null, null, null, null);
+                            if (cursor != null && cursor.moveToFirst()) {
+                                displayName = cursor.getString(cursor.getColumnIndex(
+                                        android.provider.OpenableColumns.DISPLAY_NAME));
+                            }
+                        } finally {
+                            cursor.close();
+                        }
+                    } else if (uriString.startsWith("file://")) {
+                        displayName = myFile.getName();
+                    }
+
+                    String contentType = "image/png";
+                    if (displayName.endsWith("pdf")) {
+                        contentType = "application/pdf";
+                    } else if (displayName.endsWith("mp4")) {
+                        contentType = "video/mp4";
+                        CreateCompressDir();
+                        mOutPathVideoSelect = Environment.getExternalStorageDirectory()
+                                + File.separator
+                                + APP_DIR
+                                + COMPRESSED_VIDEOS_DIR
+                                + "VIDEO_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date()) + ".mp4";
+                        new VideoCompressor().execute(pathFile, mOutPathVideoSelect, String.valueOf(requestCode), contentType);
+                        return;
+                    } else {
+
+                    }
+
+                    Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+                    ((ClWebWrapperApplication) this.getApplication()).setTodoContent(pathFile, contentType);
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
+
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
             }
+            ///// 20170509 MODIFY END
 
             ///// 20170506 DELETE START
 /*
@@ -298,59 +397,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
             }
 */
             ///// 20170506 DELETE START
-
-            ///// 20170506 ADD START
-            if (requestCode == REQUEST_CODE_SELECT_FILE) {
-/*
-                Uri selectedMediaUri = data.getData();
-                String path = selectedMediaUri.getPath();
-                String contentType = "image/png";
-                if (path.contains("images")) {
-                    contentType = "image/png";
-                } else  if (path.contains("video")) {
-                    contentType = "video/mp4";
-                } else {
-
-                }
-*/
-                // Get the Uri of the selected file
-                Uri uri = data.getData();
-                String uriString = uri.toString();
-                File myFile = new File(uriString);
-                String path = myFile.getAbsolutePath();
-                String displayName = null;
-
-                if (uriString.startsWith("content://")) {
-                    Cursor cursor = null;
-                    try {
-                        cursor = getContentResolver().query(uri, null, null, null, null);
-                        if (cursor != null && cursor.moveToFirst()) {
-                            displayName = cursor.getString(cursor.getColumnIndex(
-                                    android.provider.OpenableColumns.DISPLAY_NAME));
-                        }
-                    } finally {
-                        cursor.close();
-                    }
-                } else if (uriString.startsWith("file://")) {
-                    displayName = myFile.getName();
-                }
-
-                String contentType = "image/png";
-                if (displayName.endsWith("pdf")) {
-                    contentType = "application/pdf";
-                } else  if (displayName.endsWith("mp4")) {
-                    contentType = "video/mp4";
-                } else {
-
-                }
-
-                Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
-                ((ClWebWrapperApplication) this.getApplication()).setTodoContent(data.getData(), contentType);
-                startActivity(intent);
-                finish();
-                return;
-            }
-            ///// 20170506 ADD END
 
 
         }
@@ -447,5 +493,44 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         protected void onCancelled() {
         }
     }
+
+    ///// 20170509 ADD START
+    public void CreateCompressDir() {
+        File f = new File(Environment.getExternalStorageDirectory(), File.separator + APP_DIR);
+        f.mkdirs();
+        f = new File(Environment.getExternalStorageDirectory(), File.separator + APP_DIR + COMPRESSED_VIDEOS_DIR);
+        f.mkdirs();
+    }
+
+    class VideoCompressor extends AsyncTask<String, Void, Boolean> {
+        String mContentype;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            mContentype = params[2];
+            return MediaController.getInstance().convertVideo(params[0], params[1]);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean compressed) {
+            super.onPostExecute(compressed);
+            mProgressBar.setVisibility(View.GONE);
+            if (compressed) {
+                Log.d(SelectShootingMethodActivity.class.getSimpleName(), "Compression successfully!");
+                Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+                ((ClWebWrapperApplication) getApplication()).setTodoContent(mOutPathVideoSelect, mContentype);
+                startActivity(intent);
+                finish();
+            }
+        }
+    }
+    ///// 20170509 ADD END
+
 
 }

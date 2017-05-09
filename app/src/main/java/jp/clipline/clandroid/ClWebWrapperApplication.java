@@ -1,7 +1,6 @@
 package jp.clipline.clandroid;
 
 import android.app.Application;
-import android.net.Uri;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,15 +34,15 @@ public class ClWebWrapperApplication extends Application {
     }
 
     // ------------------------------------------------------------------------------------------ //
-    private Uri todoContentDataUri = null;
+    private String todoContentDataUri = null;
     private String todoContentDataType = null;
 
-    public void setTodoContent(Uri data, String type) {
+    public void setTodoContent(String data, String type) {
         todoContentDataUri = data;
         todoContentDataType = type;
     }
 
-    public Uri getTodoContentData() {
+    public String getTodoContentData() {
         return todoContentDataUri;
     }
 
