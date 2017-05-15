@@ -53,11 +53,45 @@
         android:layout_height="0dp"
         android:layout_centerInParent="true" />
 
+    <LinearLayout
+        android:id="@+id/linearLayoutStatus"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/relativeLayoutHeader"
+        android:layout_centerHorizontal="true"
+        android:background="#E8E8E8"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:weightSum="2.5">
+
+        <jp.clipline.clandroid.view.StatusView
+            android:id="@+id/statusView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.5" />
+
+        <jp.clipline.clandroid.view.StatusView
+            android:id="@+id/statusResport"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
+
+        <jp.clipline.clandroid.view.StatusView
+            android:id="@+id/statusCheck"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/relativeLayoutBottom"
-        android:layout_below="@+id/relativeLayoutHeader"
+        android:layout_below="@+id/linearLayoutStatus"
         android:orientation="vertical">
 
         <FrameLayout
@@ -195,69 +229,69 @@
         android:background="#E8E8E8"
         android:padding="10dp">
 
-        <LinearLayout
-            android:id="@+id/linearLayoutFooterStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentLeft="true">
+        <!--<LinearLayout-->
+            <!--android:id="@+id/linearLayoutFooterStatus"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_alignParentLeft="true">-->
 
-            <ImageView
-                android:id="@+id/imageViewFooterView"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                app:srcCompat="@drawable/ic_sample_svg"
-                />
+            <!--<ImageView-->
+                <!--android:id="@+id/imageViewFooterView"-->
+                <!--android:layout_width="28dp"-->
+                <!--android:layout_height="28dp"-->
+                <!--app:srcCompat="@drawable/ic_sample_svg"-->
+                <!--/>-->
 
-            <TextView
-                android:id="@+id/textViewFooterView"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/footer_view"
-                android:textSize="12sp"
-                android:textColor="#61B5Ab"
-                android:textStyle="normal"
-                />
+            <!--<TextView-->
+                <!--android:id="@+id/textViewFooterView"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:text="@string/footer_view"-->
+                <!--android:textSize="12sp"-->
+                <!--android:textColor="#61B5Ab"-->
+                <!--android:textStyle="normal"-->
+                <!--/>-->
 
-            <ImageView
-                android:id="@+id/imageViewFooterShoot"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                app:srcCompat="@drawable/ic_sample_svg"
-                />
+            <!--<ImageView-->
+                <!--android:id="@+id/imageViewFooterShoot"-->
+                <!--android:layout_width="28dp"-->
+                <!--android:layout_height="28dp"-->
+                <!--app:srcCompat="@drawable/ic_sample_svg"-->
+                <!--/>-->
 
-            <TextView
-                android:id="@+id/textViewFooterShoot"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/footer_shoot"
-                android:textSize="12sp"
-                android:textColor="#61B5Ab"
-                android:textStyle="normal"
-                />
+            <!--<TextView-->
+                <!--android:id="@+id/textViewFooterShoot"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:text="@string/footer_shoot"-->
+                <!--android:textSize="12sp"-->
+                <!--android:textColor="#61B5Ab"-->
+                <!--android:textStyle="normal"-->
+                <!--/>-->
 
-            <ImageView
-                android:id="@+id/imageViewFooterCompare"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                app:srcCompat="@drawable/ic_sample_svg"
-                />
+            <!--<ImageView-->
+                <!--android:id="@+id/imageViewFooterCompare"-->
+                <!--android:layout_width="28dp"-->
+                <!--android:layout_height="28dp"-->
+                <!--app:srcCompat="@drawable/ic_sample_svg"-->
+                <!--/>-->
 
-            <TextView
-                android:id="@+id/textViewFooterCompare"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/footer_compare"
-                android:textSize="12sp"
-                android:textColor="#61B5Ab"
-                android:textStyle="normal"
-                />
+            <!--<TextView-->
+                <!--android:id="@+id/textViewFooterCompare"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:text="@string/footer_compare"-->
+                <!--android:textSize="12sp"-->
+                <!--android:textColor="#61B5Ab"-->
+                <!--android:textStyle="normal"-->
+                <!--/>-->
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
         <Button
             android:text="@string/select_shooting_method_submit"
@@ -277,6 +311,7 @@
         android:id="@+id/relativeLayoutOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:background="#66000000">
 
         <ImageButton

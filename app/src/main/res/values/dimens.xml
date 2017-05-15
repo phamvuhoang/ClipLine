@@ -11,4 +11,8 @@
     <!--compare-->
     <dimen name="margin_left">30dp</dimen>
     <dimen name="margin_right">30dp</dimen>
+
+    <!--status -->
+    <dimen name="width">24dp</dimen>
+    <dimen name="height">24dp</dimen>
 </resources>

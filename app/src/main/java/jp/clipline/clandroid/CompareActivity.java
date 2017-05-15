@@ -12,7 +12,6 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,6 +27,7 @@ import java.util.Map;
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.api.MediaKey;
 import jp.clipline.clandroid.api.Report;
+import jp.clipline.clandroid.view.StatusView;
 
 
 public class CompareActivity extends AppCompatActivity implements View.OnClickListener {
@@ -52,13 +52,19 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
     private Map<String, Object> mCurrentTodoContent;
     private boolean mIsCheckSwitch = true;
 
-    private LinearLayout mLinearLayoutFooterStatus;
-    private ImageView mImageViewFooterView;
-    private TextView mTextViewFooterView;
-    private ImageView mImageViewFooterShoot;
-    private TextView mTextViewFooterShoot;
-    private ImageView mImageViewFooterCompare;
-    private TextView mTextViewFooterCompare;
+    ///// 20170516 MODIFY START
+
+    private StatusView mStatusView;
+    private StatusView mStatusViewResport;
+    private StatusView mStatusViewCheck;
+    //    private LinearLayout mLinearLayoutFooterStatus;
+//    private ImageView mImageViewFooterView;
+//    private TextView mTextViewFooterView;
+//    private ImageView mImageViewFooterShoot;
+//    private TextView mTextViewFooterShoot;
+//    private ImageView mImageViewFooterCompare;
+//    private TextView mTextViewFooterCompare;
+    ///// 20170516 MODIFY END
 
     private Button mButtonSummit;
 
@@ -260,25 +266,40 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //        videoView.setVideoURI(mTodoContentData);
 //        videoView.start();
 
+        ///// 20170516 MODIFY START
 
         // Statuses on Footer
-        mLinearLayoutFooterStatus = (LinearLayout) findViewById(R.id.linearLayoutFooterStatus);
-        mImageViewFooterView = (ImageView) findViewById(R.id.imageViewFooterView);
-        mTextViewFooterView = (TextView) findViewById(R.id.textViewFooterView);
-        mImageViewFooterShoot = (ImageView) findViewById(R.id.imageViewFooterShoot);
-        mTextViewFooterShoot = (TextView) findViewById(R.id.textViewFooterShoot);
-        mImageViewFooterCompare = (ImageView) findViewById(R.id.imageViewFooterCompare);
-        mTextViewFooterCompare = (TextView) findViewById(R.id.textViewFooterCompare);
+
+        mStatusView = (StatusView) findViewById(R.id.statusView);
+        mStatusViewResport = (StatusView) findViewById(R.id.statusResport);
+        mStatusViewCheck = (StatusView) findViewById(R.id.statusCheck);
+
+        mStatusView.setTypeView(StatusView.STATUS_VIEW.VIEW, true);
+        mStatusViewResport.setTypeView(StatusView.STATUS_VIEW.REPORT, true);
+        mStatusViewCheck.setTypeView(StatusView.STATUS_VIEW.CHECK, true);
+
+//        mLinearLayoutFooterStatus = (LinearLayout) findViewById(R.id.linearLayoutFooterStatus);
+//        mImageViewFooterView = (ImageView) findViewById(R.id.imageViewFooterView);
+//        mTextViewFooterView = (TextView) findViewById(R.id.textViewFooterView);
+//        mImageViewFooterShoot = (ImageView) findViewById(R.id.imageViewFooterShoot);
+//        mTextViewFooterShoot = (TextView) findViewById(R.id.textViewFooterShoot);
+//        mImageViewFooterCompare = (ImageView) findViewById(R.id.imageViewFooterCompare);
+//        mTextViewFooterCompare = (TextView) findViewById(R.id.textViewFooterCompare);
 
         // Firstly, hide the status, after getting result from api, then depend on the flags to process the view/hide
-        mLinearLayoutFooterStatus.setVisibility(View.GONE);
-        mImageViewFooterView.setVisibility(View.GONE);
-        mTextViewFooterView.setVisibility(View.GONE);
-        mImageViewFooterShoot.setVisibility(View.GONE);
-        mTextViewFooterShoot.setVisibility(View.GONE);
-        mImageViewFooterCompare.setVisibility(View.GONE);
-        mTextViewFooterCompare.setVisibility(View.GONE);
 
+        mStatusView.setVisibility(View.GONE);
+        mStatusViewResport.setVisibility(View.GONE);
+        mStatusViewCheck.setVisibility(View.GONE);
+//        mLinearLayoutFooterStatus.setVisibility(View.GONE);
+//        mImageViewFooterView.setVisibility(View.GONE);
+//        mTextViewFooterView.setVisibility(View.GONE);
+//        mImageViewFooterShoot.setVisibility(View.GONE);
+//        mTextViewFooterShoot.setVisibility(View.GONE);
+//        mImageViewFooterCompare.setVisibility(View.GONE);
+//        mTextViewFooterCompare.setVisibility(View.GONE);
+
+        ///// 20170516 MODIFY END
         updateStatus();
 
 
@@ -376,9 +397,13 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 
                 // Only when has_play_action is true, then all status will be visible
                 if (hasPlayAction) {
-                    mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
-                    mImageViewFooterView.setVisibility(View.VISIBLE);
-                    mTextViewFooterView.setVisibility(View.VISIBLE);
+                    ///// 20170516 MODIFY START
+                    mStatusView.setVisibility(View.VISIBLE);
+//                  mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
+//                  mImageViewFooterView.setVisibility(View.VISIBLE);
+//                  mTextViewFooterView.setVisibility(View.VISIBLE);
+                    ///// 20170516 MODIFY END
+                    // TODO 点灯
                     // TODO 点灯
                     if ((todoContent.get("is_play_action_cleared") != null)
                             && ((boolean) todoContent.get("is_play_action_cleared"))) {
@@ -392,9 +417,14 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                     && ((boolean)todoContent.get("has_report_action"))) {
 
                 // 表示
-                mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
-                mImageViewFooterShoot.setVisibility(View.VISIBLE);
-                mTextViewFooterShoot.setVisibility(View.VISIBLE);
+                // 表示
+                ///// 20170516 MODIFY START
+                mStatusViewResport.setVisibility(View.VISIBLE);
+
+//              mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
+//              mImageViewFooterShoot.setVisibility(View.VISIBLE);
+//              mTextViewFooterShoot.setVisibility(View.VISIBLE);
+                ///// 20170516 MODIFY END
             }
 
             // check has_my_report_play_action
@@ -402,9 +432,14 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                     && ((boolean)todoContent.get("has_my_report_play_action"))) {
 
                 // 表示
-                mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
-                mImageViewFooterCompare.setVisibility(View.VISIBLE);
-                mTextViewFooterCompare.setVisibility(View.VISIBLE);
+                // 表示
+                ///// 20170516 MODIFY START
+                mStatusViewCheck.setVisibility(View.VISIBLE);
+
+//               mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
+//               mImageViewFooterCompare.setVisibility(View.VISIBLE);
+//               mTextViewFooterCompare.setVisibility(View.VISIBLE);
+                ///// 20170516 MODIFY END
             }
         }
     }

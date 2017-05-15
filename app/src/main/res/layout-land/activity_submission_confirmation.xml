@@ -10,245 +10,286 @@
 
     <RelativeLayout
         android:id="@+id/relativeLayoutHeader"
-        android:layout_height="80dp"
         android:layout_width="match_parent"
+        android:layout_height="80dp"
         android:layout_alignParentTop="true"
-        android:background="#61B5Ab"
-        >
+        android:background="#61B5Ab">
 
         <TextView
+            android:id="@+id/textViewToDoTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_activity_submission_confirmation"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:textSize="36sp"
+            android:text="@string/title_activity_submission_confirmation"
             android:textColor="@android:color/background_light"
-            android:textStyle="normal"
-            android:id="@+id/textViewToDoTitle" />
+            android:textSize="36sp"
+            android:textStyle="normal" />
 
         <ImageButton
+            android:id="@+id/imageButtonTodoClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"
             android:layout_centerVertical="true"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+            android:layout_marginRight="16dp"
             android:background="#61B5Ab"
-            android:id="@+id/imageButtonTodoClose" />
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
         <TextView
+            android:id="@+id/textViewTodoBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="50dp"
             android:text="@string/select_shooting_method_back"
-            android:layout_centerVertical="true"
-            android:textSize="30sp"
             android:textColor="@android:color/background_light"
-            android:textStyle="normal"
-            android:id="@+id/textViewTodoBack"
-            />
+            android:textSize="30sp"
+            android:textStyle="normal" />
 
         <ImageButton
+            android:id="@+id/imageButtonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="16dp"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
             android:background="#61B5Ab"
-            android:id="@+id/imageButtonBack"
             app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/linearLayoutStatus"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/relativeLayoutHeader"
+        android:layout_centerHorizontal="true"
+        android:background="#E8E8E8"
+        android:paddingLeft="114dp"
+        android:paddingRight="114dp"
+        android:weightSum="2.5">
+
+        <jp.clipline.clandroid.view.StatusView
+            android:id="@+id/statusView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.5" />
+
+        <jp.clipline.clandroid.view.StatusView
+            android:id="@+id/statusResport"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
+
+        <jp.clipline.clandroid.view.StatusView
+            android:id="@+id/statusCheck"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/relativeLayoutBody"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_above="@+id/relativeLayoutBottom"
-        android:layout_below="@+id/relativeLayoutHeader"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="30dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttonCompareWithModel"
+        android:layout_below="@+id/linearLayoutStatus"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="150dp"
         android:layout_marginRight="150dp"
-        android:layout_marginBottom="150dp"
-        android:background="#FFFFFF"
-        >
+        android:background="#FFFFFF">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="@string/select_shooting_method_prompt"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:paddingLeft="5dp"
-            android:textSize="12sp"
-            android:background="#D3D3D3"
-            android:gravity="center_vertical"
-            />
+        <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:background="#D3D3D3"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:paddingLeft="5dp"-->
+        <!--android:text="@string/select_shooting_method_prompt"-->
+        <!--android:textSize="12sp" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:text="@string/submission_confirmation_save_local"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:paddingRight="5dp"
-            android:textSize="12sp"
-            android:background="#D3D3D3"
-            android:gravity="center_vertical|right"
-            />
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:background="#D3D3D3"-->
+        <!--android:gravity="center_vertical|right"-->
+        <!--android:paddingRight="5dp"-->
+        <!--android:text="@string/submission_confirmation_save_local"-->
+        <!--android:textSize="12sp" />-->
 
         <RelativeLayout
             android:id="@+id/relativeLayoutPlayer"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="#FFFFFF"
+            android:layout_width="400dp"
+            android:layout_height="320dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="31dp"
-            >
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50dp"
+            android:background="#FFFFFF">
 
-            <VideoView
-                android:layout_width="320dp"
-                android:layout_height="320dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:id="@+id/videoView" />
+            <include layout="@layout/layout_video_view" />
 
             <ImageView
-                android:layout_width="320dp"
-                android:layout_height="320dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:id="@+id/imageView" />
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true" />
+
             <WebView
+                android:id="@+id/webView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:visibility="gone"
-                android:id="@+id/webView"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:visibility="gone" />
 
-         </RelativeLayout>
+        </RelativeLayout>
 
     </RelativeLayout>
 
-    <TextView
-        android:text="@string/try_again"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonCompareWithModel"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="90dp"
-        android:id="@+id/textViewBack" />
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/icon_delete"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/textViewBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:text="@string/try_again"
+
+            />
+    </LinearLayout>
+
 
     <Button
-        android:text="@string/submission_confirmation_compare_with_model"
-        android:layout_width="200dp"
+        android:id="@+id/buttonCompareWithModel"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="120dp"
-        android:background="#F5F5F5"
-        android:id="@+id/buttonCompareWithModel" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/border_color_gray"
+        android:gravity="center"
+        android:text="@string/submission_confirmation_compare_with_model" />
 
     <RelativeLayout
         android:id="@+id/relativeLayoutBottom"
-        android:layout_height="64dp"
         android:layout_width="match_parent"
-        android:layout_centerInParent="true"
+        android:layout_height="64dp"
         android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
         android:background="#E8E8E8"
         android:padding="10dp"
-        >
+        android:visibility="gone">
 
-        <LinearLayout
-            android:id="@+id/linearLayoutFooterStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentLeft="true">
+        <!--<LinearLayout-->
+        <!--android:id="@+id/linearLayoutFooterStatus"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_alignParentLeft="true">-->
 
-            <ImageView
-                android:id="@+id/imageViewFooterView"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                app:srcCompat="@drawable/ic_sample_svg"
-                />
+        <!--<ImageView-->
+        <!--android:id="@+id/imageViewFooterView"-->
+        <!--android:layout_width="28dp"-->
+        <!--android:layout_height="28dp"-->
+        <!--app:srcCompat="@drawable/ic_sample_svg"-->
+        <!--/>-->
 
-            <TextView
-                android:id="@+id/textViewFooterView"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/footer_view"
-                android:textSize="12sp"
-                android:textColor="#61B5Ab"
-                android:textStyle="normal"
-                />
+        <!--<TextView-->
+        <!--android:id="@+id/textViewFooterView"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:text="@string/footer_view"-->
+        <!--android:textSize="12sp"-->
+        <!--android:textColor="#61B5Ab"-->
+        <!--android:textStyle="normal"-->
+        <!--/>-->
 
-            <ImageView
-                android:id="@+id/imageViewFooterShoot"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                app:srcCompat="@drawable/ic_sample_svg"
-                />
+        <!--<ImageView-->
+        <!--android:id="@+id/imageViewFooterShoot"-->
+        <!--android:layout_width="28dp"-->
+        <!--android:layout_height="28dp"-->
+        <!--app:srcCompat="@drawable/ic_sample_svg"-->
+        <!--/>-->
 
-            <TextView
-                android:id="@+id/textViewFooterShoot"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/footer_shoot"
-                android:textSize="12sp"
-                android:textColor="#61B5Ab"
-                android:textStyle="normal"
-                />
+        <!--<TextView-->
+        <!--android:id="@+id/textViewFooterShoot"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:text="@string/footer_shoot"-->
+        <!--android:textSize="12sp"-->
+        <!--android:textColor="#61B5Ab"-->
+        <!--android:textStyle="normal"-->
+        <!--/>-->
 
-            <ImageView
-                android:id="@+id/imageViewFooterCompare"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                app:srcCompat="@drawable/ic_sample_svg"
-                />
+        <!--<ImageView-->
+        <!--android:id="@+id/imageViewFooterCompare"-->
+        <!--android:layout_width="28dp"-->
+        <!--android:layout_height="28dp"-->
+        <!--app:srcCompat="@drawable/ic_sample_svg"-->
+        <!--/>-->
 
-            <TextView
-                android:id="@+id/textViewFooterCompare"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/footer_compare"
-                android:textSize="12sp"
-                android:textColor="#61B5Ab"
-                android:textStyle="normal"
-                />
+        <!--<TextView-->
+        <!--android:id="@+id/textViewFooterCompare"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:text="@string/footer_compare"-->
+        <!--android:textSize="12sp"-->
+        <!--android:textColor="#61B5Ab"-->
+        <!--android:textStyle="normal"-->
+        <!--/>-->
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
         <Button
+            android:id="@+id/buttonCompare"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="16dp"
+            android:background="#33CC66"
             android:text="@string/select_shooting_method_compare"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginRight="16dp"
-            android:textColor="#FFFFFF"
-            android:background="#33CC66"
-            android:id="@+id/buttonCompare" />
+            android:textColor="#FFFFFF" />
 
         <Button
-            android:text="@string/select_shooting_method_submit"
+            android:id="@+id/buttonSubmit"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_marginRight="16dp"
-            android:textColor="#FFFFFF"
             android:background="#33CC66"
-            android:id="@+id/buttonSubmit" />
+            android:text="@string/select_shooting_method_submit"
+            android:textColor="#FFFFFF" />
 
     </RelativeLayout>
 
@@ -256,50 +297,51 @@
         android:id="@+id/relativeLayoutOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#66000000">
+        android:background="#66000000"
+        android:visibility="gone">
 
         <ImageButton
+            android:id="@+id/imageButtonReportSentClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
             android:background="#66000000"
-            android:id="@+id/imageButtonReportSentClose" />
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="150dp"
             android:text="@string/report_sent"
-            android:textSize="35sp"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="35sp" />
 
         <Button
-            android:text="@string/report_sent_back"
+            android:id="@+id/buttonReportSentBack"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="300dp"
             android:layout_marginLeft="100dp"
-            android:textColor="#808080"
+            android:layout_marginTop="300dp"
             android:background="#FFFFFF"
-            android:id="@+id/buttonReportSentBack" />
+            android:text="@string/report_sent_back"
+            android:textColor="#808080" />
 
         <Button
-            android:text="@string/report_sent_input_comment"
+            android:id="@+id/buttonReportSentInputComment"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="300dp"
             android:layout_marginRight="100dp"
-            android:textColor="#808080"
+            android:layout_marginTop="300dp"
             android:background="#FFFFFF"
-            android:id="@+id/buttonReportSentInputComment" />
+            android:text="@string/report_sent_input_comment"
+            android:textColor="#808080" />
 
     </RelativeLayout>
 

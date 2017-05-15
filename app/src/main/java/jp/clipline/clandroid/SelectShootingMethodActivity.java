@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,6 +30,7 @@ import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.CameraUtil;
 import jp.clipline.clandroid.Utility.FileChooser;
 import jp.clipline.clandroid.api.ToDo;
+import jp.clipline.clandroid.view.StatusView;
 
 import static jp.clipline.clandroid.R.id.progressBar;
 
@@ -44,15 +44,16 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
 
     private Uri uriPicture = null;
 
-    ///// 20170506 ADD START
-    private LinearLayout mLinearLayoutFooterStatus;
-    private ImageView mImageViewFooterView;
-    private TextView mTextViewFooterView;
-    private ImageView mImageViewFooterShoot;
-    private TextView mTextViewFooterShoot;
-    private ImageView mImageViewFooterCompare;
-    private TextView mTextViewFooterCompare;
-    ///// 20170506 ADD END
+    ///// 20170514 DELETE START
+//    private LinearLayout mLinearLayoutFooterStatus;
+//    private ImageView mImageViewFooterView;
+//    private TextView mTextViewFooterView;
+//    private ImageView mImageViewFooterShoot;
+//    private TextView mTextViewFooterShoot;
+//    private ImageView mImageViewFooterCompare;
+//    private TextView mTextViewFooterCompare;
+    ///// 20170514 DELETE END
+
     ///// 20170509 ADD START
     private ProgressBar mProgressBar;
     public final String APP_DIR = "Clipline";
@@ -60,17 +61,23 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
     private String mOutPathVideoSelect;
     ///// 20170509 ADD END
 
+    ///// 20170514 ADD START
+    private StatusView mStatusView;
+    private StatusView mStatusViewResport;
+    private StatusView mStatusViewCheck;
+    ///// 20170514 ADD END
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_shooting_method);
         mProgressBar = (ProgressBar) findViewById(progressBar);
-
-        TextView textView;
+        ///// 20170514 MODIFY START
+        LinearLayout llView;
         ImageButton imageButton;
 
-        textView = (TextView) findViewById(R.id.textViewTakePicture);
-        textView.setOnClickListener(new View.OnClickListener() {
+        llView = (LinearLayout) findViewById(R.id.textViewTakePicture);
+        llView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
@@ -86,8 +93,8 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
             }
         });
 
-        textView = (TextView) findViewById(R.id.textViewTakeMovie);
-        textView.setOnClickListener(new View.OnClickListener() {
+        llView = (LinearLayout) findViewById(R.id.textViewTakeMovie);
+        llView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
@@ -96,6 +103,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });
+        ///// 20170514 MODIFY END
 
         ///// 20170506 DELETE START
 /*
@@ -127,7 +135,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         ///// 20170506 DELETE END
 
         ///// 20170506 ADD START
-        textView = (TextView) findViewById(R.id.textViewSelectCameraRoll);
+        TextView textView = (TextView) findViewById(R.id.textViewSelectCameraRoll);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,22 +215,41 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
             }
         });
 
-        mLinearLayoutFooterStatus = (LinearLayout) findViewById(R.id.linearLayoutFooterStatus);
-        mImageViewFooterView = (ImageView) findViewById(R.id.imageViewFooterView);
-        mTextViewFooterView = (TextView) findViewById(R.id.textViewFooterView);
-        mImageViewFooterShoot = (ImageView) findViewById(R.id.imageViewFooterShoot);
-        mTextViewFooterShoot = (TextView) findViewById(R.id.textViewFooterShoot);
-        mImageViewFooterCompare = (ImageView) findViewById(R.id.imageViewFooterCompare);
-        mTextViewFooterCompare = (TextView) findViewById(R.id.textViewFooterCompare);
+        ///// 20170514 ADD START
+        mStatusView = (StatusView) findViewById(R.id.statusView);
+        mStatusViewResport = (StatusView) findViewById(R.id.statusResport);
+        mStatusViewCheck = (StatusView) findViewById(R.id.statusCheck);
 
-        // Firstly, hide the status, after getting result from api, then depend on the flags to process the view/hide
-        mLinearLayoutFooterStatus.setVisibility(View.GONE);
-        mImageViewFooterView.setVisibility(View.GONE);
-        mTextViewFooterView.setVisibility(View.GONE);
-        mImageViewFooterShoot.setVisibility(View.GONE);
-        mTextViewFooterShoot.setVisibility(View.GONE);
-        mImageViewFooterCompare.setVisibility(View.GONE);
-        mTextViewFooterCompare.setVisibility(View.GONE);
+        mStatusView.setTypeView(StatusView.STATUS_VIEW.VIEW, true);
+        mStatusViewResport.setTypeView(StatusView.STATUS_VIEW.REPORT, true);
+        mStatusViewCheck.setTypeView(StatusView.STATUS_VIEW.CHECK, true);
+
+        mStatusView.setVisibility(View.GONE);
+        mStatusViewResport.setVisibility(View.GONE);
+        mStatusViewCheck.setVisibility(View.GONE);
+
+        ///// 20170514 ADD START
+
+        ///// 20170514 DELETE START
+
+//        mLinearLayoutFooterStatus = (LinearLayout) findViewById(R.id.linearLayoutFooterStatus);
+//        mImageViewFooterView = (ImageView) findViewById(R.id.imageViewFooterView);
+//        mTextViewFooterView = (TextView) findViewById(R.id.textViewFooterView);
+//        mImageViewFooterShoot = (ImageView) findViewById(R.id.imageViewFooterShoot);
+//        mTextViewFooterShoot = (TextView) findViewById(R.id.textViewFooterShoot);
+//        mImageViewFooterCompare = (ImageView) findViewById(R.id.imageViewFooterCompare);
+//        mTextViewFooterCompare = (TextView) findViewById(R.id.textViewFooterCompare);
+//
+//        // Firstly, hide the status, after getting result from api, then depend on the flags to process the view/hide
+//        mLinearLayoutFooterStatus.setVisibility(View.GONE);
+//        mImageViewFooterView.setVisibility(View.GONE);
+//        mTextViewFooterView.setVisibility(View.GONE);
+//        mImageViewFooterShoot.setVisibility(View.GONE);
+//        mTextViewFooterShoot.setVisibility(View.GONE);
+//        mImageViewFooterCompare.setVisibility(View.GONE);
+//        mTextViewFooterCompare.setVisibility(View.GONE);
+
+        ///// 20170514 DELETE END
 
         imageButton = (ImageButton) findViewById(R.id.imageButtonTodoClose);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -459,9 +486,14 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
 
                         // Only when has_play_action is true, then all status will be visible
                         if (hasPlayAction) {
-                            mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
-                            mImageViewFooterView.setVisibility(View.VISIBLE);
-                            mTextViewFooterView.setVisibility(View.VISIBLE);
+
+                            ///// 20170514 MODIFY START
+                            mStatusView.setVisibility(View.VISIBLE);
+//                            mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
+//                            mImageViewFooterView.setVisibility(View.VISIBLE);
+//                            mTextViewFooterView.setVisibility(View.VISIBLE);
+                            ///// 20170514 MODIFY END
+
                             // TODO 点灯
                             if ((todoContent.get("is_play_action_cleared") != null)
                                     && ((boolean) todoContent.get("is_play_action_cleared"))) {
@@ -475,9 +507,13 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                             && ((boolean) todoContent.get("has_report_action"))) {
 
                         // 表示
-                        mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
-                        mImageViewFooterShoot.setVisibility(View.VISIBLE);
-                        mTextViewFooterShoot.setVisibility(View.VISIBLE);
+                        ///// 20170514 MODIFY START
+                        mStatusViewResport.setVisibility(View.VISIBLE);
+
+//                        mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
+//                        mImageViewFooterShoot.setVisibility(View.VISIBLE);
+//                        mTextViewFooterShoot.setVisibility(View.VISIBLE);
+                        ///// 20170514 MODIFY END
                     }
 
                     // check has_my_report_play_action
@@ -485,9 +521,13 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                             && ((boolean) todoContent.get("has_my_report_play_action"))) {
 
                         // 表示
-                        mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
-                        mImageViewFooterCompare.setVisibility(View.VISIBLE);
-                        mTextViewFooterCompare.setVisibility(View.VISIBLE);
+                        ///// 20170514 MODIFY START
+                        mStatusViewCheck.setVisibility(View.VISIBLE);
+
+//                        mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
+//                        mImageViewFooterCompare.setVisibility(View.VISIBLE);
+//                        mTextViewFooterCompare.setVisibility(View.VISIBLE);
+                        ///// 20170514 MODIFY END
                     }
                 }
                 ///// 20170506 ADD END
