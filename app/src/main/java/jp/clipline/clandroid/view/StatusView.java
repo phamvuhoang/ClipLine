@@ -11,11 +11,6 @@ import android.widget.TextView;
 
 import jp.clipline.clandroid.R;
 
-/**
- * Created by nguyentu on 5/14/17.
- */
-
-///// 20170514 ADD START
 public class StatusView extends LinearLayout {
 
 
@@ -116,4 +111,3 @@ public class StatusView extends LinearLayout {
 
 
 }
-///// 20170514 ADD END

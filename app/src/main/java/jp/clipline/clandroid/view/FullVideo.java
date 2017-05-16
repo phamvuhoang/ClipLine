@@ -4,10 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.VideoView;
 
-/**
- * Created by nguyentu on 5/14/17.
- */
-///// 20170514 MODIFY START
 public class FullVideo extends VideoView {
 
     protected int defaultWidth = 1920;
@@ -33,4 +29,3 @@ public class FullVideo extends VideoView {
         setMeasuredDimension(width, height);
     }
 }
-///// 20170514 MODIFY START
