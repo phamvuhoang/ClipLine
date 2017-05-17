@@ -47,9 +47,12 @@ public class TerminalFirstUseScreenDisplayedActivity extends AppCompatActivity {
         protected void onPostExecute(final Boolean success) {
             if (success) {
                 if(message==null) {
+                    ///// 20170517 MODIFY START
                     Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                    intent.putExtra("FROM_SCREEN_LOGIN", "from_screen_login");
                     startActivity(intent);
                     finish();
+                    ///// 20170517 MODIFY END
 
                     ///// 20170505 TEMPORARY ADD START Bypass LaunchCrossWalkActivity
 /*

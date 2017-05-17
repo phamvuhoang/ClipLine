@@ -72,7 +72,10 @@
     <string name="compare_switch_video">Switch videos</string>
 
     <string name="report_sent">Report was sent</string>
+    <string name="report_sent_successful">Report has been posted</string>
+    <string name="report_sent_failed">Failed</string>
     <string name="report_sent_back">Back</string>
     <string name="report_sent_input_comment">Input Comment</string>
+    <string name="report_sent_retry">Retry</string>
 
 </resources>

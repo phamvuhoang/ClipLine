@@ -16,8 +16,9 @@ public class IntentParameters {
     private boolean mIsBrowserCalling = false;
     private boolean mIsProfile = false;
     private String mGetAction;
-    private Uri mExtraOutput = null;
-
+    ///// 20170518 MODIFY START
+    private String mExtraOutput = null;
+    ///// 20170518 MODIFY END
     // FIXME : プロフィール画像撮影モード、
 
     public IntentParameters(Intent intent, boolean isStandardAspectHardWare) {
@@ -28,7 +29,9 @@ public class IntentParameters {
         if (intent.getAction().equals(MediaStore.ACTION_IMAGE_CAPTURE)) {
             mIsBrowserCalling = true;
             mIsVideo = false;
-            mExtraOutput = (Uri) intent.getExtras().get(MediaStore.EXTRA_OUTPUT);
+            ///// 20170518 MODIFY START
+            mExtraOutput = (String) intent.getExtras().get(MediaStore.EXTRA_OUTPUT);
+            ///// 20170518 MODIFY END
             return;
         }
 
@@ -100,12 +103,11 @@ public class IntentParameters {
     public boolean isVideo() {
         return mIsVideo;
     }
-
-    public Uri getExtraOutput() {
+    ///// 20170518 MODIFY START
+    public String getExtraOutput() {
         return mExtraOutput;
     }
-
-    ;
+    ///// 20170518 MODIFY END
 
     public void setIsBackShooting(boolean isBackShooting) {
         mIsBackShooting = isBackShooting;

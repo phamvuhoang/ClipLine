@@ -50,6 +50,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import net.ypresto.androidtranscoder.MediaTranscoder;
 import net.ypresto.androidtranscoder.format.MediaFormatStrategyPresets;
 
@@ -135,7 +137,17 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         String message = String.format("DEBUG : %s(%d,%d) : %s端末", android.os.Build.MODEL, size.x, size.y, (CameraUtil.isStandardAspectHardWare(getWindowManager())) ? "スタンダード" : "ワイド");
         Log.v(TAG, message);
 
-        mIntentParameters = new IntentParameters(getIntent(), CameraUtil.isStandardAspectHardWare(getWindowManager()));
+        ///// 20170518 MODIFY START
+        if (savedInstanceState != null) {
+            String temp = String.valueOf(savedInstanceState.get("intentParameters_save"));
+            if (temp != null) {
+                mIntentParameters = new Gson().fromJson(temp, IntentParameters.class);
+            }
+        }else {
+            mIntentParameters = new IntentParameters(getIntent(), CameraUtil.isStandardAspectHardWare(getWindowManager()));
+        }
+        ///// 20170518 MODIFY START
+
         mIntentParameters.printInfomation();
         Log.d(TAG, String.format("IntentParameter : %s : %s, %s", mIntentParameters.isCallFromIntent() ? "インテント起動" : "", mIntentParameters.isAspectWide() ? "ワイド" : "スタンダード", mIntentParameters.isBackShooting() ? "背面" : "前面"));
 
@@ -441,10 +453,13 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     protected void onSaveInstanceState(Bundle outState) {
         // @see : https://www.ipentec.com/document/document.aspx?page=android-rotate-screen-save-value-in-bundle
         super.onSaveInstanceState(outState);
-
+        ///// 20170518 MODIFY START
         outState.putString("SEEK_BAR_ZOOM_PROGRESS", Integer.toString(mSeekBarZoom.getProgress()));
         outState.putString("SEEK_BAR_BRIGHTNESS_PROGRESS", Integer.toString(mSeekBarBrightness.getProgress()));
         outState.putString("IS_VIDEO_MODE", Boolean.toString(isVideoMode()));
+        Gson gson = new Gson();
+        outState.putString("intentParameters_save", gson.toJson(mIntentParameters));
+        ///// 20170518 MODIFY END
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -1289,6 +1304,9 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                         ContentResolver contentResolver = getContentResolver();
                         // intent.setData();
                         intent.setData(Uri.fromFile(new File(mNextVideoAbsolutePath)));
+                        ///// 20170518 MODIFY START
+                        intent.putExtra("path_result",Uri.fromFile(new File(mNextVideoAbsolutePath)));
+                        ///// 20170518 MODIFY END
                         setResult(RESULT_OK, intent);
 //                    }
 
@@ -1401,7 +1419,9 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
 
                 // ブラウザからの起動の場合終了する
                 if (mIntentParameters.isBrowserCalling()) {
-                    Uri uri = mIntentParameters.getExtraOutput();
+                    ///// 20170518 MODIFY START
+                    Uri uri = Uri.parse(mIntentParameters.getExtraOutput());
+                    ///// 20170518 MODIFY END
                     if (uri != null) {
                         try {
                             // 出力ファイル指定がある場合には、出力
@@ -1410,7 +1430,11 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                             outputStream.close();
 
                             // @FIXME
-                            setResult(RESULT_OK, new Intent());
+                            ///// 20170518 MODIFY START
+                            Intent returnIntent = new Intent();
+                            returnIntent.putExtra("path_result",uri);
+                            setResult(RESULT_OK, returnIntent);
+                            ///// 20170518 MODIFY END
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }

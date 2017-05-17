@@ -80,6 +80,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         llView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ///// 20170518 MODIFY START
                 Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
                 intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
                 String file_name = System.currentTimeMillis() + ".png";
@@ -87,9 +88,10 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 values.put(MediaStore.Images.Media.TITLE, file_name);
                 values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
                 uriPicture = Uri.fromFile(new File(CameraUtil.getPhotoFilePath()));
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, uriPicture);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, String.valueOf(uriPicture));
                 startActivityForResult(intent, REQUEST_CODE_PICTURE_CAPTURE);
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                ///// 20170518 MODIFY END
             }
         });
 
@@ -324,6 +326,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
             try {
                 ///// 20170509 MODIFY START
                 if (requestCode == REQUEST_CODE_PICTURE_CAPTURE) {
+                    uriPicture = (Uri) data.getExtras().get("path_result");
                     String path = AndroidUtility.getFilePath(this, uriPicture);
                     Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
                     ((ClWebWrapperApplication) getApplication()).setTodoContent(path, "image/png");

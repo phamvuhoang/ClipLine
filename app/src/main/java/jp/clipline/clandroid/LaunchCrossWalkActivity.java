@@ -66,9 +66,14 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
 //        mCookieManager = new XWalkCookieManager();
         mCookieManager.setAcceptCookie(true);
         mCookieManager.setAcceptFileSchemeCookies(true);
-        ///// 20170506 DELETE START
-        //mCookieManager.removeAllCookie();
-        ///// 20170506 DELETE END
+
+        ///// 20170517 MODIFY START
+        String fromLogin = getIntent().getExtras().getString("FROM_SCREEN_LOGIN", null);
+        if (fromLogin != null) { // intent from screen login
+            mCookieManager.removeAllCookie();
+        }
+
+
         // @see : https://cliplinedev.slack.com/archives/multiplatform/p1485911439000053
         // String cookie = String.format("X-ClipLine-AppType=android; %s", AndroidUtility.getCookie(getApplicationContext()));
         String cookie = String.format("%s", AndroidUtility.getCookie(getApplicationContext()));
@@ -79,13 +84,13 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
 
         mXWalkView.addJavascriptInterface(new NativeInterface(), "NativeInterface");
 
-        if (getIntent().getExtras() == null) {
+        if (fromLogin != null) {
             mXWalkView.load(BASE_URL, null, extraHeaders);
         } else {
             String url = (String) getIntent().getExtras().get("BASE_URL");
             mXWalkView.load(String.format(url, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST), null, extraHeaders);
         }
-
+        ///// 20170517 MODIFY END
         activityRequestPermissions(PERMISSION_REQUEST_CODE);
     }
 
