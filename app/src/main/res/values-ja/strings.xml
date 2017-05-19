@@ -69,10 +69,12 @@
     <string name="compare_start_video">同時に見比べる</string>
     <string name="compare_switch_video">切り替え</string>
 
-    <string name="report_sent">レポートを送りました</string>
-    <string name="report_sent_successful">Report has been posted</string>
-    <string name="report_sent_failed">Failed</string>
+    <!-- ///// 20170519 MODIFY START-->
+    <string name="report_sent">投稿しています</string>
+    <string name="report_sent_successful">完了しました</string>
+    <string name="report_sent_failed">失敗しました</string>
     <string name="report_sent_back">もどる</string>
     <string name="report_sent_input_comment">コメントを入れる</string>
-
+    <string name="report_sent_retry">閉じる</string>
+    <!-- ///// 20170519 MODIFY END-->
 </resources>
