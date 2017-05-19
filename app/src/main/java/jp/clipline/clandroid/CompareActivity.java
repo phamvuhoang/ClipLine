@@ -50,10 +50,8 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
     private WebView mWebViewContent;
     private WebView mWebViewMine;
 
-    ///// 20170517 DELETE START
 //    private Button mButtonStartAllVideo;
 //    private Button mButtonSwitch;
-    ///// 20170517 DELETE END
 
     private TextView mBackScreen;
     private ImageButton mButtonClose;
@@ -64,8 +62,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
     private String mPath;
     private Map<String, Object> mCurrentTodoContent;
     private boolean mIsCheckSwitch = true;
-
-    ///// 20170517 MODIFY START
 
     private StatusView mStatusView;
     private StatusView mStatusViewResport;
@@ -103,8 +99,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
     private TextView mTextViewError;
     private ProgressBar mProgressBar;
 
-    ///// 20170517 MODIFY END
-
     private Button mButtonSummit;
 
     private RelativeLayout mRelativeLayoutOverlay;
@@ -114,8 +108,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare);
 
-
-        ///// 20160508 ADD START
         // レポート完成画面
         mRelativeLayoutOverlay = (RelativeLayout) findViewById(R.id.relativeLayoutOverlay);
         mRelativeLayoutOverlay.setVisibility(View.GONE);
@@ -129,7 +121,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         // レポート完成：もどるボタン
-        ///// 20170518 MODIFY START
         mTextViewError = (TextView) findViewById(R.id.textViewError);
         mButtonReportSentRetry = (Button) findViewById(R.id.buttonReportSentRetry);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -145,7 +136,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
         mButtonReportSentClose = (Button) findViewById(R.id.buttonReportSentBack);
-        ///// 20170518 MODIFY END
+
         mButtonReportSentClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,9 +154,8 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         // レポート完成：コメントを入れるボタン
-        ///// 20170518 MODIFY START
         mButtonReportSentComment = (Button) findViewById(R.id.buttonReportSentInputComment);
-        ///// 20170518 MODIFY END
+
         mButtonReportSentComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,10 +172,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
             }
         });
-        ///// 20160508 ADD END
-
-
-        ///// 20170507 ADD START
 
         mWebViewContent = (WebView) findViewById(R.id.webViewContent);
         mWebViewMine = (WebView) findViewById(R.id.webViewMine);
@@ -193,29 +179,29 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         mVideoViewContent = (VideoView) findViewById(R.id.videoViewContent);
         mVideoViewMine = (VideoView) findViewById(R.id.videoViewMine);
         mBackScreen = (TextView) findViewById(R.id.backScreen);
-        ///// 20170517 DELETE START
+
 //        mButtonStartAllVideo = (Button) findViewById(R.id.buttonStartAllVideo);
 //        mButtonSwitch = (Button) findViewById(R.id.buttonSwitch);
-        ///// 20170517 DELETE END
+
         mButtonClose = (ImageButton) findViewById(R.id.imageButton);
         mButtonBack = (ImageButton) findViewById(R.id.imageButtonBack);
 
         mBackScreen.setOnClickListener(this);
-        ///// 20170517 DELETE START
+
 //        mButtonStartAllVideo.setOnClickListener(this);
 //        mButtonSwitch.setOnClickListener(this);
-        ///// 20170517 DELETE END
+
         mButtonClose.setOnClickListener(this);
         mButtonBack.setOnClickListener(this);
 
         mWebViewContent.getSettings().setJavaScriptEnabled(true);
         mWebViewMine.getSettings().setJavaScriptEnabled(true);
-        ///// 20170509 MODIFY START
+
         mTodoContentType = ((ClWebWrapperApplication) this.getApplication()).getTodoContentType();
         File file = new File(((ClWebWrapperApplication) this.getApplication()).getTodoContentData());
         Uri uriFile = Uri.fromFile(file);
         mTodoContentData = uriFile;
-        ///// 20170509 MODIFY END
+
 
         mCurrentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
         TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);
@@ -235,9 +221,9 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                 mWebViewMine.setVisibility(View.VISIBLE);
             } else if (mTodoContentType.equals("video/mp4")) {
                 mVideoViewMine.setVideoPath(mPath);
-                ///// 20170518 DELETE START
+
 //                mVideoViewMine.setMediaController(new MediaController(this));
-                ///// 20170518 DELETE END
+
                 mVideoViewMine.setVisibility(View.VISIBLE);
                 mVideoViewMine.seekTo(100);
             }
@@ -249,14 +235,14 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 
                 if (isVideo) {
                     mVideoViewContent.setVideoPath((String) mCurrentTodoContent.get("pre_signed_standard_mp4_url"));
-                    ///// 20170518 DELETE START
+
 //                    mVideoViewContent.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 //                        @Override
 //                        public void onPrepared(MediaPlayer mp) {
 //                            mp.seekTo(100);
 //                        }
 //                    });
-                    ///// 20170518 DELETE END
+
                     mVideoViewContent.setVisibility(View.VISIBLE);
                 } else if (isImage) { //TODO contact (media_thumb_pre_signed_url)
                     mWebViewContent.loadUrl(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")));
@@ -270,8 +256,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-
-        ///// 20170507 ADD END
 
 
 /*
@@ -331,18 +315,15 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //        videoView.setVideoURI(mTodoContentData);
 //        videoView.start();
 
-        ///// 20170516 MODIFY START
-
         // Statuses on Footer
 
         mStatusView = (StatusView) findViewById(R.id.statusView);
         mStatusViewResport = (StatusView) findViewById(R.id.statusResport);
         mStatusViewCheck = (StatusView) findViewById(R.id.statusCheck);
-        ///// 20170518 MODIFY START
+
         mStatusView.setTypeView(StatusView.STATUS_VIEW.VIEW, false);
         mStatusViewResport.setTypeView(StatusView.STATUS_VIEW.REPORT, false);
         mStatusViewCheck.setTypeView(StatusView.STATUS_VIEW.CHECK, false);
-        ///// 20170518 MODIFY END
 
 //        mLinearLayoutFooterStatus = (LinearLayout) findViewById(R.id.linearLayoutFooterStatus);
 //        mImageViewFooterView = (ImageView) findViewById(R.id.imageViewFooterView);
@@ -365,10 +346,8 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //        mImageViewFooterCompare.setVisibility(View.GONE);
 //        mTextViewFooterCompare.setVisibility(View.GONE);
 
-        ///// 20170516 MODIFY END
         updateStatus();
 
-        ///// 20170517 MODIFY START
         // この内容で提出
         mButtonSummit = (Button) findViewById(R.id.buttonSubmit);
         mButtonSummit.setOnClickListener(new View.OnClickListener() {
@@ -382,10 +361,8 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         findViewById();
-        ///// 20170517 MODIFY END
     }
 
-    ///// 20170517 MODIFY START
     @Override
     public void onClick(View v) {
         Intent intent;
@@ -396,20 +373,17 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         String url;
         boolean isPortrait;
         switch (v.getId()) {
-            ///// 20170517 DELETE START
 //            case R.id.buttonStartAllVideo:
 //                mVideoViewContent.setMediaController(new MediaController(this));
 //                mVideoViewContent.start();
 //                mVideoViewMine.start();
 //                break;
-            ///// 20170517 DELETE END
             case R.id.backScreen:
                 intent = new Intent(CompareActivity.this, SelectShootingMethodActivity.class);
                 startActivity(intent);
                 finish();
 
                 break;
-            ///// 20170517 DELETE START
 //            case R.id.buttonSwitch:
 //                if (mIsCheckSwitch) {
 //                    mVideoViewContent.setVideoPath(mPath);
@@ -424,7 +398,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //                mVideoViewMine.start();
 //
 //                break;
-            ///// 20170517 DELETE END
             case R.id.imageButton:
                 todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
                 studentId = todoParameters.get("studentId");
@@ -524,7 +497,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
-    ///// 20170517 MODIFY END
 
     /**
      * Update footer icons based on return from server
@@ -539,12 +511,10 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 
                 // Only when has_play_action is true, then all status will be visible
                 if (hasPlayAction) {
-                    ///// 20170516 MODIFY START
                     mStatusView.setVisibility(View.VISIBLE);
 //                  mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
 //                  mImageViewFooterView.setVisibility(View.VISIBLE);
 //                  mTextViewFooterView.setVisibility(View.VISIBLE);
-                    ///// 20170516 MODIFY END
                     // TODO 点灯
                     // TODO 点灯
                     if ((todoContent.get("is_play_action_cleared") != null)
@@ -559,14 +529,11 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                     && ((boolean) todoContent.get("has_report_action"))) {
 
                 // 表示
-                // 表示
-                ///// 20170516 MODIFY START
                 mStatusViewResport.setVisibility(View.VISIBLE);
 
 //              mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
 //              mImageViewFooterShoot.setVisibility(View.VISIBLE);
 //              mTextViewFooterShoot.setVisibility(View.VISIBLE);
-                ///// 20170516 MODIFY END
             }
 
             // check has_my_report_play_action
@@ -574,14 +541,11 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                     && ((boolean) todoContent.get("has_my_report_play_action"))) {
 
                 // 表示
-                // 表示
-                ///// 20170516 MODIFY START
                 mStatusViewCheck.setVisibility(View.VISIBLE);
 
 //               mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
 //               mImageViewFooterCompare.setVisibility(View.VISIBLE);
 //               mTextViewFooterCompare.setVisibility(View.VISIBLE);
-                ///// 20170516 MODIFY END
             }
         }
     }
@@ -669,7 +633,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            ///// 20170518 MODIFY START
             if (success) {
                 Log.i("reponse:", reponseData.toString());
                 mProgressBar.setVisibility(View.GONE);
@@ -688,7 +651,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                 mButtonReportSentRetry.setVisibility(View.VISIBLE);
                 mTextViewError.setVisibility(View.VISIBLE);
             }
-            ///// 20170518 MODIFY END
+
             // TODO Just show complete screen for now, need to modify later
             mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
         }
@@ -697,9 +660,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         protected void onCancelled() {
         }
     }
-
-
-    ///// 20170517 ADD START
 
     private void findViewById() {
         mCurrentTimeContent = (TextView) findViewById(R.id.current_time_tv_content);
@@ -909,7 +869,4 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                 return false;//"reverse landscape";
         }
     }
-
-    ///// 20170517 ADD END
-
 }

@@ -40,8 +40,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
     private Uri mTodoContentData = null;
     private WebView mWebView;
 
-    ///// 20170516 MODIFY START
-
     private StatusView mStatusView;
     private StatusView mStatusViewResport;
     private StatusView mStatusViewCheck;
@@ -67,30 +65,25 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
     private final int SEEKTOTIME = 1111;
     private final int UPDATE_UI = 1;
     private final MyHandler mHandler = new MyHandler(this);
-    ///// 20170516 MODIFY END
 
     private Button mButtonCompareToModel;
     private Button mButtonCompare;
     private Button mButtonSummit;
 
     private RelativeLayout mRelativeLayoutOverlay;
-    ///// 20170507 ADD END
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submission_confirmation);
-        ///// 20170509 MODIFY START
         mTodoContentType = ((ClWebWrapperApplication) this.getApplication()).getTodoContentType();
         File file = new File(((ClWebWrapperApplication) this.getApplication()).getTodoContentData());
         Uri uriFile = Uri.fromFile(file);
         mTodoContentData = uriFile;
-        ///// 20170509 MODIFY START
         ImageButton imageButton;
         ImageView imageView;
         TextView textView;
 
-        ///// 20160508 ADD START
         // レポート完成画面
         mRelativeLayoutOverlay = (RelativeLayout) findViewById(R.id.relativeLayoutOverlay);
         mRelativeLayoutOverlay.setVisibility(View.GONE);
@@ -139,12 +132,9 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 finish();
             }
         });
-        ///// 20160508 ADD END
-
 
         imageView = (ImageView) findViewById(R.id.imageView);
 
-        ///// 20170516 MODIFY START
         findViewById();
 //        VideoView videoView = (VideoView) findViewById(R.id.videoView);
         mWebView = (WebView) findViewById(R.id.webView);
@@ -173,22 +163,17 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             }
 
         }
-        ///// 20170516 MODIFY END
 
         // 戻るボタン
         imageButton = (ImageButton) findViewById(R.id.imageButtonBack);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ///// 20170507 DELETE START
 /*
                 Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
                 startActivity(intent);
                 finish();
 */
-                ///// 20170507 DELETE END
-
-                ///// 20170507 ADD START
                 Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
                 String studentId = todoParameters.get("studentId");
                 String categoryId = todoParameters.get("categoryId");
@@ -200,7 +185,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 intent.putExtra("BASE_URL", url);
                 startActivity(intent);
                 finish();
-                ///// 20170507 ADD END
 
             }
         });
@@ -209,15 +193,11 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ///// 20170507 DELETE START
 /*
                 Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
                 startActivity(intent);
                 finish();
 */
-                ///// 20170507 DELETE END
-
-                ///// 20170507 ADD START
                 Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
                 String studentId = todoParameters.get("studentId");
                 String categoryId = todoParameters.get("categoryId");
@@ -229,11 +209,9 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 intent.putExtra("BASE_URL", url);
                 startActivity(intent);
                 finish();
-                ///// 20170507 ADD END
             }
         });
 
-        ///// 20170507 ADD START
         imageButton = (ImageButton) findViewById(R.id.imageButtonTodoClose);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,10 +241,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             }
         });
 
-        ///// 20170516 MODIFY START
-
         // Statuses on Footer
-
         mStatusView = (StatusView) findViewById(R.id.statusView);
         mStatusViewResport = (StatusView) findViewById(R.id.statusResport);
         mStatusViewCheck = (StatusView) findViewById(R.id.statusCheck);
@@ -296,8 +271,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 //        mImageViewFooterCompare.setVisibility(View.GONE);
 //        mTextViewFooterCompare.setVisibility(View.GONE);
 
-        ///// 20170516 MODIFY END
-
         updateStatus();
 
         // お手本を見比べる
@@ -313,7 +286,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 finish();
             }
         });
-        ///// 20170507 ADD END
 
         // 見比べる : ToCompare
         mButtonCompare = (Button) findViewById(R.id.buttonCompare);
@@ -346,16 +318,12 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         Map<String, Object> currentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
         textView = (TextView) findViewById(R.id.textViewToDoTitle);
 
-        ///// 20170505 MODIFY START
         if (currentTodoContent != null && currentTodoContent.get("title") != null) {
             textView.setText((String) currentTodoContent.get("title"));
         } else {
             textView.setText("");
         }
-        ///// 20170505 MODIFY END
     }
-
-    ///// 20170516 ADD START
 
     private void findViewById() {
         mVideoView = (FullVideo) findViewById(R.id.video_view);
@@ -498,10 +466,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         }
     }
 
-
-    ///// 20170516 ADD END
-
-
     /**
      * Update footer icons based on return from server
      */
@@ -515,12 +479,10 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 
                 // Only when has_play_action is true, then all status will be visible
                 if (hasPlayAction) {
-                    ///// 20170516 MODIFY START
                     mStatusView.setVisibility(View.VISIBLE);
 //                  mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
 //                  mImageViewFooterView.setVisibility(View.VISIBLE);
 //                  mTextViewFooterView.setVisibility(View.VISIBLE);
-                    ///// 20170516 MODIFY END
                     // TODO 点灯
                     if ((todoContent.get("is_play_action_cleared") != null)
                             && ((boolean) todoContent.get("is_play_action_cleared"))) {
@@ -534,13 +496,11 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                     && ((boolean) todoContent.get("has_report_action"))) {
 
                 // 表示
-                ///// 20170516 MODIFY START
                 mStatusViewResport.setVisibility(View.VISIBLE);
 
 //              mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
 //              mImageViewFooterShoot.setVisibility(View.VISIBLE);
 //              mTextViewFooterShoot.setVisibility(View.VISIBLE);
-                ///// 20170516 MODIFY END
             }
 
             // check has_my_report_play_action
@@ -548,13 +508,11 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                     && ((boolean) todoContent.get("has_my_report_play_action"))) {
 
                 // 表示
-                ///// 20170516 MODIFY START
                 mStatusViewCheck.setVisibility(View.VISIBLE);
 
 //               mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
 //               mImageViewFooterCompare.setVisibility(View.VISIBLE);
 //               mTextViewFooterCompare.setVisibility(View.VISIBLE);
-                ///// 20170516 MODIFY END
             }
         }
     }
@@ -569,7 +527,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             hasMyReportPlayAction = ((boolean) todoContent.get("has_my_report_play_action"));
         }
 
-        ///// 20170507 TEMPORARY ADD to test submit button
         hasMyReportPlayAction = false;
 
         // TODO 見比べる有???
@@ -586,8 +543,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         }
     }
 
-    ///// 20170516 ADD START
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pause_img:
@@ -619,8 +574,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             }
         }
     }
-
-    ///// 20170516 ADD START
 
 
     /**

@@ -67,7 +67,6 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
         mCookieManager.setAcceptCookie(true);
         mCookieManager.setAcceptFileSchemeCookies(true);
 
-        ///// 20170517 MODIFY START
         String fromLogin = getIntent().getExtras().getString("FROM_SCREEN_LOGIN", null);
         if (fromLogin != null) { // intent from screen login
             mCookieManager.removeAllCookie();
@@ -90,7 +89,7 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
             String url = (String) getIntent().getExtras().get("BASE_URL");
             mXWalkView.load(String.format(url, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST), null, extraHeaders);
         }
-        ///// 20170517 MODIFY END
+
         activityRequestPermissions(PERMISSION_REQUEST_CODE);
     }
 

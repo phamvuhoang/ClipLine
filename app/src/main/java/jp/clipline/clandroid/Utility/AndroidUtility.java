@@ -152,7 +152,6 @@ public class AndroidUtility {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-    ///// 20170514 ADD START
     /**
      * check string is null or blank
      *
@@ -162,5 +161,4 @@ public class AndroidUtility {
     public static boolean isNullOrBlank(String value) {
         return (value == null) || (value.equals("null")) || (value.equals(""));
     }
-    ///// 20170514 ADD END
 }

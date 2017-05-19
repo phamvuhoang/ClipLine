@@ -33,18 +33,13 @@ public class Branch {
                 .add("password", password)
                 .build();
 
-        ///// 20170505 ADD START
         String language = Locale.getDefault().toString();
-        ///// 20170505 ADD END
-
-        ///// 20170505 MODIFY START
         Request request = new Request.Builder()
                 .url(String.format(SIGN_IN_URL, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST))
                 .post(requestBody)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .addHeader("Accept-Language", language)
                 .build();
-        ///// 20170505 MODIFY END
 
         Response response = new OkHttpClient().newCall(request).execute();
         if (response.isSuccessful()) {

@@ -40,11 +40,9 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
     private static int REQUEST_CODE_VIDEO_CAPTURE = 2;
     private static int REQUEST_CODE_PICTURE_SELECTOR = 3;
     private static int REQUEST_CODE_VIDEO_SELECTOR = 4;
-    private static int REQUEST_CODE_SELECT_FILE = 5; ///// 20170506 ADD
+    private static int REQUEST_CODE_SELECT_FILE = 5;
 
     private Uri uriPicture = null;
-
-    ///// 20170514 DELETE START
 //    private LinearLayout mLinearLayoutFooterStatus;
 //    private ImageView mImageViewFooterView;
 //    private TextView mTextViewFooterView;
@@ -52,27 +50,20 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
 //    private TextView mTextViewFooterShoot;
 //    private ImageView mImageViewFooterCompare;
 //    private TextView mTextViewFooterCompare;
-    ///// 20170514 DELETE END
-
-    ///// 20170509 ADD START
     private ProgressBar mProgressBar;
     public final String APP_DIR = "Clipline";
     public final String COMPRESSED_VIDEOS_DIR = "/Compressed Videos/";
     private String mOutPathVideoSelect;
-    ///// 20170509 ADD END
-
-    ///// 20170514 ADD START
     private StatusView mStatusView;
     private StatusView mStatusViewResport;
     private StatusView mStatusViewCheck;
-    ///// 20170514 ADD END
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_shooting_method);
         mProgressBar = (ProgressBar) findViewById(progressBar);
-        ///// 20170514 MODIFY START
+
         LinearLayout llView;
         ImageButton imageButton;
 
@@ -80,7 +71,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         llView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ///// 20170518 MODIFY START
+
                 Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
                 intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
                 String file_name = System.currentTimeMillis() + ".png";
@@ -91,7 +82,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, String.valueOf(uriPicture));
                 startActivityForResult(intent, REQUEST_CODE_PICTURE_CAPTURE);
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
-                ///// 20170518 MODIFY END
             }
         });
 
@@ -105,9 +95,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });
-        ///// 20170514 MODIFY END
-
-        ///// 20170506 DELETE START
 /*
         textView = (TextView) findViewById(R.id.textViewSelectPicture);
         textView.setOnClickListener(new View.OnClickListener() {
@@ -134,9 +121,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
             }
         });
 */
-        ///// 20170506 DELETE END
-
-        ///// 20170506 ADD START
         TextView textView = (TextView) findViewById(R.id.textViewSelectCameraRoll);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +137,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 fileChooser.setFileListener(new FileChooser.FileSelectedListener() {
                     @Override
                     public void fileSelected(File file) {
-                        ///// 20170509 MODIFY START
                         try {
                             Log.i("selected file: ", file.getAbsolutePath());
                             // Get the Uri of the selected file
@@ -205,7 +188,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                         } catch (URISyntaxException e) {
                             e.printStackTrace();
                         }
-                        ///// 20170509 MIDIFY END
                     }
                 });
                 fileChooser.showDialog();
@@ -217,7 +199,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
             }
         });
 
-        ///// 20170514 ADD START
         mStatusView = (StatusView) findViewById(R.id.statusView);
         mStatusViewResport = (StatusView) findViewById(R.id.statusResport);
         mStatusViewCheck = (StatusView) findViewById(R.id.statusCheck);
@@ -229,10 +210,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         mStatusView.setVisibility(View.GONE);
         mStatusViewResport.setVisibility(View.GONE);
         mStatusViewCheck.setVisibility(View.GONE);
-
-        ///// 20170514 ADD START
-
-        ///// 20170514 DELETE START
 
 //        mLinearLayoutFooterStatus = (LinearLayout) findViewById(R.id.linearLayoutFooterStatus);
 //        mImageViewFooterView = (ImageView) findViewById(R.id.imageViewFooterView);
@@ -251,8 +228,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
 //        mImageViewFooterCompare.setVisibility(View.GONE);
 //        mTextViewFooterCompare.setVisibility(View.GONE);
 
-        ///// 20170514 DELETE END
-
         imageButton = (ImageButton) findViewById(R.id.imageButtonTodoClose);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -270,30 +245,24 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 finish();
             }
         });
-        ///// 20170506 ADD END
 
         imageButton = (ImageButton) findViewById(R.id.imageButtonBack);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ///// 20170506 ADD START
                 Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
                 String studentId = todoParameters.get("studentId");
                 String categoryId = todoParameters.get("categoryId");
                 String todoContentId = todoParameters.get("todoContentId");
                 String url = "%s://%s/training/#/students/" + studentId
                         + "/todos/" + todoContentId;
-                ///// 20170506 ADD END
                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-                ///// 20170506 MODIFY START
                 intent.putExtra("BASE_URL", url);
-                ///// 20170506 MODIFY END
                 startActivity(intent);
                 finish();
             }
         });
 
-        ///// 20170507 ADD START
         textView = (TextView) findViewById(R.id.textViewTodoBack);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -311,7 +280,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 finish();
             }
         });
-        ///// 20170507 ADD END
 
         Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
         String studentId = todoParameters.get("studentId");
@@ -324,7 +292,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             try {
-                ///// 20170509 MODIFY START
+
                 if (requestCode == REQUEST_CODE_PICTURE_CAPTURE) {
                     uriPicture = (Uri) data.getExtras().get("path_result");
                     String path = AndroidUtility.getFilePath(this, uriPicture);
@@ -411,9 +379,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
-            ///// 20170509 MODIFY END
-
-            ///// 20170506 DELETE START
 /*
             if (requestCode == REQUEST_CODE_PICTURE_SELECTOR) {
                 Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
@@ -431,9 +396,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 return;
             }
 */
-            ///// 20170506 DELETE START
-
-
         }
 
 
@@ -472,16 +434,13 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
             if (success) {
                 ((ClWebWrapperApplication) getApplication()).setCurrentTodoContent(todoContent);
 
-                ///// 20170505 MODIFY START
                 TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);
                 if (todoContent != null && todoContent.get("title") != null) {
                     textView.setText((String) todoContent.get("title"));
                 } else {
                     textView.setText("");
                 }
-                ///// 20170505 MODIFY END
 
-                ///// 20170506 ADD START
                 if (todoContent != null) {
                     boolean hasPlayAction = false;
                     if (todoContent.get("has_play_action") != null) {
@@ -489,13 +448,10 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
 
                         // Only when has_play_action is true, then all status will be visible
                         if (hasPlayAction) {
-
-                            ///// 20170514 MODIFY START
                             mStatusView.setVisibility(View.VISIBLE);
 //                            mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
 //                            mImageViewFooterView.setVisibility(View.VISIBLE);
 //                            mTextViewFooterView.setVisibility(View.VISIBLE);
-                            ///// 20170514 MODIFY END
 
                             // TODO 点灯
                             if ((todoContent.get("is_play_action_cleared") != null)
@@ -510,13 +466,11 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                             && ((boolean) todoContent.get("has_report_action"))) {
 
                         // 表示
-                        ///// 20170514 MODIFY START
                         mStatusViewResport.setVisibility(View.VISIBLE);
 
 //                        mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
 //                        mImageViewFooterShoot.setVisibility(View.VISIBLE);
 //                        mTextViewFooterShoot.setVisibility(View.VISIBLE);
-                        ///// 20170514 MODIFY END
                     }
 
                     // check has_my_report_play_action
@@ -524,16 +478,13 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                             && ((boolean) todoContent.get("has_my_report_play_action"))) {
 
                         // 表示
-                        ///// 20170514 MODIFY START
                         mStatusViewCheck.setVisibility(View.VISIBLE);
 
 //                        mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
 //                        mImageViewFooterCompare.setVisibility(View.VISIBLE);
 //                        mTextViewFooterCompare.setVisibility(View.VISIBLE);
-                        ///// 20170514 MODIFY END
                     }
                 }
-                ///// 20170506 ADD END
             }
         }
 
@@ -542,7 +493,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         }
     }
 
-    ///// 20170509 ADD START
     public void CreateCompressDir() {
         File f = new File(Environment.getExternalStorageDirectory(), File.separator + APP_DIR);
         f.mkdirs();
@@ -578,7 +528,4 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
             }
         }
     }
-    ///// 20170509 ADD END
-
-
 }
