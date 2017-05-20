@@ -267,10 +267,20 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
 
+        ///// 20170520 MODIFY START
         // ex) NativeInterface.coachToDo(92680,988,15532);
         @JavascriptInterface
-        public void coachdToDo(String coachId, String categoryId, String todoId) {
+        public void coachToDo(String coachId, String categoryId, String todoId) {
+
+            Log.e("coachdToDo", coachId + "\n" + categoryId + "\n" + todoId);
+            categoryId = "988";
+            ((ClWebWrapperApplication) getApplication()).setTodoParameters(coachId, categoryId, todoId);
+            Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
+            startActivity(intent);
+
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
+        ///// 20170520 MODIFY END
     }
 
 
