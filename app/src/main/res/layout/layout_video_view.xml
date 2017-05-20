@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:paddingLeft="16dp"
-                    android:src="@drawable/video_stop_style" />
+                    android:src="@drawable/video_start_style" />
 
                 <TextView
                     android:id="@+id/current_time_tv"

@@ -6,7 +6,7 @@
     android:id="@+id/activity_select_shooting_method"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F0F0"
+    android:background="#FFFFFF"
     tools:context="jp.clipline.clandroid.SelectShootingMethodActivity">
 
     <RelativeLayout
@@ -20,33 +20,13 @@
             android:id="@+id/textViewToDoTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:text="@string/title_activity_select_shooting_method"
             android:textColor="@android:color/background_light"
             android:textSize="36sp"
-            android:textStyle="normal" />
-
-        <ImageButton
-            android:id="@+id/imageButtonTodoClose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:textStyle="normal"
             android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
-            android:background="#61B5Ab"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
-
-        <TextView
-            android:id="@+id/textViewTodoBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="50dp"
-            android:text="@string/select_shooting_method_back"
-            android:textColor="@android:color/background_light"
-            android:textSize="30sp"
-            android:textStyle="normal" />
+            android:layout_marginLeft="40dp"
+            android:layout_toEndOf="@+id/imageButtonBack" />
 
         <ImageButton
             android:id="@+id/imageButtonBack"
@@ -66,9 +46,9 @@
         android:layout_height="50dp"
         android:layout_below="@+id/relativeLayoutHeader"
         android:layout_centerHorizontal="true"
-        android:background="#E8E8E8"
-        android:paddingLeft="114dp"
-        android:paddingRight="114dp"
+        android:background="#FFFFFF"
+        android:paddingLeft="100dp"
+        android:paddingRight="100dp"
         android:weightSum="2.5">
 
         <jp.clipline.clandroid.view.StatusView
@@ -94,44 +74,48 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_below="@+id/linearLayoutStatus"
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dark_gray" />
 
     <LinearLayout
         android:id="@+id/relativeLayoutBody"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/relativeLayoutFooter"
-        android:layout_below="@+id/linearLayoutStatus"
+        android:layout_below="@+id/view"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="150dp"
-        android:layout_marginRight="150dp"
-        android:layout_marginTop="30dp"
-        android:background="#FFFFFF"
+        android:gravity="center"
+        android:paddingRight="200dp"
+        android:paddingLeft="200dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:background="#D3D3D3"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:paddingLeft="5dp"
             android:text="@string/select_shooting_method_prompt"
             android:textSize="12sp" />
 
         <LinearLayout
             android:id="@+id/textViewTakeMovie"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:background="@color/green"
             android:gravity="center"
             android:orientation="horizontal"
             android:textColor="#000000">
 
+
             <ImageView
                 android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_height="15dp"
                 android:layout_gravity="center"
                 android:background="@drawable/icon_movie"
                 android:gravity="center" />
@@ -152,7 +136,7 @@
 
         <LinearLayout
             android:id="@+id/textViewTakePicture"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
@@ -186,7 +170,7 @@
 
         <TextView
             android:id="@+id/textViewSelectCameraRoll"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
@@ -229,104 +213,104 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/relativeLayoutFooter"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:background="#E8E8E8"
-        android:padding="10dp">
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/relativeLayoutFooter"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="64dp"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:background="#E8E8E8"-->
+    <!--android:padding="10dp">-->
 
-        <!--<LinearLayout-->
-        <!--android:id="@+id/linearLayoutFooterStatus"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:gravity="center_vertical"-->
-        <!--&gt;-->
+    <!--<LinearLayout-->
+    <!--android:id="@+id/linearLayoutFooterStatus"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:gravity="center_vertical"-->
+    <!--&gt;-->
 
-        <!--<ImageView-->
-        <!--android:id="@+id/imageViewFooterView"-->
-        <!--android:layout_width="28dp"-->
-        <!--android:layout_height="28dp"-->
-        <!--app:srcCompat="@drawable/ic_sample_svg" />-->
+    <!--<ImageView-->
+    <!--android:id="@+id/imageViewFooterView"-->
+    <!--android:layout_width="28dp"-->
+    <!--android:layout_height="28dp"-->
+    <!--app:srcCompat="@drawable/ic_sample_svg" />-->
 
-        <!--<TextView-->
-        <!--android:id="@+id/textViewFooterView"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:text="@string/footer_view"-->
-        <!--android:textColor="#61B5Ab"-->
-        <!--android:textSize="12sp"-->
-        <!--android:textStyle="normal" />-->
+    <!--<TextView-->
+    <!--android:id="@+id/textViewFooterView"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:text="@string/footer_view"-->
+    <!--android:textColor="#61B5Ab"-->
+    <!--android:textSize="12sp"-->
+    <!--android:textStyle="normal" />-->
 
-        <!--<ImageView-->
-        <!--android:id="@+id/imageViewFooterShoot"-->
-        <!--android:layout_width="28dp"-->
-        <!--android:layout_height="28dp"-->
-        <!--app:srcCompat="@drawable/ic_sample_svg" />-->
+    <!--<ImageView-->
+    <!--android:id="@+id/imageViewFooterShoot"-->
+    <!--android:layout_width="28dp"-->
+    <!--android:layout_height="28dp"-->
+    <!--app:srcCompat="@drawable/ic_sample_svg" />-->
 
-        <!--<TextView-->
-        <!--android:id="@+id/textViewFooterShoot"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:text="@string/footer_shoot"-->
-        <!--android:textColor="#61B5Ab"-->
-        <!--android:textSize="12sp"-->
-        <!--android:textStyle="normal" />-->
+    <!--<TextView-->
+    <!--android:id="@+id/textViewFooterShoot"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:text="@string/footer_shoot"-->
+    <!--android:textColor="#61B5Ab"-->
+    <!--android:textSize="12sp"-->
+    <!--android:textStyle="normal" />-->
 
-        <!--<ImageView-->
-        <!--android:id="@+id/imageViewFooterCompare"-->
-        <!--android:layout_width="28dp"-->
-        <!--android:layout_height="28dp"-->
-        <!--app:srcCompat="@drawable/ic_sample_svg" />-->
+    <!--<ImageView-->
+    <!--android:id="@+id/imageViewFooterCompare"-->
+    <!--android:layout_width="28dp"-->
+    <!--android:layout_height="28dp"-->
+    <!--app:srcCompat="@drawable/ic_sample_svg" />-->
 
-        <!--<TextView-->
-        <!--android:id="@+id/textViewFooterCompare"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:text="@string/footer_compare"-->
-        <!--android:textColor="#61B5Ab"-->
-        <!--android:textSize="12sp"-->
-        <!--android:textStyle="normal" />-->
+    <!--<TextView-->
+    <!--android:id="@+id/textViewFooterCompare"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:text="@string/footer_compare"-->
+    <!--android:textColor="#61B5Ab"-->
+    <!--android:textSize="12sp"-->
+    <!--android:textStyle="normal" />-->
 
-        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true">
+    <!--<LinearLayout-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_alignParentEnd="true"-->
+    <!--android:layout_centerVertical="true">-->
 
-            <Button
-                android:id="@+id/buttonToCompare"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:enabled="false"
-                android:gravity="center"
-                android:text="@string/select_shooting_method_compare" />
+    <!--<Button-->
+    <!--android:id="@+id/buttonToCompare"-->
+    <!--android:layout_width="150dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="#FFFFFF"-->
+    <!--android:enabled="false"-->
+    <!--android:gravity="center"-->
+    <!--android:text="@string/select_shooting_method_compare" />-->
 
-            <Button
-                android:id="@+id/buttonSubmit"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:background="#606060"
-                android:enabled="false"
-                android:gravity="center"
-                android:text="@string/select_shooting_method_submit"
+    <!--<Button-->
+    <!--android:id="@+id/buttonSubmit"-->
+    <!--android:layout_width="150dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="#606060"-->
+    <!--android:enabled="false"-->
+    <!--android:gravity="center"-->
+    <!--android:text="@string/select_shooting_method_submit"-->
 
-                />
+    <!--/>-->
 
-        </LinearLayout>
+    <!--</LinearLayout>-->
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
 
     <ProgressBar
         android:id="@+id/progressBar"

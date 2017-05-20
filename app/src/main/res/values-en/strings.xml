@@ -56,8 +56,8 @@
     <string name="select_shooting_method_take_picture">Take picture</string>
     <string name="select_shooting_method_take_video">Take video</string>
     <string name="select_shooting_method_select_camera_roll">Select from Camera roll</string>
-    <string name="select_shooting_method_compare">Compare</string>
-    <string name="select_shooting_method_submit">Submit content</string>
+    <string name="select_shooting_method_compare">Check</string>
+    <string name="select_shooting_method_submit">Post</string>
 
     <string name="footer_view">View</string>
     <string name="footer_shoot">Report</string>
@@ -73,11 +73,12 @@
     <string name="compare_start_video">Start both videos</string>
     <string name="compare_switch_video">Switch videos</string>
 
-    <string name="report_sent">Report was sent</string>
+    <string name="report_sent">Sending</string>
     <string name="report_sent_successful">Report has been posted</string>
     <string name="report_sent_failed">Failed</string>
     <string name="report_sent_back">Back</string>
     <string name="report_sent_input_comment">Input Comment</string>
     <string name="report_sent_retry">Retry</string>
+    <string name="error_submit">Please confirm the communication environment and re-post.</string>
 
 </resources>

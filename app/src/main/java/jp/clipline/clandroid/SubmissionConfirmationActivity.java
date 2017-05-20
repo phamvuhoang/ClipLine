@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -67,8 +69,19 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
     private final MyHandler mHandler = new MyHandler(this);
 
     private Button mButtonCompareToModel;
-    private Button mButtonCompare;
-    private Button mButtonSummit;
+    //    private Button mButtonCompare;
+//    private Button mButtonSummit;
+    private Button mImageButtonCompareOrSubmit;
+    private boolean mHasMyReportPlayAction = false;
+    private RelativeLayout mRelativeLayoutContentVideo;
+    private ImageView mImageViewSubmit;
+    private TextView mTextViewUpload;
+    private Button mButtonReportSentComment;
+    private Button mButtonReportSentClose;
+    private Button mButtonReportSentRetry;
+    private TextView mTextViewError;
+    private ProgressBar mProgressBar;
+    private View mViewProgressBar;
 
     private RelativeLayout mRelativeLayoutOverlay;
 
@@ -95,10 +108,29 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 mRelativeLayoutOverlay.setVisibility(View.GONE);
             }
         });
+        ///// 20170520 ADD START
+        mTextViewError = (TextView) findViewById(R.id.textViewError);
+        mButtonReportSentRetry = (Button) findViewById(R.id.buttonReportSentRetry);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mViewProgressBar = findViewById(R.id.viewProgressBar);
+        mProgressBar.setVisibility(View.VISIBLE);
+        mProgressBar.setIndeterminate(true);
+        mButtonReportSentRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mProgressBar.setVisibility(View.VISIBLE);
+                mTextViewUpload.setText(getResources().getText(R.string.report_sent));
+                mImageViewSubmit.setBackground(null);
+                mTextViewError.setVisibility(View.GONE);
+                mViewProgressBar.setVisibility(View.GONE);
+                new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
+            }
+        });
+        ///// 20170520 ADD END
 
         // レポート完成：もどるボタン
-        Button button = (Button) findViewById(R.id.buttonReportSentBack);
-        button.setOnClickListener(new View.OnClickListener() {
+        mButtonReportSentClose = (Button) findViewById(R.id.buttonReportSentBack);
+        mButtonReportSentClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
@@ -115,8 +147,8 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         });
 
         // レポート完成：コメントを入れるボタン
-        button = (Button) findViewById(R.id.buttonReportSentInputComment);
-        button.setOnClickListener(new View.OnClickListener() {
+        mButtonReportSentComment = (Button) findViewById(R.id.buttonReportSentInputComment);
+        mButtonReportSentComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
@@ -143,6 +175,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             imageView.setImageURI(mTodoContentData);
 //            videoView.setVisibility(View.GONE);
             mWebView.setVisibility(View.GONE);
+            mRelativeLayoutContentVideo.setVisibility(View.GONE);
         } else if (mTodoContentType.equals("video/mp4")) {
             // 動画が撮影or選択された場合
             playVideo(mTodoContentData);
@@ -189,46 +222,51 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             }
         });
 
-        textView = (TextView) findViewById(R.id.textViewTodoBack);
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-/*
-                Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
-                startActivity(intent);
-                finish();
-*/
-                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                String studentId = todoParameters.get("studentId");
-                String categoryId = todoParameters.get("categoryId");
-                String todoContentId = todoParameters.get("todoContentId");
-                String url = "%s://%s/training/#/students/" + studentId
-                        + "/todos/" + todoContentId;
+//        textView = (TextView) findViewById(R.id.textViewTodoBack);
+//        textView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+///*
+//                Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
+//                startActivity(intent);
+//                finish();
+//*/
+//                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+//                String studentId = todoParameters.get("studentId");
+//                String categoryId = todoParameters.get("categoryId");
+//                String todoContentId = todoParameters.get("todoContentId");
+//                String url = "%s://%s/training/#/students/" + studentId
+//                        + "/todos/" + todoContentId;
+//
+//                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+//                intent.putExtra("BASE_URL", url);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
-                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-                intent.putExtra("BASE_URL", url);
-                startActivity(intent);
-                finish();
-            }
-        });
+        mImageButtonCompareOrSubmit = (Button) findViewById(R.id.buttonCompareOrSubmit);
+        mImageButtonCompareOrSubmit.setOnClickListener(this);
+        ///// 20170520 DELETE START
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+        // 一覧へ戻る
+//                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+//                String studentId = todoParameters.get("studentId");
+//                String categoryId = todoParameters.get("categoryId");
+//                String todoContentId = todoParameters.get("todoContentId");
+//                String url = "%s://%s/training/#/students/" + studentId
+//                        + "/todos?type=updates"; // TODO type=updates/repeat???
+//                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+//                intent.putExtra("BASE_URL", url);
+//                startActivity(intent);
+//                finish();
 
-        imageButton = (ImageButton) findViewById(R.id.imageButtonTodoClose);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 一覧へ戻る
-                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                String studentId = todoParameters.get("studentId");
-                String categoryId = todoParameters.get("categoryId");
-                String todoContentId = todoParameters.get("todoContentId");
-                String url = "%s://%s/training/#/students/" + studentId
-                        + "/todos?type=updates"; // TODO type=updates/repeat???
-                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-                intent.putExtra("BASE_URL", url);
-                startActivity(intent);
-                finish();
-            }
-        });
+
+//            }
+//        });
+        ///// 20170520 DELETE END
 
         // やり直す: back to SelectShooting
         textView = (TextView) findViewById(R.id.textViewBack);
@@ -260,9 +298,9 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 
         // Firstly, hide the status, after getting result from api, then depend on the flags to process the view/hide
 
-        mStatusView.setVisibility(View.GONE);
-        mStatusViewResport.setVisibility(View.GONE);
-        mStatusViewCheck.setVisibility(View.GONE);
+//        mStatusView.setVisibility(View.GONE);
+//        mStatusViewResport.setVisibility(View.GONE);
+//        mStatusViewCheck.setVisibility(View.GONE);
 //        mLinearLayoutFooterStatus.setVisibility(View.GONE);
 //        mImageViewFooterView.setVisibility(View.GONE);
 //        mTextViewFooterView.setVisibility(View.GONE);
@@ -287,30 +325,33 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             }
         });
 
+        ///// 20170520 DELETE START
         // 見比べる : ToCompare
-        mButtonCompare = (Button) findViewById(R.id.buttonCompare);
-        mButtonCompare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
-                startActivity(intent);
-
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-
-                finish();
-            }
-        });
+//        mButtonCompare = (Button) findViewById(R.id.buttonCompare);/
+//        mButtonCompare.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
+//                startActivity(intent);
+//
+//                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+//
+//                finish();
+//            }
+//        });
 
         // この内容で提出
-        mButtonSummit = (Button) findViewById(R.id.buttonSubmit);
-        mButtonSummit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // First, get media key
-                // On post execute, upload file to S3 and call report submit api
-                new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
-            }
-        });
+//        mButtonSummit = (Button) findViewById(R.id.buttonSubmit);
+//        mButtonSummit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // First, get media key
+//                // On post execute, upload file to S3 and call report submit api
+//                new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
+//            }
+//        });
+
+        ///// 20170520 DELETE END
 
         // 見比べる有／無によりボタン表示／非表示設定
         updateButtonVisible();
@@ -323,6 +364,16 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         } else {
             textView.setText("");
         }
+        ///// 20170520 MODIFY START
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        ///// 20170520 MODIFY END
     }
 
     private void findViewById() {
@@ -333,6 +384,9 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         mVolumeSeekBar = (SeekBar) findViewById(R.id.volume_seek);
         mPlayAndPause = (ImageView) findViewById(R.id.pause_img);
         mChangeFullScreen = (ImageView) findViewById(R.id.change_screen);
+        mRelativeLayoutContentVideo = (RelativeLayout) findViewById(R.id.relativeLayoutContentVideo);
+        mImageViewSubmit = (ImageView) findViewById(R.id.imageViewStatusSubmit);
+        mTextViewUpload = (TextView) findViewById(R.id.textViewUpload);
         setListener();
         init();
     }
@@ -404,7 +458,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                mVideoView.start();
+//                mVideoView.start();
                 updateTextViewWithTimeFormat(mTotalTimeTv, mVideoView.getDuration());
                 mHandler.sendEmptyMessage(UPDATE_UI);
             }
@@ -518,32 +572,35 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
     }
 
     private void updateButtonVisible() {
+        ///// 20170520 MODIFY START
         Map<String, Object> todoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
 
-        boolean hasMyReportPlayAction = false;
+//        boolean hasMyReportPlayAction = false;
 
         if ((todoContent != null)
                 && (todoContent.get("has_my_report_play_action") != null)) {
-            hasMyReportPlayAction = ((boolean) todoContent.get("has_my_report_play_action"));
+            mHasMyReportPlayAction = ((boolean) todoContent.get("has_my_report_play_action"));
         }
-
-        hasMyReportPlayAction = false;
+        //TODO HARDCODE TEST
+        mHasMyReportPlayAction = false;
 
         // TODO 見比べる有???
-        if (hasMyReportPlayAction) {
+        if (mHasMyReportPlayAction) {
             mButtonCompareToModel.setVisibility(View.GONE);
-            mButtonSummit.setVisibility(View.GONE);
-
-            mButtonCompare.setVisibility(View.VISIBLE);
+            mImageButtonCompareOrSubmit.setText(getResources().getText(R.string.select_shooting_method_compare));
+//            mButtonSummit.setVisibility(View.GONE);
+//            mButtonCompare.setVisibility(View.VISIBLE);
         } else {
             mButtonCompareToModel.setVisibility(View.VISIBLE);
-            mButtonSummit.setVisibility(View.VISIBLE);
-
-            mButtonCompare.setVisibility(View.GONE);
+            mImageButtonCompareOrSubmit.setText(getResources().getText(R.string.select_shooting_method_submit));
+//            mButtonSummit.setVisibility(View.VISIBLE);
+//            mButtonCompare.setVisibility(View.GONE);
         }
+        ///// 20170520 MODIFY END
     }
 
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.pause_img:
                 if (mVideoView.isPlaying()) {
@@ -557,10 +614,27 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 }
                 break;
             case R.id.change_screen:
-                Intent intent = new Intent(this, FullVideoActivity.class);
+                intent = new Intent(this, FullVideoActivity.class);
                 intent.putExtra("seekto", mVideoView.getDuration());
                 startActivityForResult(intent, SEEKTOTIME);
 
+                break;
+            ///// 20170520 MODIFY START
+            case R.id.buttonCompareOrSubmit:
+                if (mHasMyReportPlayAction) { // check
+                    intent = new Intent(getApplicationContext(), CompareActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    finish();
+                } else { // post
+                    // First, get media key
+                    // On post execute, upload file to S3 and call report submit api
+                    mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
+                    new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
+                }
+                break;
+            ///// 20170520 MODIFY END
+            default:
                 break;
         }
     }
@@ -569,6 +643,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SEEKTOTIME) {
             if (resultCode == Activity.RESULT_OK) {
+                mPlayAndPause.setImageResource(R.drawable.video_start_style);
                 int seek = data.getIntExtra("seekto", 0);
                 mVideoView.seekTo(seek);
             }
@@ -660,6 +735,25 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         protected void onPostExecute(final Boolean success) {
             if (success) {
                 Log.i("reponse:", reponseData.toString());
+                mProgressBar.setVisibility(View.GONE);
+                mViewProgressBar.setBackground(ContextCompat.getDrawable(SubmissionConfirmationActivity.this, R.color.green));
+                mViewProgressBar.setVisibility(View.VISIBLE);
+                mImageViewSubmit.setBackground(ContextCompat.getDrawable(SubmissionConfirmationActivity.this, R.drawable.icon_status_complete));
+                mTextViewUpload.setText(getResources().getText(R.string.report_sent_successful));
+                mButtonReportSentComment.setVisibility(View.VISIBLE);
+                mButtonReportSentClose.setVisibility(View.VISIBLE);
+                mButtonReportSentRetry.setVisibility(View.GONE);
+
+            } else {
+                mProgressBar.setVisibility(View.GONE);
+                mViewProgressBar.setBackground(ContextCompat.getDrawable(SubmissionConfirmationActivity.this, R.color.colorRed));
+                mViewProgressBar.setVisibility(View.VISIBLE);
+                mImageViewSubmit.setBackground(ContextCompat.getDrawable(SubmissionConfirmationActivity.this, R.drawable.icon_error));
+                mTextViewUpload.setText(getResources().getText(R.string.report_sent_failed));
+                mButtonReportSentComment.setVisibility(View.GONE);
+                mButtonReportSentClose.setVisibility(View.VISIBLE);
+                mButtonReportSentRetry.setVisibility(View.VISIBLE);
+                mTextViewError.setVisibility(View.VISIBLE);
             }
 
             // TODO Just show complete screen for now, need to modify later

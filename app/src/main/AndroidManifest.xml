@@ -54,8 +54,7 @@
         </activity>
         <activity android:name=".CameraActivity" />
         <activity
-            android:name=".SubmissionConfirmationActivity"
-            android:screenOrientation="landscape" />
+            android:name=".SubmissionConfirmationActivity"/>
         <activity android:name=".CompareActivity" />
         <activity android:name=".FullVideoActivity" />
     </application>

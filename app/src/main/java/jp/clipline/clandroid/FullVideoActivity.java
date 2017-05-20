@@ -148,7 +148,7 @@ public class FullVideoActivity extends AppCompatActivity implements View.OnClick
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                mVideoView.start();
+//                mVideoView.start();
                 updateTextViewWithTimeFormat(mTotalTimeTv, mVideoView.getDuration());
                 mHandler.sendEmptyMessage(UPDATE_UI);
             }

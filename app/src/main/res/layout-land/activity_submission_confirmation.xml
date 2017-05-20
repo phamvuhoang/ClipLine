@@ -5,7 +5,7 @@
     android:id="@+id/activity_submission_confirmation"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F0F0"
+    android:background="#FFFFFF"
     tools:context="jp.clipline.clandroid.SubmissionConfirmationActivity">
 
     <RelativeLayout
@@ -19,33 +19,26 @@
             android:id="@+id/textViewToDoTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@string/title_activity_submission_confirmation"
+            android:layout_marginLeft="40dp"
+            android:layout_toEndOf="@+id/imageButtonBack"
+            android:text="@string/title_activity_select_shooting_method"
             android:textColor="@android:color/background_light"
             android:textSize="36sp"
             android:textStyle="normal" />
 
-        <ImageButton
-            android:id="@+id/imageButtonTodoClose"
+        <Button
+            android:id="@+id/buttonCompareOrSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
-            android:background="#61B5Ab"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+            android:background="@drawable/border_color_gray"
+            android:gravity="center"
+            android:text="abcccccc"
+            android:textColor="@color/white" />
 
-        <TextView
-            android:id="@+id/textViewTodoBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="50dp"
-            android:text="@string/select_shooting_method_back"
-            android:textColor="@android:color/background_light"
-            android:textSize="30sp"
-            android:textStyle="normal" />
 
         <ImageButton
             android:id="@+id/imageButtonBack"
@@ -65,9 +58,9 @@
         android:layout_height="50dp"
         android:layout_below="@+id/relativeLayoutHeader"
         android:layout_centerHorizontal="true"
-        android:background="#E8E8E8"
-        android:paddingLeft="114dp"
-        android:paddingRight="114dp"
+        android:background="#FFFFFF"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:weightSum="2.5">
 
         <jp.clipline.clandroid.view.StatusView
@@ -93,48 +86,32 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/linearLayoutStatus"
+        android:background="@color/dark_gray" />
+
     <RelativeLayout
         android:id="@+id/relativeLayoutBody"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/buttonCompareWithModel"
-        android:layout_below="@+id/linearLayoutStatus"
+        android:layout_above="@+id/content_bottom"
+        android:layout_below="@+id/view"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="150dp"
-        android:layout_marginRight="150dp"
-        android:background="#FFFFFF">
-
-        <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="30dp"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:background="#D3D3D3"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:paddingLeft="5dp"-->
-        <!--android:text="@string/select_shooting_method_prompt"-->
-        <!--android:textSize="12sp" />-->
-
-        <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="30dp"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:background="#D3D3D3"-->
-        <!--android:gravity="center_vertical|right"-->
-        <!--android:paddingRight="5dp"-->
-        <!--android:text="@string/submission_confirmation_save_local"-->
-        <!--android:textSize="12sp" />-->
+        android:layout_marginTop="5dp"
+        android:paddingTop="5dp">
 
         <RelativeLayout
             android:id="@+id/relativeLayoutPlayer"
-            android:layout_width="400dp"
-            android:layout_height="320dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="50dp"
-            android:background="#FFFFFF">
+            android:layout_marginBottom="10dp"
+            android:background="#FFFFFF"
+            android:paddingLeft="200dp"
+            android:paddingRight="200dp">
 
             <include layout="@layout/layout_video_view" />
 
@@ -157,191 +134,225 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/content_bottom"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonCompareWithModel"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center"
-            android:background="@drawable/icon_delete"
-            android:gravity="center" />
-
-        <TextView
-            android:id="@+id/textViewBack"
+        <LinearLayout
+            android:id="@+id/linearLayout4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-            android:gravity="center"
-            android:text="@string/try_again"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
 
-            />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:background="@drawable/icon_delete"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/textViewBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:text="@string/try_again"
+
+                />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonCompareWithModel"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_color_gray"
+            android:gravity="center"
+            android:text="@string/submission_confirmation_compare_with_model"
+            android:visibility="visible" />
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/buttonCompareWithModel"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/border_color_gray"
-        android:gravity="center"
-        android:text="@string/submission_confirmation_compare_with_model" />
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/relativeLayoutOverlay"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="#66000000"-->
+    <!--android:visibility="gone">-->
 
-    <RelativeLayout
-        android:id="@+id/relativeLayoutBottom"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:background="#E8E8E8"
-        android:padding="10dp"
-        android:visibility="gone">
+    <!--<ImageButton-->
+    <!--android:id="@+id/imageButtonReportSentClose"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_marginRight="16dp"-->
+    <!--android:background="#66000000"-->
+    <!--app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />-->
 
-        <!--<LinearLayout-->
-        <!--android:id="@+id/linearLayoutFooterStatus"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_alignParentLeft="true">-->
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginTop="150dp"-->
+    <!--android:text="@string/report_sent"-->
+    <!--android:textColor="#FFFFFF"-->
+    <!--android:textSize="35sp" />-->
 
-        <!--<ImageView-->
-        <!--android:id="@+id/imageViewFooterView"-->
-        <!--android:layout_width="28dp"-->
-        <!--android:layout_height="28dp"-->
-        <!--app:srcCompat="@drawable/ic_sample_svg"-->
-        <!--/>-->
+    <!--<Button-->
+    <!--android:id="@+id/buttonReportSentBack"-->
+    <!--android:layout_width="150dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_marginLeft="100dp"-->
+    <!--android:layout_marginTop="300dp"-->
+    <!--android:background="#FFFFFF"-->
+    <!--android:text="@string/report_sent_back"-->
+    <!--android:textColor="#808080" />-->
 
-        <!--<TextView-->
-        <!--android:id="@+id/textViewFooterView"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:text="@string/footer_view"-->
-        <!--android:textSize="12sp"-->
-        <!--android:textColor="#61B5Ab"-->
-        <!--android:textStyle="normal"-->
-        <!--/>-->
+    <!--<Button-->
+    <!--android:id="@+id/buttonReportSentInputComment"-->
+    <!--android:layout_width="150dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_marginRight="100dp"-->
+    <!--android:layout_marginTop="300dp"-->
+    <!--android:background="#FFFFFF"-->
+    <!--android:text="@string/report_sent_input_comment"-->
+    <!--android:textColor="#808080" />-->
 
-        <!--<ImageView-->
-        <!--android:id="@+id/imageViewFooterShoot"-->
-        <!--android:layout_width="28dp"-->
-        <!--android:layout_height="28dp"-->
-        <!--app:srcCompat="@drawable/ic_sample_svg"-->
-        <!--/>-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/textViewFooterShoot"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:text="@string/footer_shoot"-->
-        <!--android:textSize="12sp"-->
-        <!--android:textColor="#61B5Ab"-->
-        <!--android:textStyle="normal"-->
-        <!--/>-->
-
-        <!--<ImageView-->
-        <!--android:id="@+id/imageViewFooterCompare"-->
-        <!--android:layout_width="28dp"-->
-        <!--android:layout_height="28dp"-->
-        <!--app:srcCompat="@drawable/ic_sample_svg"-->
-        <!--/>-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/textViewFooterCompare"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:text="@string/footer_compare"-->
-        <!--android:textSize="12sp"-->
-        <!--android:textColor="#61B5Ab"-->
-        <!--android:textStyle="normal"-->
-        <!--/>-->
-
-        <!--</LinearLayout>-->
-
-        <Button
-            android:id="@+id/buttonCompare"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginRight="16dp"
-            android:background="#33CC66"
-            android:text="@string/select_shooting_method_compare"
-            android:textColor="#FFFFFF" />
-
-        <Button
-            android:id="@+id/buttonSubmit"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginRight="16dp"
-            android:background="#33CC66"
-            android:text="@string/select_shooting_method_submit"
-            android:textColor="#FFFFFF" />
-
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
 
     <RelativeLayout
         android:id="@+id/relativeLayoutOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#66000000"
-        android:visibility="gone">
+        android:visibility="visible">
 
-        <ImageButton
-            android:id="@+id/imageButtonReportSentClose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="16dp"
-            android:background="#66000000"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="100dp"
+            android:background="@android:color/white">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="150dp"
-            android:text="@string/report_sent"
-            android:textColor="#FFFFFF"
-            android:textSize="35sp" />
+            <ImageButton
+                android:id="@+id/imageButtonReportSentClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_margin="5dp"
+                android:background="#66000000"
+                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
-        <Button
-            android:id="@+id/buttonReportSentBack"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="300dp"
-            android:background="#FFFFFF"
-            android:text="@string/report_sent_back"
-            android:textColor="#808080" />
+            <ImageView
+                android:id="@+id/imageViewStatusSubmit"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignBottom="@+id/textViewUpload"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="55dp" />
 
-        <Button
-            android:id="@+id/buttonReportSentInputComment"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="100dp"
-            android:layout_marginTop="300dp"
-            android:background="#FFFFFF"
-            android:text="@string/report_sent_input_comment"
-            android:textColor="#808080" />
+            <TextView
+                android:id="@+id/textViewUpload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/linearLayout5"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="25dp"
+                android:text="@string/report_sent"
+                android:textColor="#000"
+                android:textSize="35sp" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:indeterminate="true" />
+
+                <View
+                    android:id="@+id/viewProgressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/textViewError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linearLayout5"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:text="@string/error_submit"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonReportSentInputComment"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/border_color_gray"
+                    android:text="@string/report_sent_input_comment"
+                    android:textColor="#808080"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/buttonReportSentBack"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/border_color_gray"
+                    android:text="@string/report_sent_back"
+                    android:textColor="#808080"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/buttonReportSentRetry"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/border_color_gray"
+                    android:text="@string/report_sent_retry"
+                    android:textColor="#808080"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </RelativeLayout>
+
 
     </RelativeLayout>
 

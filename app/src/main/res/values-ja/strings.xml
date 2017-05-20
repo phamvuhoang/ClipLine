@@ -54,8 +54,8 @@
     <string name="select_shooting_method_take_picture">写真をとる</string>
     <string name="select_shooting_method_take_video">動画をとる</string>
     <string name="select_shooting_method_select_camera_roll">カメラロールから選ぶ</string>
-    <string name="select_shooting_method_compare">見比べる</string>
-    <string name="select_shooting_method_submit">この内容で提出</string>
+    <string name="select_shooting_method_compare">比べる</string>
+    <string name="select_shooting_method_submit">投稿</string>
 
     <string name="footer_view">見る</string>
     <string name="footer_shoot">撮影</string>
@@ -78,5 +78,6 @@
     <string name="report_sent_back">もどる</string>
     <string name="report_sent_input_comment">コメントを入れる</string>
     <string name="report_sent_retry">閉じる</string>
+    <string name="error_submit">通信環境をご確認の上、再投稿してください。</string>
     <!-- ///// 20170519 MODIFY END-->
 </resources>
