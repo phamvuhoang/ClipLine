@@ -19,21 +19,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="50dp"
-            android:text="@string/title_activity_compare"
+            android:layout_marginLeft="40dp"
+            android:layout_toEndOf="@+id/imageButtonBack"
+            android:text="@string/title_activity_select_shooting_method"
             android:textColor="@android:color/background_light"
-            android:textSize="30sp"
+            android:textSize="36sp"
             android:textStyle="normal" />
 
-        <ImageButton
-            android:id="@+id/imageButton"
+        <Button
+            android:id="@+id/buttonSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
-            android:background="#61B5Ab"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+            android:background="@drawable/border_color_gray"
+            android:gravity="center"
+            android:text="@string/select_shooting_method_submit"
+            android:textColor="@color/white" />
+
 
         <ImageButton
             android:id="@+id/imageButtonBack"
@@ -382,91 +386,91 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/relativeLayoutBottom"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:background="#E8E8E8"
-        android:padding="10dp">
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/relativeLayoutBottom"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="64dp"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:background="#E8E8E8"-->
+    <!--android:padding="10dp">-->
 
-        <!--<LinearLayout-->
-        <!--android:id="@+id/linearLayoutFooterStatus"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_alignParentLeft="true">-->
+    <!--<LinearLayout-->
+    <!--android:id="@+id/linearLayoutFooterStatus"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_alignParentLeft="true">-->
 
-        <!--<ImageView-->
-        <!--android:id="@+id/imageViewFooterView"-->
-        <!--android:layout_width="28dp"-->
-        <!--android:layout_height="28dp"-->
-        <!--app:srcCompat="@drawable/ic_sample_svg"-->
-        <!--/>-->
+    <!--<ImageView-->
+    <!--android:id="@+id/imageViewFooterView"-->
+    <!--android:layout_width="28dp"-->
+    <!--android:layout_height="28dp"-->
+    <!--app:srcCompat="@drawable/ic_sample_svg"-->
+    <!--/>-->
 
-        <!--<TextView-->
-        <!--android:id="@+id/textViewFooterView"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:text="@string/footer_view"-->
-        <!--android:textSize="12sp"-->
-        <!--android:textColor="#61B5Ab"-->
-        <!--android:textStyle="normal"-->
-        <!--/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/textViewFooterView"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:text="@string/footer_view"-->
+    <!--android:textSize="12sp"-->
+    <!--android:textColor="#61B5Ab"-->
+    <!--android:textStyle="normal"-->
+    <!--/>-->
 
-        <!--<ImageView-->
-        <!--android:id="@+id/imageViewFooterShoot"-->
-        <!--android:layout_width="28dp"-->
-        <!--android:layout_height="28dp"-->
-        <!--app:srcCompat="@drawable/ic_sample_svg"-->
-        <!--/>-->
+    <!--<ImageView-->
+    <!--android:id="@+id/imageViewFooterShoot"-->
+    <!--android:layout_width="28dp"-->
+    <!--android:layout_height="28dp"-->
+    <!--app:srcCompat="@drawable/ic_sample_svg"-->
+    <!--/>-->
 
-        <!--<TextView-->
-        <!--android:id="@+id/textViewFooterShoot"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:text="@string/footer_shoot"-->
-        <!--android:textSize="12sp"-->
-        <!--android:textColor="#61B5Ab"-->
-        <!--android:textStyle="normal"-->
-        <!--/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/textViewFooterShoot"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:text="@string/footer_shoot"-->
+    <!--android:textSize="12sp"-->
+    <!--android:textColor="#61B5Ab"-->
+    <!--android:textStyle="normal"-->
+    <!--/>-->
 
-        <!--<ImageView-->
-        <!--android:id="@+id/imageViewFooterCompare"-->
-        <!--android:layout_width="28dp"-->
-        <!--android:layout_height="28dp"-->
-        <!--app:srcCompat="@drawable/ic_sample_svg"-->
-        <!--/>-->
+    <!--<ImageView-->
+    <!--android:id="@+id/imageViewFooterCompare"-->
+    <!--android:layout_width="28dp"-->
+    <!--android:layout_height="28dp"-->
+    <!--app:srcCompat="@drawable/ic_sample_svg"-->
+    <!--/>-->
 
-        <!--<TextView-->
-        <!--android:id="@+id/textViewFooterCompare"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:text="@string/footer_compare"-->
-        <!--android:textSize="12sp"-->
-        <!--android:textColor="#61B5Ab"-->
-        <!--android:textStyle="normal"-->
-        <!--/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/textViewFooterCompare"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:text="@string/footer_compare"-->
+    <!--android:textSize="12sp"-->
+    <!--android:textColor="#61B5Ab"-->
+    <!--android:textStyle="normal"-->
+    <!--/>-->
 
-        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
-        <Button
-            android:id="@+id/buttonSubmit"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginRight="16dp"
-            android:background="#33CC66"
-            android:text="@string/select_shooting_method_submit"
-            android:textColor="#FFFFFF" />
+    <!--<Button-->
+    <!--android:id="@+id/buttonSubmit"-->
+    <!--android:layout_width="150dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginRight="16dp"-->
+    <!--android:background="#33CC66"-->
+    <!--android:text="@string/select_shooting_method_submit"-->
+    <!--android:textColor="#FFFFFF" />-->
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
 
     <RelativeLayout
         android:id="@+id/relativeLayoutOverlay"
@@ -478,17 +482,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="50dp"
+            android:layout_margin="100dp"
             android:background="@android:color/white">
 
-            <ImageButton
-                android:id="@+id/imageButtonReportSentClose"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="16dp"
-                android:background="#66000000"
-                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
             <ImageView
                 android:id="@+id/imageViewStatusSubmit"
@@ -502,30 +498,51 @@
                 android:id="@+id/textViewUpload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/progressBar"
+                android:layout_above="@+id/linearLayout5"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="25dp"
                 android:text="@string/report_sent"
                 android:textColor="#000"
                 android:textSize="35sp" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleHorizontal"
+            <LinearLayout
+                android:id="@+id/linearLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp" />
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:indeterminate="true" />
+
+                <View
+                    android:id="@+id/viewProgressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/textViewError"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/progressBar"
+                android:layout_below="@+id/linearLayout5"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:text="@string/error_submit"
+                android:textSize="20sp"
                 android:visibility="gone" />
 
             <LinearLayout
@@ -547,7 +564,7 @@
                     android:visibility="gone" />
 
                 <Button
-                    android:id="@+id/buttonReportSentBack"
+                    android:id="@+id/buttonReportSentClose"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"

@@ -79,6 +79,6 @@
     <string name="report_sent_input_comment">Comment</string>
     <string name="report_sent_back">Close</string>
     <string name="report_sent_retry">Retry</string>
-    <string name="error_submit">Please confirm the communication environment and re-post.</string>
+    <string name="error_submit">Cannot connect to ClipLine.\n Please try again later.</string>
 
 </resources>

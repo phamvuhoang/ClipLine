@@ -85,6 +85,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 
     private RelativeLayout mRelativeLayoutOverlay;
     ///// 20170521 ADD START
+    private final int UPLOAD_NONE = 0;
     private final int UPLOAD_SUCCESSFULL = 1;
     private final int UPLOAD_FAILE = 2;
     private int mSubmissionConfirmation = 0;
@@ -147,6 +148,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             public void onClick(View v) {
 
                 mRelativeLayoutOverlay.setVisibility(View.GONE);
+                mSubmissionConfirmation = UPLOAD_NONE;
 //                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
 //                String studentId = todoParameters.get("studentId");
 //                String categoryId = todoParameters.get("categoryId");

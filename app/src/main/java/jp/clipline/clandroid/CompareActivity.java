@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PersistableBundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -102,28 +103,42 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
     private Button mButtonSummit;
 
     private RelativeLayout mRelativeLayoutOverlay;
+    ///// 20170521 ADD START
+    private final int UPLOAD_NONE = 0;
+    private final int UPLOAD_SUCCESSFULL = 1;
+    private final int UPLOAD_FAILE = 2;
+
+    private int mSubmissionConfirmation = 0;
+    private View mViewProgressBar;
+    ///// 20170521 ADD END
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare);
-
+        ///// 20170521 ADD START
+        if (savedInstanceState != null) {
+            mSubmissionConfirmation = savedInstanceState.getInt("compareActivity");
+        }
+        ///// 20170521 ADD START
         // レポート完成画面
         mRelativeLayoutOverlay = (RelativeLayout) findViewById(R.id.relativeLayoutOverlay);
         mRelativeLayoutOverlay.setVisibility(View.GONE);
-
-        ImageButton imageButton = (ImageButton) findViewById(R.id.imageButtonReportSentClose);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mRelativeLayoutOverlay.setVisibility(View.GONE);
-            }
-        });
-
+        ///// 20170521 DELETE START
+//        ImageButton imageButton = (ImageButton) findViewById(R.id.imageButtonReportSentClose);
+//        imageButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mRelativeLayoutOverlay.setVisibility(View.GONE);
+//            }
+//        });
+        ///// 20170521 DELETE END
         // レポート完成：もどるボタン
         mTextViewError = (TextView) findViewById(R.id.textViewError);
         mButtonReportSentRetry = (Button) findViewById(R.id.buttonReportSentRetry);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mViewProgressBar = findViewById(R.id.viewProgressBar);
         mProgressBar.setVisibility(View.VISIBLE);
         mProgressBar.setIndeterminate(true);
         mButtonReportSentRetry.setOnClickListener(new View.OnClickListener() {
@@ -132,24 +147,30 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                 mProgressBar.setVisibility(View.VISIBLE);
                 mTextViewUpload.setText(getResources().getText(R.string.report_sent));
                 mImageViewSubmit.setBackground(null);
+                mTextViewError.setVisibility(View.GONE);
+                mViewProgressBar.setVisibility(View.GONE);
                 new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
             }
         });
-        mButtonReportSentClose = (Button) findViewById(R.id.buttonReportSentBack);
+        mButtonReportSentClose = (Button) findViewById(R.id.buttonReportSentClose);
 
         mButtonReportSentClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                String studentId = todoParameters.get("studentId");
-                String categoryId = todoParameters.get("categoryId");
-                String todoContentId = todoParameters.get("todoContentId");
-                String url = "%s://%s/training/#/students/" + studentId
-                        + "/todos?type=updates"; // TODO type=updates/repeat???
-                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-                intent.putExtra("BASE_URL", url);
-                startActivity(intent);
-                finish();
+                ///// 20170521 MODIFY START
+                mRelativeLayoutOverlay.setVisibility(View.GONE);
+                mSubmissionConfirmation = UPLOAD_NONE;
+//                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+//                String studentId = todoParameters.get("studentId");
+//                String categoryId = todoParameters.get("categoryId");
+//                String todoContentId = todoParameters.get("todoContentId");
+//                String url = "%s://%s/training/#/students/" + studentId
+//                        + "/todos?type=updates"; // TODO type=updates/repeat???
+//                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+//                intent.putExtra("BASE_URL", url);
+//                startActivity(intent);
+//                finish();
+                ///// 20170521 MODIFY END
             }
         });
 
@@ -183,7 +204,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //        mButtonStartAllVideo = (Button) findViewById(R.id.buttonStartAllVideo);
 //        mButtonSwitch = (Button) findViewById(R.id.buttonSwitch);
 
-        mButtonClose = (ImageButton) findViewById(R.id.imageButton);
+//        mButtonClose = (ImageButton) findViewById(R.id.imageButton);
         mButtonBack = (ImageButton) findViewById(R.id.imageButtonBack);
 
         mBackScreen.setOnClickListener(this);
@@ -191,7 +212,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //        mButtonStartAllVideo.setOnClickListener(this);
 //        mButtonSwitch.setOnClickListener(this);
 
-        mButtonClose.setOnClickListener(this);
+//        mButtonClose.setOnClickListener(this);
         mButtonBack.setOnClickListener(this);
 
         mWebViewContent.getSettings().setJavaScriptEnabled(true);
@@ -205,6 +226,34 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 
         mCurrentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
         TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);
+        ///// 20170521 ADD START
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                Map<String, String> todoParameters;
+                String studentId;
+                String categoryId;
+                String todoContentId;
+                String url;
+
+                todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                studentId = todoParameters.get("studentId");
+                categoryId = todoParameters.get("categoryId");
+                todoContentId = todoParameters.get("todoContentId");
+/*
+                String url = "%s://%s/training/#/students/" + studentId
+                        + "/todos?type=caetgory&category_id=" + categoryId;
+*/
+                url = "%s://%s/training/#/students/" + studentId
+                        + "/todos/" + todoContentId;
+                intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                intent.putExtra("BASE_URL", url);
+                startActivity(intent);
+                finish();
+            }
+        });
+        ///// 20170521 ADD END
 
         mIsCheckSwitch = true;
         if (mCurrentTodoContent != null && mCurrentTodoContent.get("title") != null) {
@@ -213,8 +262,9 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
             textView.setText("");
         }
         try {
-            mPath = "file:///" + AndroidUtility.getFilePath(this, mTodoContentData);
+            mPath = "file://" + AndroidUtility.getFilePath(this, mTodoContentData);
             if (mTodoContentType.equals("image/png")) {
+                mWebViewMine.removeAllViews();
                 ImageView imageView = new ImageView(this);
                 Picasso.with(this).load(mPath).into(imageView);
                 mWebViewMine.addView(imageView);
@@ -225,7 +275,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //                mVideoViewMine.setMediaController(new MediaController(this));
 
                 mVideoViewMine.setVisibility(View.VISIBLE);
-                mVideoViewMine.seekTo(100);
+//                mVideoViewMine.seekTo(100);
             }
 
             if (mCurrentTodoContent != null) {
@@ -335,9 +385,10 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 
         // Firstly, hide the status, after getting result from api, then depend on the flags to process the view/hide
 
-        mStatusView.setVisibility(View.GONE);
-        mStatusViewResport.setVisibility(View.GONE);
-        mStatusViewCheck.setVisibility(View.GONE);
+//        mStatusView.setVisibility(View.GONE);
+//        mStatusViewResport.setVisibility(View.GONE);
+//        mStatusViewCheck.setVisibility(View.GONE);
+
 //        mLinearLayoutFooterStatus.setVisibility(View.GONE);
 //        mImageViewFooterView.setVisibility(View.GONE);
 //        mTextViewFooterView.setVisibility(View.GONE);
@@ -353,9 +404,16 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         mButtonSummit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ///// 20170504 MODIFY START
                 // First, get media key
                 // On post execute, upload file to S3 and call report submit api
                 mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
+                mTextViewUpload.setText(getResources().getText(R.string.report_sent));
+                mImageViewSubmit.setBackground(null);
+                mTextViewError.setVisibility(View.GONE);
+                mViewProgressBar.setVisibility(View.GONE);
+                ///// 20170504 MODIFY END
                 new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
             }
         });
@@ -398,18 +456,20 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //                mVideoViewMine.start();
 //
 //                break;
-            case R.id.imageButton:
-                todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                studentId = todoParameters.get("studentId");
-                categoryId = todoParameters.get("categoryId");
-                todoContentId = todoParameters.get("todoContentId");
-                url = "%s://%s/training/#/students/" + studentId
-                        + "/todos?type=updates"; // TODO type=updates/repeat???
-                intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-                intent.putExtra("BASE_URL", url);
-                startActivity(intent);
-                finish();
-                break;
+            ///// 201705021 DELETE START
+//            case R.id.imageButton:
+//                todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+//                studentId = todoParameters.get("studentId");
+//                categoryId = todoParameters.get("categoryId");
+//                todoContentId = todoParameters.get("todoContentId");
+//                url = "%s://%s/training/#/students/" + studentId
+//                        + "/todos?type=updates"; // TODO type=updates/repeat???
+//                intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+//                intent.putExtra("BASE_URL", url);
+//                startActivity(intent);
+//                finish();
+//                break;
+            ///// 201705021 DELETE END
             case R.id.imageButtonBack:
 
                 todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
@@ -550,6 +610,42 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    ///// 20170521 ADD START
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mSubmissionConfirmation == UPLOAD_SUCCESSFULL) {
+            mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.GONE);
+            mViewProgressBar.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.color.green));
+            mViewProgressBar.setVisibility(View.VISIBLE);
+            mImageViewSubmit.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.icon_status_complete));
+            mTextViewUpload.setText(getResources().getText(R.string.report_sent_successful));
+            mButtonReportSentComment.setVisibility(View.VISIBLE);
+            mButtonReportSentClose.setVisibility(View.VISIBLE);
+            mButtonReportSentRetry.setVisibility(View.GONE);
+        } else if (mSubmissionConfirmation == UPLOAD_FAILE) {
+            mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.GONE);
+            mViewProgressBar.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.color.colorRed));
+            mViewProgressBar.setVisibility(View.VISIBLE);
+            mImageViewSubmit.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.icon_error));
+            mTextViewUpload.setText(getResources().getText(R.string.report_sent_failed));
+            mButtonReportSentComment.setVisibility(View.GONE);
+            mButtonReportSentClose.setVisibility(View.VISIBLE);
+            mButtonReportSentRetry.setVisibility(View.VISIBLE);
+            mTextViewError.setVisibility(View.VISIBLE);
+        } else {
+            mRelativeLayoutOverlay.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("compareActivity", mSubmissionConfirmation);
+    }
+    ///// 20170521 ADD END
 
     /**
      * Get media key to send file to S3 and send report
@@ -633,24 +729,32 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         protected void onPostExecute(final Boolean success) {
+            ///// 20170521 MODIFY START
             if (success) {
                 Log.i("reponse:", reponseData.toString());
                 mProgressBar.setVisibility(View.GONE);
+                mViewProgressBar.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.color.green));
+                mViewProgressBar.setVisibility(View.VISIBLE);
                 mImageViewSubmit.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.icon_status_complete));
                 mTextViewUpload.setText(getResources().getText(R.string.report_sent_successful));
                 mButtonReportSentComment.setVisibility(View.VISIBLE);
                 mButtonReportSentClose.setVisibility(View.VISIBLE);
                 mButtonReportSentRetry.setVisibility(View.GONE);
+                mSubmissionConfirmation = UPLOAD_SUCCESSFULL;
 
             } else {
                 mProgressBar.setVisibility(View.GONE);
+                mViewProgressBar.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.color.colorRed));
+                mViewProgressBar.setVisibility(View.VISIBLE);
                 mImageViewSubmit.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.icon_error));
                 mTextViewUpload.setText(getResources().getText(R.string.report_sent_failed));
                 mButtonReportSentComment.setVisibility(View.GONE);
                 mButtonReportSentClose.setVisibility(View.VISIBLE);
                 mButtonReportSentRetry.setVisibility(View.VISIBLE);
                 mTextViewError.setVisibility(View.VISIBLE);
+                mSubmissionConfirmation = UPLOAD_FAILE;
             }
+            ///// 20170521 MODIFY END
 
             // TODO Just show complete screen for now, need to modify later
             mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
@@ -696,7 +800,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         mPosSeekBarContent.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                updateTextViewWithTimeFormat(mCurrentTimeContent, progress);
+                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeContent, progress);
             }
 
             @Override
@@ -714,7 +818,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         mPosSeekBarMine.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                updateTextViewWithTimeFormat(mCurrentTimeMine, progress);
+                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeMine, progress);
             }
 
             @Override
@@ -744,7 +848,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         mVideoViewContent.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                updateTextViewWithTimeFormat(mTotalTimeContent, mVideoViewContent.getDuration());
+                AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeContent, mVideoViewContent.getDuration());
                 mHandlerContent.sendEmptyMessage(UPDATE_UI);
             }
         });
@@ -770,7 +874,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         mVideoViewMine.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                updateTextViewWithTimeFormat(mTotalTimeMine, mVideoViewMine.getDuration());
+                AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeMine, mVideoViewMine.getDuration());
                 mHandlerMine.sendEmptyMessage(UPDATE_UI);
             }
         });
@@ -801,7 +905,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                     case UPDATE_UI:
                         int currentPosition = mVideoViewContent.getCurrentPosition();
                         int totalPosition = mVideoViewContent.getDuration();
-                        updateTextViewWithTimeFormat(mCurrentTimeContent, currentPosition);
+                        AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeContent, currentPosition);
                         mPosSeekBarContent.setMax(totalPosition);
                         mPosSeekBarContent.setProgress(currentPosition);
                         mHandlerContent.sendEmptyMessageDelayed(UPDATE_UI, 500);
@@ -828,7 +932,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                     case UPDATE_UI:
                         int currentPosition = mVideoViewMine.getCurrentPosition();
                         int totalPosition = mVideoViewMine.getDuration();
-                        updateTextViewWithTimeFormat(mCurrentTimeMine, currentPosition);
+                        AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeMine, currentPosition);
                         mPosSeekBarMine.setMax(totalPosition);
                         mPosSeekBarMine.setProgress(currentPosition);
                         mHandlerMine.sendEmptyMessageDelayed(UPDATE_UI, 500);
@@ -838,22 +942,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         }
-    }
-
-
-    private void updateTextViewWithTimeFormat(TextView tv, int milliSecond) {
-        int second = milliSecond / 1000;
-        int hh = second / 3600;
-        int mm = second % 3600 / 60;
-        int ss = second % 60;
-
-        String timeStr = null;
-        if (hh != 0) {
-            timeStr = String.format("%02d:%02d:%02d", hh, mm, ss);
-        } else {
-            timeStr = String.format("%02d:%02d", mm, ss);
-        }
-        tv.setText(timeStr);
     }
 
     public boolean getRotation() {
