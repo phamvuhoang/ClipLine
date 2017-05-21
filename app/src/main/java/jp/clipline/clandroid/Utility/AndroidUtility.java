@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.widget.TextView;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -160,5 +161,20 @@ public class AndroidUtility {
      */
     public static boolean isNullOrBlank(String value) {
         return (value == null) || (value.equals("null")) || (value.equals(""));
+    }
+
+    public static void updateTextViewWithTimeFormat(TextView tv, int milliSecond) {
+        int second = milliSecond / 1000;
+        int hh = second / 3600;
+        int mm = second % 3600 / 60;
+        int ss = second % 60;
+
+        String timeStr = null;
+        if (hh != 0) {
+            timeStr = String.format("%02d:%02d:%02d", hh, mm, ss);
+        } else {
+            timeStr = String.format("%02d:%02d", mm, ss);
+        }
+        tv.setText(timeStr);
     }
 }

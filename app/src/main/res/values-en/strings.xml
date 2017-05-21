@@ -76,8 +76,8 @@
     <string name="report_sent">Sending</string>
     <string name="report_sent_successful">Report has been posted</string>
     <string name="report_sent_failed">Failed</string>
-    <string name="report_sent_back">Back</string>
-    <string name="report_sent_input_comment">Input Comment</string>
+    <string name="report_sent_input_comment">Comment</string>
+    <string name="report_sent_back">Close</string>
     <string name="report_sent_retry">Retry</string>
     <string name="error_submit">Please confirm the communication environment and re-post.</string>
 

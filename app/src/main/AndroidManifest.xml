@@ -50,7 +50,11 @@
             android:name=".LaunchCrossWalkActivity"
             android:screenOrientation="landscape" />
         <activity android:name=".SelectShootingMethodActivity">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity android:name=".CameraActivity" />
         <activity

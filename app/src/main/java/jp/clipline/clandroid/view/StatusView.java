@@ -97,13 +97,14 @@ public class StatusView extends LinearLayout {
                 mTextViewContent.setText(getContext().getText(R.string.footer_compare));
             }
         } else { ////Screen compare
-
             mTextViewLine.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.green));
             if (typeView.equals(STATUS_VIEW.REPORT)) {
                 mTextViewStatus.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.icon_status_complete));
+                mTextViewContent.setText(getContext().getText(R.string.footer_shoot));
             } else if (typeView.equals(STATUS_VIEW.CHECK)) {
                 mTextViewStatus.setText("3");
                 mTextViewStatus.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.circle_green));
+                mTextViewContent.setText(getContext().getText(R.string.footer_compare));
             }
         }
 
