@@ -11,6 +11,8 @@ public class ClWebWrapperApplication extends Application {
     // ------------------------------------------------------------------------------------------ //
     private Map<String, Object> currentTodoContent = null;
 
+    private boolean mIsBack = false;
+
     public void setCurrentTodoContent(Map<String, Object> _currentTodoContent) {
         this.currentTodoContent = _currentTodoContent;
     }
@@ -50,4 +52,11 @@ public class ClWebWrapperApplication extends Application {
         return todoContentDataType;
     }
 
+    public boolean isBack() {
+        return mIsBack;
+    }
+
+    public void setBack(boolean isBack) {
+        mIsBack = isBack;
+    }
 }

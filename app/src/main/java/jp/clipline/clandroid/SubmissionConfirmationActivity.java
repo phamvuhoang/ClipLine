@@ -177,6 +177,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                 intent.putExtra("BASE_URL", url);
                 startActivity(intent);
+                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 finish();
             }
         });
@@ -215,15 +216,16 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 
         ///// 20170521 DELETE START
         // 戻るボタン
-//        imageButton = (ImageButton) findViewById(R.id.imageButtonBack);
-//        imageButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-/*
+        ImageButton imageButton = (ImageButton) findViewById(R.id.imageButtonBack);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+///*
                 Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 finish();
-*/
+//*/
 //                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
 //                String studentId = todoParameters.get("studentId");
 //                String categoryId = todoParameters.get("categoryId");
@@ -236,8 +238,8 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 //                startActivity(intent);
 //                finish();
 //
-//            }
-//        });
+            }
+        });
         ///// 20170521 DELETE END
 
 //        textView = (TextView) findViewById(R.id.textViewTodoBack);
@@ -293,6 +295,8 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
                 startActivity(intent);
+//                overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
+                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 finish();
             }
         });
@@ -337,9 +341,10 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
                 startActivity(intent);
 
-                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-
+//                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 finish();
+
             }
         });
 
@@ -388,6 +393,8 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
                 startActivity(intent);
+//                overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
+                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 finish();
             }
         });
@@ -626,7 +633,8 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 if (mHasMyReportPlayAction) { // check
                     intent = new Intent(getApplicationContext(), CompareActivity.class);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+//                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                     finish();
                 } else { // post
                     // First, get media key

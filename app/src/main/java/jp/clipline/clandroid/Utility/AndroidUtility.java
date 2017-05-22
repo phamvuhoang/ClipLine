@@ -1,6 +1,7 @@
 package jp.clipline.clandroid.Utility;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -20,6 +21,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import jp.clipline.clandroid.ClWebWrapperApplication;
 
 public class AndroidUtility {
 
@@ -176,5 +179,9 @@ public class AndroidUtility {
             timeStr = String.format("%02d:%02d", mm, ss);
         }
         tv.setText(timeStr);
+    }
+
+    public static void setBack(Activity context, boolean back) {
+        ((ClWebWrapperApplication) context.getApplication()).setBack(back);
     }
 }

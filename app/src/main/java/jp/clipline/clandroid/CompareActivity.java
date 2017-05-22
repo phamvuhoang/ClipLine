@@ -653,6 +653,13 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         super.onSaveInstanceState(outState);
         outState.putInt("compareActivity", mSubmissionConfirmation);
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+    }
+
     ///// 20170521 ADD END
 
     /**

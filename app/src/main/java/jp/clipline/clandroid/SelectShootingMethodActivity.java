@@ -61,6 +61,10 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!((ClWebWrapperApplication) this.getApplication()).isBack()) {
+            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+        }
+
         setContentView(R.layout.activity_select_shooting_method);
         mProgressBar = (ProgressBar) findViewById(progressBar);
 
@@ -184,6 +188,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                             Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
                             ((ClWebWrapperApplication) getApplication()).setTodoContent(pathfile/*data.getData()*/, contentType);
                             startActivity(intent);
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             finish();
                         } catch (URISyntaxException e) {
                             e.printStackTrace();
@@ -261,6 +266,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                 intent.putExtra("BASE_URL", url);
                 startActivity(intent);
+                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 finish();
             }
         });
@@ -302,8 +308,10 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                     Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
                     ((ClWebWrapperApplication) getApplication()).setTodoContent(path, "image/png");
                     startActivity(intent);
-                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+//                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                     finish();
+
                     return;
                 }
 
@@ -312,7 +320,8 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                     Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
                     ((ClWebWrapperApplication) this.getApplication()).setTodoContent(pathVideo, "video/mp4");
                     startActivity(intent);
-                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+//                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                     finish();
                     return;
                 }
@@ -373,9 +382,10 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                     ((ClWebWrapperApplication) this.getApplication()).setTodoContent(pathFile, contentType);
                     startActivity(intent);
 
-                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-
+//                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                     finish();
+
                     return;
                 }
 
@@ -456,6 +466,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                         Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                         intent.putExtra("BASE_URL", url);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                         finish();
                     }
                 });
@@ -547,5 +558,11 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 finish();
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AndroidUtility.setBack(SelectShootingMethodActivity.this, true);
     }
 }
