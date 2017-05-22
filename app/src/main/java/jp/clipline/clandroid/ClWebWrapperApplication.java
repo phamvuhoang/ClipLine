@@ -52,6 +52,7 @@ public class ClWebWrapperApplication extends Application {
         return todoContentDataType;
     }
 
+    ///// 20170523 ADD START
     public boolean isBack() {
         return mIsBack;
     }
@@ -59,4 +60,5 @@ public class ClWebWrapperApplication extends Application {
     public void setBack(boolean isBack) {
         mIsBack = isBack;
     }
+    ///// 20170523 ADD END
 }

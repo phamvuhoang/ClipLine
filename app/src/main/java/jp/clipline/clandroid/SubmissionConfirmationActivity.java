@@ -177,7 +177,9 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                 intent.putExtra("BASE_URL", url);
                 startActivity(intent);
+                ///// 20170523 ADD START
                 overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                ///// 20170523 ADD END
                 finish();
             }
         });
@@ -214,7 +216,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 
         }
 
-        ///// 20170521 DELETE START
+        ///// 20170523 MODIFY START
         // 戻るボタン
         ImageButton imageButton = (ImageButton) findViewById(R.id.imageButtonBack);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -240,7 +242,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 //
             }
         });
-        ///// 20170521 DELETE END
+        ///// 20170523 MODIFY END
 
 //        textView = (TextView) findViewById(R.id.textViewTodoBack);
 //        textView.setOnClickListener(new View.OnClickListener() {
@@ -295,8 +297,10 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
                 startActivity(intent);
+                ///// 20170523 MODIFY START
 //                overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
                 overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                ///// 20170523 MODIFY END
                 finish();
             }
         });
@@ -340,9 +344,10 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
                 startActivity(intent);
-
+    ///// 20170523 MODIFY START
 //                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                ///// 20170523 MODIFY END
                 finish();
 
             }
@@ -393,8 +398,10 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
                 startActivity(intent);
+                ///// 20170523 MODIFY START
 //                overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
                 overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                ///// 20170523 MODIFY END
                 finish();
             }
         });
@@ -633,8 +640,10 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 if (mHasMyReportPlayAction) { // check
                     intent = new Intent(getApplicationContext(), CompareActivity.class);
                     startActivity(intent);
+                    ///// 20170523 MODIFY START
 //                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                     overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                    ///// 20170523 MODIFY END
                     finish();
                 } else { // post
                     // First, get media key
