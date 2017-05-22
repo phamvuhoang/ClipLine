@@ -648,15 +648,18 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 } else { // post
                     // First, get media key
                     // On post execute, upload file to S3 and call report submit api
-                    ///// 20170521 MODIFY START
+                    ///// 20170523 MODIFY START
                     mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
                     mProgressBar.setVisibility(View.VISIBLE);
                     mTextViewUpload.setText(getResources().getText(R.string.report_sent));
                     mImageViewSubmit.setBackground(null);
                     mTextViewError.setVisibility(View.GONE);
                     mViewProgressBar.setVisibility(View.GONE);
+                    mButtonReportSentComment.setVisibility(View.GONE);
+                    mButtonReportSentRetry.setVisibility(View.GONE);
+                    mButtonReportSentClose.setVisibility(View.GONE);
                     new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
-                    ///// 20170521 MODIFY END
+                    ///// 20170523 MODIFY END
                 }
                 break;
             ///// 20170520 MODIFY END
@@ -796,10 +799,14 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(Boolean success) {
+            //TODO TEST
+            ///// 20170523 ADD START
+            success = true;
+            ///// 20170523 ADD END
+
             ///// 20170521 MODIFY START
             if (success) {
-                Log.i("reponse:", reponseData.toString());
                 mProgressBar.setVisibility(View.GONE);
                 mViewProgressBar.setBackground(ContextCompat.getDrawable(SubmissionConfirmationActivity.this, R.color.green));
                 mViewProgressBar.setVisibility(View.VISIBLE);

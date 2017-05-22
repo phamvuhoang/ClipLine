@@ -563,16 +563,6 @@
                     android:textColor="#808080"
                     android:visibility="gone" />
 
-                <Button
-                    android:id="@+id/buttonReportSentClose"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/border_color_gray"
-                    android:text="@string/report_sent_back"
-                    android:textColor="#808080"
-                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/buttonReportSentRetry"
@@ -582,6 +572,16 @@
                     android:layout_marginRight="10dp"
                     android:background="@drawable/border_color_gray"
                     android:text="@string/report_sent_retry"
+                    android:textColor="#808080"
+                    android:visibility="gone" />
+                <Button
+                    android:id="@+id/buttonReportSentClose"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/border_color_gray"
+                    android:text="@string/report_sent_back"
                     android:textColor="#808080"
                     android:visibility="gone" />
             </LinearLayout>

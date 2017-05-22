@@ -409,7 +409,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         mButtonSummit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ///// 20170504 MODIFY START
+                ///// 20170523 MODIFY START
                 // First, get media key
                 // On post execute, upload file to S3 and call report submit api
                 mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
@@ -418,7 +418,10 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                 mImageViewSubmit.setBackground(null);
                 mTextViewError.setVisibility(View.GONE);
                 mViewProgressBar.setVisibility(View.GONE);
-                ///// 20170504 MODIFY END
+                mButtonReportSentComment.setVisibility(View.GONE);
+                mButtonReportSentRetry.setVisibility(View.GONE);
+                mButtonReportSentClose.setVisibility(View.GONE);
+                ///// 20170523 MODIFY END
                 new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
             }
         });
@@ -744,10 +747,14 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(Boolean success) {
+            //TODO TEST
+            ///// 20170523 ADD START
+            success = true;
+            ///// 20170523 ADD END
+
             ///// 20170521 MODIFY START
             if (success) {
-                Log.i("reponse:", reponseData.toString());
                 mProgressBar.setVisibility(View.GONE);
                 mViewProgressBar.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.color.green));
                 mViewProgressBar.setVisibility(View.VISIBLE);
