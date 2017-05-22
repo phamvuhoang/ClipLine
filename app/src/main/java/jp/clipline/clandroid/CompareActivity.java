@@ -230,25 +230,30 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent;
-                Map<String, String> todoParameters;
-                String studentId;
-                String categoryId;
-                String todoContentId;
-                String url;
-
-                todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                studentId = todoParameters.get("studentId");
-                categoryId = todoParameters.get("categoryId");
-                todoContentId = todoParameters.get("todoContentId");
+                ///// 20170521 DELETE START
+//                Intent intent;
+//                Map<String, String> todoParameters;
+//                String studentId;
+//                String categoryId;
+//                String todoContentId;
+//                String url;
+//
+//                todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+//                studentId = todoParameters.get("studentId");
+//                categoryId = todoParameters.get("categoryId");
+//                todoContentId = todoParameters.get("todoContentId");
 /*
                 String url = "%s://%s/training/#/students/" + studentId
                         + "/todos?type=caetgory&category_id=" + categoryId;
 */
-                url = "%s://%s/training/#/students/" + studentId
-                        + "/todos/" + todoContentId;
-                intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-                intent.putExtra("BASE_URL", url);
+//                url = "%s://%s/training/#/students/" + studentId
+//                        + "/todos/" + todoContentId;
+//                intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+//                intent.putExtra("BASE_URL", url);
+//                startActivity(intent);
+//                finish();
+                ///// 20170521 DELETE END
+                Intent intent = new Intent(CompareActivity.this, SelectShootingMethodActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -471,19 +476,22 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //                break;
             ///// 201705021 DELETE END
             case R.id.imageButtonBack:
-
-                todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                studentId = todoParameters.get("studentId");
-                categoryId = todoParameters.get("categoryId");
-                todoContentId = todoParameters.get("todoContentId");
+                ///// 20170521 DELETE START
+//                todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+//                studentId = todoParameters.get("studentId");
+//                categoryId = todoParameters.get("categoryId");
+//                todoContentId = todoParameters.get("todoContentId");
 /*
                 String url = "%s://%s/training/#/students/" + studentId
                         + "/todos?type=caetgory&category_id=" + categoryId;
 */
-                url = "%s://%s/training/#/students/" + studentId
-                        + "/todos/" + todoContentId;
-                intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-                intent.putExtra("BASE_URL", url);
+//                url = "%s://%s/training/#/students/" + studentId
+//                        + "/todos/" + todoContentId;
+//                intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+//                intent.putExtra("BASE_URL", url);
+//                startActivity(intent);
+                ///// 20170521 DELETE END
+                intent = new Intent(CompareActivity.this, SelectShootingMethodActivity.class);
                 startActivity(intent);
                 finish();
                 break;

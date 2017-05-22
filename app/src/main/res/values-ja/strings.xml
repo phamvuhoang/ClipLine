@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ガワアプリ</string>
+    <string name="app_name">ClipLine</string>
     <string name="action_settings">設定</string>
     <!--///// 20170519 DELETE START-->
     <!--<string name="title_activity_login">ClipLine</string>-->
