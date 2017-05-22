@@ -20,13 +20,13 @@
             android:id="@+id/textViewToDoTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40dp"
+            android:layout_toEndOf="@+id/imageButtonBack"
             android:text="@string/title_activity_select_shooting_method"
             android:textColor="@android:color/background_light"
             android:textSize="36sp"
-            android:textStyle="normal"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="40dp"
-            android:layout_toEndOf="@+id/imageButtonBack" />
+            android:textStyle="normal" />
 
         <ImageButton
             android:id="@+id/imageButtonBack"
@@ -75,10 +75,10 @@
     </LinearLayout>
 
     <View
-        android:layout_below="@+id/linearLayoutStatus"
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@+id/linearLayoutStatus"
         android:background="@color/dark_gray" />
 
     <LinearLayout
@@ -86,11 +86,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/view"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:paddingRight="200dp"
-        android:paddingLeft="200dp"
-        android:orientation="vertical">
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:paddingLeft="300dp"
+        android:paddingRight="300dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -106,7 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:background="@color/green"
             android:gravity="center"
             android:orientation="horizontal"
