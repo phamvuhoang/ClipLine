@@ -3,10 +3,14 @@ package jp.clipline.clandroid;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -23,12 +27,17 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,6 +46,7 @@ import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.api.Branch;
+import okhttp3.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -63,27 +73,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private BranchLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mServiceIdView;
-    private AutoCompleteTextView mBranchIdView;
+//    private AutoCompleteTextView mServiceIdView;
+//    private AutoCompleteTextView mBranchIdView;
+    private EditText mServiceId;
+    private EditText mBranchId;
     private EditText mPasswordView;
-    private View mProgressView;
+    private Button mLogin;
+    private ProgressBar mProgressView;
     private View mLoginFormView;
 
     private String mCookie = null;
+    private Response mResponse = null;
+    private TextView mAndroidId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         setContentView(R.layout.activity_login);
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = (ProgressBar) findViewById(R.id.login_progress);
+        mProgressView.getIndeterminateDrawable()
+                .setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
 
-        // Set up the login form.
-        mBranchIdView = (AutoCompleteTextView) findViewById(R.id.branchId);
-        populateAutoComplete();
+        mServiceId = (EditText) findViewById(R.id.editTextServiceID);
+        mBranchId = (EditText) findViewById(R.id.editTextBranchID);
+        mPasswordView = (EditText) findViewById(R.id.editTextPassword);
+        mLogin = (Button) findViewById(R.id.buttonLogin);
+        mLogin.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attemptLogin();
+            }
+        });
 
-        mServiceIdView = (AutoCompleteTextView) findViewById(R.id.serviceId);
-
-        mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -94,60 +119,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
-
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-
-        Map<String, String> loginSetting = AndroidUtility.getLoginSetting(getApplicationContext());
-        if (loginSetting != null) {
-            mBranchIdView.setText(loginSetting.get("branchId"));
-            mServiceIdView.setText(loginSetting.get("serviceId"));
-            mPasswordView.setText(loginSetting.get("password"));
-        }
-
-        TextView androidId = (TextView) findViewById(R.id.androidId);
-        androidId.setText(String.format(getString(R.string.android_id_format), AndroidUtility.getAndroidId(getContentResolver())));
-
-        androidId.setText(String.format("[%s] %s", BuildConfig.ANDROID_ENV, androidId.getText()));
+        mAndroidId = (TextView) findViewById(R.id.androidId);
+        mAndroidId.setText(String.format(getString(R.string.android_id_format), AndroidUtility.getAndroidId(getContentResolver())));
+        mAndroidId.setText(String.format("[%s] %s", BuildConfig.ANDROID_ENV, mAndroidId.getText()));
     }
 
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mBranchIdView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
 
     /**
      * Callback received when a permissions request has been completed.
@@ -157,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                            @NonNull int[] grantResults) {
         if (requestCode == REQUEST_READ_CONTACTS) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
+//                populateAutoComplete();
             }
         }
     }
@@ -173,50 +149,39 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return;
         }
 
-        // Reset errors.
-        mBranchIdView.setError(null);
-        mPasswordView.setError(null);
-
         // Store values at the time of the login attempt.
-        String branchId = mBranchIdView.getText().toString();
-        String serviceId = mServiceIdView.getText().toString();
+        String serviceId = mServiceId.getText().toString();
+        String branchId = mBranchId.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
-
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
+        if (TextUtils.isEmpty(serviceId)) {
+            mServiceId.setError(getString(R.string.error_field_required));
+            mServiceId.requestFocus();
+            return;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(branchId)) {
-            mBranchIdView.setError(getString(R.string.error_field_required));
-            focusView = mBranchIdView;
-            cancel = true;
+            mBranchId.setError(getString(R.string.error_field_required));
+            mBranchId.requestFocus();
+            return;
         }
-//        else if (!isEmailValid(email)) {
-//            mBranchIdView.setError(getString(R.string.error_invalid_email));
-//            focusView = mBranchIdView;
-//            cancel = true;
-//        }
 
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-
-            mAuthTask = new BranchLoginTask(branchId, serviceId, password);
-            AndroidUtility.setLoginSetting(getApplicationContext(), branchId, serviceId, password);
-            mAuthTask.execute((Void) null);
+        // Check for a valid password, if the user entered one.
+        if (TextUtils.isEmpty(password) && isPasswordValid(password)) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.requestFocus();
+            return;
         }
+
+        // Show a progress spinner, and kick off a background task to
+        // perform the user login attempt.
+        showProgress(true);
+
+        mAuthTask = new BranchLoginTask(branchId, serviceId, password);
+        AndroidUtility.setLoginSetting(getApplicationContext(), branchId, serviceId, password);
+        mAuthTask.execute((Void) null);
     }
 
     private boolean isEmailValid(String email) {
@@ -226,7 +191,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() < 4;
     }
 
     /**
@@ -305,7 +270,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mBranchIdView.setAdapter(adapter);
+//        mBranchIdView.setAdapter(adapter);
     }
 
 
@@ -338,7 +303,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                mCookie = Branch.signIn(mBranchId, mServiceId, mPassword);
+                mResponse = (Response) Branch.signIn(mBranchId, mServiceId, mPassword);
                 return Boolean.TRUE;
             } catch (IOException e) {
                 return Boolean.FALSE;
@@ -348,13 +313,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
+            String message = null;
+            int code = 0;
             if (success) {
-                AndroidUtility.setCookie(getApplicationContext(), mCookie);
-                new GetAgreementTask().execute((Void) null);
+                code = mResponse.code();
+                try {
+                    if (mResponse.isSuccessful()) {
+                        mCookie = mResponse.headers().get("Set-Cookie");
+                        AndroidUtility.setCookie(getApplicationContext(), mCookie);
+                        new GetAgreementTask().execute((Void) null);
+                        return;
+                    }
+                    ShowError(message, code);
 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                code = 403;
+                ShowError(message, code);
             }
         }
 
@@ -362,6 +339,36 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onCancelled() {
             mAuthTask = null;
         }
+    }
+
+    private void ShowError(String message, int code) {
+        String title = null;
+        if (code == 200) {
+            title = "端末が未登録です";
+            message = mAndroidId.getText().toString();
+        }
+        if (code == 401) {
+            title = getResources().getString(R.string.login_title_error_401);
+            message = getResources().getString(R.string.login_message_error_401);
+        }
+        if (code == 403) {
+            title = getResources().getString(R.string.login_title_error_403);
+            message = getResources().getString(R.string.login_message_error_403);
+        }
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setMessage(message);
+        alertDialogBuilder.setPositiveButton(getResources().getText(R.string.close), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                arg0.dismiss();
+                showProgress(false);
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
 

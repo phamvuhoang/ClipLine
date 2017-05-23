@@ -23,10 +23,9 @@ public class Branch {
     private final static String SIGN_OUT_URL = "%s://%s/v2/api/v1/branches/sign_out";
     private final static String SIGN_IN_WITH_IDFV_URL = "%s://%s/v2/api/v1/branches/sign_in_with_idfv";
 
-    public static String signIn(String branchId, String serviceId, String password) throws IOException {
+    public static Object signIn(String branchId, String serviceId, String password) throws IOException {
 
-        String cookie = null;
-
+        Object res = null;
         RequestBody requestBody = new FormBody.Builder()
                 .add("branch_id", branchId)
                 .add("service_id", serviceId)
@@ -42,16 +41,22 @@ public class Branch {
                 .build();
 
         Response response = new OkHttpClient().newCall(request).execute();
-        if (response.isSuccessful()) {
-            Log.d(TAG, String.format("Sign In : Cookie = %s", response.headers().get("Set-Cookie")));
-            cookie = response.headers().get("Set-Cookie");
-        } else {
-            Log.d(TAG, String.format("Sign In : failed"));
-            throw new IOException("Sign In : failed");
-        }
+        res = response;
+//        if (response.isSuccessful()) {
+//            Log.e("-------------- isSuccessful ", response.body().string());
+//            Log.e("-------------- headers ", response.headers().toString());
+//            Log.d(TAG, String.format("Sign In : Cookie = %s", response.headers().get("Set-Cookie")));
+//            cookie = response.headers().get("Set-Cookie");
+//        } else {
+//            Log.d(TAG, String.format("Sign In : failed"));
+//            Log.e("-------------- error body", response.body().string());
+//            Log.e("-------------- error headers", response.headers().toString());
+//            throw new IOException("Sign In : failed");
+//        }
+
         response.close();
 
-        return cookie;
+        return res;
     }
 
     public static void signOut(String cookie) throws IOException {

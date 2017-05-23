@@ -17,7 +17,7 @@
     <string name="error_field_required">この項目は必須です</string>
     <string name="permission_rationale">"電子メールの完了を提供するには連絡先権限が必要です."
     </string>
-    <string name="android_id_format">Android管理番号 : %s</string>
+    <string name="android_id_format">Android管理番号 \n%s</string>
     <string name="title_activity_terminal_first_use_screen_displayed">
         TerminalFirstUseScreenDisplayedActivity
     </string>
@@ -79,5 +79,11 @@
     <string name="report_sent_back">もどる</string>
     <string name="report_sent_retry">閉じる</string>
     <string name="error_submit">通信環境をご確認の上、再投稿してください。</string>
-    <!-- ///// 20170519 MODIFY END-->
+
+    <string name="for_student">学習者用</string>
+    <string name="close"> 閉じる</string>
+    <string name="login_title_error_401">ログインエラー</string>
+    <string name="login_message_error_401">サービスID、店舗ID、パスワードを正しく入力してください。</string>
+    <string name="login_title_error_403">ログインエラー</string>
+    <string name="login_message_error_403">ご利用の端末からはアクセスできません。</string>
 </resources>

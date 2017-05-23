@@ -19,7 +19,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="android_id_format">Android device id : %s</string>
+    <string name="android_id_format">Android device id \n%s</string>
     <string name="title_activity_terminal_first_use_screen_displayed">
         TerminalFirstUseScreenDisplayedActivity
     </string>
@@ -80,5 +80,12 @@
     <string name="report_sent_back">Close</string>
     <string name="report_sent_retry">Retry</string>
     <string name="error_submit">Cannot connect to ClipLine.\n Please try again later.</string>
+
+    <string name="for_student">For Student</string>
+    <string name="close">Close</string>
+    <string name="login_title_error_401">Login Error</string>
+    <string name="login_message_error_401">Please enter service ID, branch ID, and the password correctly</string>
+    <string name="login_title_error_403">Login Error</string>
+    <string name="login_message_error_403">You can’t access from this terminal.</string>
 
 </resources>
