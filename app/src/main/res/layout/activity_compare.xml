@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_compare"
     android:layout_width="match_parent"
-    android:background="#FFFFFF"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context="jp.clipline.clandroid.CompareActivity">
 
     <RelativeLayout
@@ -27,17 +27,28 @@
             android:textSize="36sp"
             android:textStyle="normal" />
 
-        <Button
-            android:id="@+id/buttonSubmit"
+
+        <android.support.v7.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:padding="1dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
-            android:background="@drawable/border_color_gray"
-            android:gravity="center"
-            android:text="@string/select_shooting_method_submit"
-            android:textColor="@color/white" />
+            app:cardCornerRadius="3dp"
+            app:cardElevation="5dp">
+
+            <Button
+                android:id="@+id/buttonSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="#61B5Ab"
+                android:gravity="center"
+                android:text="@string/select_shooting_method_submit"
+                android:textColor="@color/white" />
+        </android.support.v7.widget.CardView>
 
         <LinearLayout
             android:id="@+id/imageButtonBack"
@@ -64,47 +75,55 @@
         android:layout_height="0dp"
         android:layout_centerInParent="true" />
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:id="@+id/linearLayoutStatus"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="52dp"
         android:layout_below="@+id/relativeLayoutHeader"
-        android:layout_centerHorizontal="true"
-        android:background="#FFFFFF"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:weightSum="2.5">
+        app:cardCornerRadius="1dp"
+        app:cardElevation="5dp">
 
-        <jp.clipline.clandroid.view.StatusView
-            android:id="@+id/statusView"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.5" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:background="#FFFFFF"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:weightSum="2.5">
 
-        <jp.clipline.clandroid.view.StatusView
-            android:id="@+id/statusResport"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1" />
+            <jp.clipline.clandroid.view.StatusView
+                android:id="@+id/statusView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="0.5" />
 
-        <jp.clipline.clandroid.view.StatusView
-            android:id="@+id/statusCheck"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1" />
+            <jp.clipline.clandroid.view.StatusView
+                android:id="@+id/statusResport"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
 
-    </LinearLayout>
+            <jp.clipline.clandroid.view.StatusView
+                android:id="@+id/statusCheck"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/relativeLayoutBottom"
         android:layout_below="@+id/linearLayoutStatus"
-        android:paddingBottom="300dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="300dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
