@@ -17,6 +17,7 @@
         android:id="@+id/textViewStatus"
         android:layout_width="@dimen/width"
         android:layout_height="@dimen/height"
+        android:textColor="@color/white"
         android:gravity="center" />
 
     <TextView
