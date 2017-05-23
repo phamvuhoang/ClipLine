@@ -344,8 +344,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void ShowError(String message, int code) {
         String title = null;
         if (code == 200) {
-            title = "端末が未登録です";
-            message = mAndroidId.getText().toString();
+            title = getResources().getString(R.string.login_title_error_200);;
+            message = getResources().getString(R.string.login_message_error_200)
+                + "\n" + mAndroidId.getText().toString();
         }
         if (code == 401) {
             title = getResources().getString(R.string.login_title_error_401);

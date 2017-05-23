@@ -83,6 +83,8 @@
 
     <string name="for_student">For Student</string>
     <string name="close">Close</string>
+    <string name="login_title_error_200">This device is not registered</string>
+    <string name="login_message_error_200">Device Number</string>
     <string name="login_title_error_401">Login Error</string>
     <string name="login_message_error_401">Please enter service ID, branch ID, and the password correctly</string>
     <string name="login_title_error_403">Login Error</string>
