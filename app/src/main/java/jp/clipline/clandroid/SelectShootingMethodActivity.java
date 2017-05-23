@@ -70,7 +70,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         mProgressBar = (ProgressBar) findViewById(progressBar);
 
         LinearLayout llView;
-        ImageButton imageButton;
 
         llView = (LinearLayout) findViewById(R.id.textViewTakePicture);
         llView.setOnClickListener(new View.OnClickListener() {
@@ -255,8 +254,8 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
 //        });
         ///// 20170520 DELETE END
 
-        imageButton = (ImageButton) findViewById(R.id.imageButtonBack);
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        LinearLayout backScreen = (LinearLayout) findViewById(R.id.imageButtonBack);
+        backScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ///// 20170523 MODIFY START

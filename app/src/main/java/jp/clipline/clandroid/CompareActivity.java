@@ -21,6 +21,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -56,7 +57,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 
     private TextView mBackScreen;
     private ImageButton mButtonClose;
-    private ImageButton mButtonBack;
+    private LinearLayout mButtonBack;
 
     private VideoView mVideoViewContent;
     private VideoView mVideoViewMine;
@@ -205,7 +206,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //        mButtonSwitch = (Button) findViewById(R.id.buttonSwitch);
 
 //        mButtonClose = (ImageButton) findViewById(R.id.imageButton);
-        mButtonBack = (ImageButton) findViewById(R.id.imageButtonBack);
+        mButtonBack = (LinearLayout) findViewById(R.id.imageButtonBack);
 
         mBackScreen.setOnClickListener(this);
 
@@ -276,11 +277,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                 mWebViewMine.setVisibility(View.VISIBLE);
             } else if (mTodoContentType.equals("video/mp4")) {
                 mVideoViewMine.setVideoPath(mPath);
-
-//                mVideoViewMine.setMediaController(new MediaController(this));
-
                 mVideoViewMine.setVisibility(View.VISIBLE);
-//                mVideoViewMine.seekTo(100);
             }
 
             if (mCurrentTodoContent != null) {
@@ -871,6 +868,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         mVideoViewContent.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.seekTo(1);
                 AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeContent, mVideoViewContent.getDuration());
                 mHandlerContent.sendEmptyMessage(UPDATE_UI);
             }
@@ -897,6 +895,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         mVideoViewMine.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.seekTo(1);
                 AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeMine, mVideoViewMine.getDuration());
                 mHandlerMine.sendEmptyMessage(UPDATE_UI);
             }

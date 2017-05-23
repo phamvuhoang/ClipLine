@@ -39,15 +39,22 @@
             android:text="@string/select_shooting_method_submit"
             android:textColor="@color/white" />
 
-        <ImageButton
+        <LinearLayout
             android:id="@+id/imageButtonBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
             android:background="#61B5Ab"
-            app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_arrow_back_black_24dp" />
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 

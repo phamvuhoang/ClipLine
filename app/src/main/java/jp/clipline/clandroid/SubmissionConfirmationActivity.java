@@ -19,6 +19,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -218,8 +219,8 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 
         ///// 20170523 MODIFY START
         // 戻るボタン
-        ImageButton imageButton = (ImageButton) findViewById(R.id.imageButtonBack);
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        LinearLayout backScreen = (LinearLayout) findViewById(R.id.imageButtonBack);
+        backScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 ///*
@@ -490,7 +491,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-//                mVideoView.start();
+                mediaPlayer.seekTo(1);
                 AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeTv, mVideoView.getDuration());
                 mHandler.sendEmptyMessage(UPDATE_UI);
             }

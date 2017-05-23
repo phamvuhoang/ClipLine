@@ -46,7 +46,7 @@
     <string name="compress_canceled">インポートはキャンセルされました</string>
     <string name="compress_failed">このファイルはインポートが出来ません</string>
 
-    <string name="terminal">端末初回利用画面です</string>
+    <string name="terminal">端末が未登録です</string>
 
     <string name="title_activity_select_shooting_method">ロード中．．．</string>
     <string name="select_shooting_method_back">お手本を見る</string>

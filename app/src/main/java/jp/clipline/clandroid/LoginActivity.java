@@ -348,20 +348,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
-
             if (success) {
-                //if(AndroidUtility.isTerminalFirstUseScreenDisplayed(getApplicationContext())){
                 AndroidUtility.setCookie(getApplicationContext(), mCookie);
-                Intent intent = new Intent(getApplicationContext(), TerminalFirstUseScreenDisplayedActivity.class);
-                startActivity(intent);
-                finish();
-                //}
-                //else {
-                //    Intent intent = new Intent(getApplicationContext(), LaunchWebViewActivity.class);
-                //    startActivity(intent);
-                //    finish();
-                //}
+                new GetAgreementTask().execute((Void) null);
+
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -371,6 +361,46 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onCancelled() {
             mAuthTask = null;
+        }
+    }
+
+
+    public class GetAgreementTask extends AsyncTask<Void, Void, Boolean> {
+
+        String message = null;
+
+        GetAgreementTask() {
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                Map<String, String> loginSetting = AndroidUtility.getLoginSetting(getApplicationContext());
+                message = Branch.signInWithIdfv(loginSetting.get("branchId"), loginSetting.get("serviceId"), loginSetting.get("password"), AndroidUtility.getAndroidId(getContentResolver()));
+                return Boolean.TRUE;
+            } catch (IOException e) {
+                return Boolean.FALSE;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if (success) {
+                if (message == null) {
+                    Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                    intent.putExtra("FROM_SCREEN_LOGIN", "from_screen_login");
+                    startActivity(intent);
+                    finish();
+                } else {
+//                    TextView textView = (TextView) findViewById(R.id.textView);
+//                    textView.setText(message);
+                }
+            } else {
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
             showProgress(false);
         }
     }
