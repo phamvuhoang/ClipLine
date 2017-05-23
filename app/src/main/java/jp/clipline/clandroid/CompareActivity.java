@@ -104,29 +104,24 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
     private Button mButtonSummit;
 
     private RelativeLayout mRelativeLayoutOverlay;
-    ///// 20170521 ADD START
     private final int UPLOAD_NONE = 0;
     private final int UPLOAD_SUCCESSFULL = 1;
     private final int UPLOAD_FAILE = 2;
 
     private int mSubmissionConfirmation = 0;
     private View mViewProgressBar;
-    ///// 20170521 ADD END
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare);
-        ///// 20170521 ADD START
         if (savedInstanceState != null) {
             mSubmissionConfirmation = savedInstanceState.getInt("compareActivity");
         }
-        ///// 20170521 ADD START
         // レポート完成画面
         mRelativeLayoutOverlay = (RelativeLayout) findViewById(R.id.relativeLayoutOverlay);
         mRelativeLayoutOverlay.setVisibility(View.GONE);
-        ///// 20170521 DELETE START
 //        ImageButton imageButton = (ImageButton) findViewById(R.id.imageButtonReportSentClose);
 //        imageButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -134,7 +129,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //                mRelativeLayoutOverlay.setVisibility(View.GONE);
 //            }
 //        });
-        ///// 20170521 DELETE END
         // レポート完成：もどるボタン
         mTextViewError = (TextView) findViewById(R.id.textViewError);
         mButtonReportSentRetry = (Button) findViewById(R.id.buttonReportSentRetry);
@@ -158,7 +152,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         mButtonReportSentClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ///// 20170521 MODIFY START
                 mRelativeLayoutOverlay.setVisibility(View.GONE);
                 mSubmissionConfirmation = UPLOAD_NONE;
 //                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
@@ -171,7 +164,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //                intent.putExtra("BASE_URL", url);
 //                startActivity(intent);
 //                finish();
-                ///// 20170521 MODIFY END
             }
         });
 
@@ -227,11 +219,9 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 
         mCurrentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
         TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);
-        ///// 20170521 ADD START
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ///// 20170521 DELETE START
 //                Intent intent;
 //                Map<String, String> todoParameters;
 //                String studentId;
@@ -253,13 +243,11 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //                intent.putExtra("BASE_URL", url);
 //                startActivity(intent);
 //                finish();
-                ///// 20170521 DELETE END
                 Intent intent = new Intent(CompareActivity.this, SelectShootingMethodActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
-        ///// 20170521 ADD END
 
         mIsCheckSwitch = true;
         if (mCurrentTodoContent != null && mCurrentTodoContent.get("title") != null) {
@@ -406,7 +394,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         mButtonSummit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ///// 20170523 MODIFY START
                 // First, get media key
                 // On post execute, upload file to S3 and call report submit api
                 mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
@@ -418,7 +405,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                 mButtonReportSentComment.setVisibility(View.GONE);
                 mButtonReportSentRetry.setVisibility(View.GONE);
                 mButtonReportSentClose.setVisibility(View.GONE);
-                ///// 20170523 MODIFY END
                 new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
             }
         });
@@ -461,7 +447,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //                mVideoViewMine.start();
 //
 //                break;
-            ///// 201705021 DELETE START
 //            case R.id.imageButton:
 //                todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
 //                studentId = todoParameters.get("studentId");
@@ -474,9 +459,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //                startActivity(intent);
 //                finish();
 //                break;
-            ///// 201705021 DELETE END
             case R.id.imageButtonBack:
-                ///// 20170521 DELETE START
 //                todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
 //                studentId = todoParameters.get("studentId");
 //                categoryId = todoParameters.get("categoryId");
@@ -490,7 +473,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
 //                intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
 //                intent.putExtra("BASE_URL", url);
 //                startActivity(intent);
-                ///// 20170521 DELETE END
                 intent = new Intent(CompareActivity.this, SelectShootingMethodActivity.class);
                 startActivity(intent);
                 finish();
@@ -618,7 +600,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    ///// 20170521 ADD START
     @Override
     protected void onResume() {
         super.onResume();
@@ -653,15 +634,11 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         super.onSaveInstanceState(outState);
         outState.putInt("compareActivity", mSubmissionConfirmation);
     }
-    ///// 20170523 ADD START
     @Override
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
     }
-    ///// 20170523 ADD END
-
-    ///// 20170521 ADD END
 
     /**
      * Get media key to send file to S3 and send report
@@ -746,11 +723,8 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         @Override
         protected void onPostExecute(Boolean success) {
             //TODO TEST
-            ///// 20170523 ADD START
             success = true;
-            ///// 20170523 ADD END
 
-            ///// 20170521 MODIFY START
             if (success) {
                 mProgressBar.setVisibility(View.GONE);
                 mViewProgressBar.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.color.green));
@@ -774,7 +748,6 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
                 mTextViewError.setVisibility(View.VISIBLE);
                 mSubmissionConfirmation = UPLOAD_FAILE;
             }
-            ///// 20170521 MODIFY END
 
             // TODO Just show complete screen for now, need to modify later
             mRelativeLayoutOverlay.setVisibility(View.VISIBLE);

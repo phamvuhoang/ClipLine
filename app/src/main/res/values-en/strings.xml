@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">ClipLine</string>
     <string name="action_settings">Settings</string>
-    <!--///// 20170519 DELETE START-->
     <!--<string name="title_activity_login">ClipLine</string>-->
-    <!--///// 20170519 DELETE END-->
 
     <!-- Strings related to login -->
     <string name="prompt_service_id">Service ID</string>

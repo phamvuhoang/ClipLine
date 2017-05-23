@@ -256,7 +256,6 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
         // ex) NativeInterface.studentToDo(92680,988,15532);
         @JavascriptInterface
         public void studentToDo(String studentId, String categoryId, String todoContentId) {
-            ///// 20170523 MODIFY START
             categoryId = "988";
             AndroidUtility.setBack(LaunchCrossWalkActivity.this, false);
             ((ClWebWrapperApplication) getApplication()).setTodoParameters(studentId, categoryId, todoContentId);
@@ -267,10 +266,8 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-            ///// 20170523 MODIFY END
         }
 
-        ///// 20170520 MODIFY START
         // ex) NativeInterface.coachToDo(92680,988,15532);
         @JavascriptInterface
         public void coachToDo(String coachId, String categoryId, String todoId) {
@@ -283,7 +280,6 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
 
 //            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
-        ///// 20170520 MODIFY END
     }
 
 

@@ -85,22 +85,18 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
     private View mViewProgressBar;
 
     private RelativeLayout mRelativeLayoutOverlay;
-    ///// 20170521 ADD START
     private final int UPLOAD_NONE = 0;
     private final int UPLOAD_SUCCESSFULL = 1;
     private final int UPLOAD_FAILE = 2;
     private int mSubmissionConfirmation = 0;
-    ///// 20170521 ADD END
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submission_confirmation);
-        ///// 20170521 ADD START
         if (savedInstanceState != null) {
             mSubmissionConfirmation = savedInstanceState.getInt("submissionConfirmation");
         }
-        ///// 20170521 ADD START
         mTodoContentType = ((ClWebWrapperApplication) this.getApplication()).getTodoContentType();
         File file = new File(((ClWebWrapperApplication) this.getApplication()).getTodoContentData());
         Uri uriFile = Uri.fromFile(file);
@@ -112,7 +108,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         // レポート完成画面
         mRelativeLayoutOverlay = (RelativeLayout) findViewById(R.id.relativeLayoutOverlay);
         mRelativeLayoutOverlay.setVisibility(View.GONE);
-        ///// 20170521 DELETE START
 //        imageButton = (ImageButton) findViewById(R.id.imageButtonReportSentClose);
 //        imageButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -120,8 +115,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 //                mRelativeLayoutOverlay.setVisibility(View.GONE);
 //            }
 //        });
-        ///// 20170521 DELETE END
-        ///// 20170520 ADD START
         mTextViewError = (TextView) findViewById(R.id.textViewError);
         mButtonReportSentRetry = (Button) findViewById(R.id.buttonReportSentRetry);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -139,9 +132,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
             }
         });
-        ///// 20170520 ADD END
 
-        ///// 20170521 MODIFY START
         // レポート完成：もどるボタン
         mButtonReportSentClose = (Button) findViewById(R.id.buttonReportSentClose);
         mButtonReportSentClose.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +153,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 //                finish();
             }
         });
-///// 20170521 MODIFY END
         // レポート完成：コメントを入れるボタン
         mButtonReportSentComment = (Button) findViewById(R.id.buttonReportSentInputComment);
         mButtonReportSentComment.setOnClickListener(new View.OnClickListener() {
@@ -178,9 +168,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                 intent.putExtra("BASE_URL", url);
                 startActivity(intent);
-                ///// 20170523 ADD START
                 overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-                ///// 20170523 ADD END
                 finish();
             }
         });
@@ -217,7 +205,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 
         }
 
-        ///// 20170523 MODIFY START
         // 戻るボタン
         LinearLayout backScreen = (LinearLayout) findViewById(R.id.imageButtonBack);
         backScreen.setOnClickListener(new View.OnClickListener() {
@@ -243,7 +230,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 //
             }
         });
-        ///// 20170523 MODIFY END
 
 //        textView = (TextView) findViewById(R.id.textViewTodoBack);
 //        textView.setOnClickListener(new View.OnClickListener() {
@@ -270,7 +256,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 
         mImageButtonCompareOrSubmit = (Button) findViewById(R.id.buttonCompareOrSubmit);
         mImageButtonCompareOrSubmit.setOnClickListener(this);
-        ///// 20170520 DELETE START
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -289,7 +274,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 
 //            }
 //        });
-        ///// 20170520 DELETE END
 
         // やり直す: back to SelectShooting
         textView = (TextView) findViewById(R.id.textViewBack);
@@ -298,10 +282,8 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
                 startActivity(intent);
-                ///// 20170523 MODIFY START
 //                overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
                 overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-                ///// 20170523 MODIFY END
                 finish();
             }
         });
@@ -345,16 +327,13 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
                 startActivity(intent);
-    ///// 20170523 MODIFY START
 //                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-                ///// 20170523 MODIFY END
                 finish();
 
             }
         });
 
-        ///// 20170520 DELETE START
         // 見比べる : ToCompare
 //        mButtonCompare = (Button) findViewById(R.id.buttonCompare);/
 //        mButtonCompare.setOnClickListener(new View.OnClickListener() {
@@ -380,7 +359,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 //            }
 //        });
 
-        ///// 20170520 DELETE END
 
         // 見比べる有／無によりボタン表示／非表示設定
         updateButtonVisible();
@@ -393,20 +371,16 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         } else {
             textView.setText("");
         }
-        ///// 20170520 MODIFY START
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
                 startActivity(intent);
-                ///// 20170523 MODIFY START
 //                overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
                 overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-                ///// 20170523 MODIFY END
                 finish();
             }
         });
-        ///// 20170520 MODIFY END
     }
 
     private void findViewById() {
@@ -589,7 +563,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
     }
 
     private void updateButtonVisible() {
-        ///// 20170520 MODIFY START
         Map<String, Object> todoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
 
 //        boolean hasMyReportPlayAction = false;
@@ -613,7 +586,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 //            mButtonSummit.setVisibility(View.VISIBLE);
 //            mButtonCompare.setVisibility(View.GONE);
         }
-        ///// 20170520 MODIFY END
     }
 
     public void onClick(View v) {
@@ -636,20 +608,16 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 startActivityForResult(intent, SEEKTOTIME);
 
                 break;
-            ///// 20170520 MODIFY START
             case R.id.buttonCompareOrSubmit:
                 if (mHasMyReportPlayAction) { // check
                     intent = new Intent(getApplicationContext(), CompareActivity.class);
                     startActivity(intent);
-                    ///// 20170523 MODIFY START
 //                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                     overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-                    ///// 20170523 MODIFY END
                     finish();
                 } else { // post
                     // First, get media key
                     // On post execute, upload file to S3 and call report submit api
-                    ///// 20170523 MODIFY START
                     mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
                     mProgressBar.setVisibility(View.VISIBLE);
                     mTextViewUpload.setText(getResources().getText(R.string.report_sent));
@@ -660,16 +628,14 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                     mButtonReportSentRetry.setVisibility(View.GONE);
                     mButtonReportSentClose.setVisibility(View.GONE);
                     new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
-                    ///// 20170523 MODIFY END
                 }
                 break;
-            ///// 20170520 MODIFY END
+
             default:
                 break;
         }
     }
 
-    ///// 20170521 ADD START
     @Override
     protected void onResume() {
         super.onResume();
@@ -699,7 +665,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         }
     }
 
-    ///// 20170521 ADD END
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SEEKTOTIME) {
@@ -711,13 +676,11 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         }
     }
 
-    ///// 20170521 ADD START
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("submissionConfirmation", mSubmissionConfirmation);
     }
-    ///// 20170521 ADD END
 
     /**
      * Get media key to send file to S3 and send report
@@ -802,11 +765,8 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         @Override
         protected void onPostExecute(Boolean success) {
             //TODO TEST
-            ///// 20170523 ADD START
             success = true;
-            ///// 20170523 ADD END
 
-            ///// 20170521 MODIFY START
             if (success) {
                 mProgressBar.setVisibility(View.GONE);
                 mViewProgressBar.setBackground(ContextCompat.getDrawable(SubmissionConfirmationActivity.this, R.color.green));
@@ -830,7 +790,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 mTextViewError.setVisibility(View.VISIBLE);
                 mSubmissionConfirmation = UPLOAD_FAILE;
             }
-            ///// 20170521 MODIFY END
             // TODO Just show complete screen for now, need to modify later
             mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
         }
