@@ -315,26 +315,42 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         mStatusViewResport.setTypeView(StatusView.STATUS_VIEW.REPORT, true);
         mStatusViewCheck.setTypeView(StatusView.STATUS_VIEW.CHECK, true);
 
-//        mLinearLayoutFooterStatus = (LinearLayout) findViewById(R.id.linearLayoutFooterStatus);
-//        mImageViewFooterView = (ImageView) findViewById(R.id.imageViewFooterView);
-//        mTextViewFooterView = (TextView) findViewById(R.id.textViewFooterView);
-//        mImageViewFooterShoot = (ImageView) findViewById(R.id.imageViewFooterShoot);
-//        mTextViewFooterShoot = (TextView) findViewById(R.id.textViewFooterShoot);
-//        mImageViewFooterCompare = (ImageView) findViewById(R.id.imageViewFooterCompare);
-//        mTextViewFooterCompare = (TextView) findViewById(R.id.textViewFooterCompare);
+        mStatusView.setClickListener(new StatusView.ClickListener() {
+            @Override
+            public void onListener() {
+                mConfirDlg = new PopUpDlg(SubmissionConfirmationActivity.this, true);
+                mConfirDlg.show("", getString(R.string.confirm_retry),
+                        getString(R.string.yes),
+                        getString(R.string.no),
+                        // onOK
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                                String studentId = todoParameters.get("studentId");
+                                String categoryId = todoParameters.get("categoryId");
+                                String todoContentId = todoParameters.get("todoContentId");
+                                String url = "%s://%s/training/#/students/" + studentId
+                                        + "/todos/" + todoContentId;
+                                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                                intent.putExtra("BASE_URL", url);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                                finish();
+                            }
+                        },
+                        // onCancel
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (dialog != null) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+            }
+        });
 
-        // Firstly, hide the status, after getting result from api, then depend on the flags to process the view/hide
-
-//        mStatusView.setVisibility(View.GONE);
-//        mStatusViewResport.setVisibility(View.GONE);
-//        mStatusViewCheck.setVisibility(View.GONE);
-//        mLinearLayoutFooterStatus.setVisibility(View.GONE);
-//        mImageViewFooterView.setVisibility(View.GONE);
-//        mTextViewFooterView.setVisibility(View.GONE);
-//        mImageViewFooterShoot.setVisibility(View.GONE);
-//        mTextViewFooterShoot.setVisibility(View.GONE);
-//        mImageViewFooterCompare.setVisibility(View.GONE);
-//        mTextViewFooterCompare.setVisibility(View.GONE);
 
         updateStatus();
 
