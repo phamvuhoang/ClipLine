@@ -86,4 +86,7 @@
     <string name="login_title_error_403">ログインエラー</string>
     <string name="login_message_error_403">ご利用の端末からはアクセスできません。</string>
 
+    <string name="confirm_retry">撮影したレポートを破棄しますか。</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
 </resources>

@@ -1,6 +1,7 @@
 package jp.clipline.clandroid;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -29,6 +30,7 @@ import java.util.Map;
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.CameraUtil;
 import jp.clipline.clandroid.Utility.FileChooser;
+import jp.clipline.clandroid.Utility.PopUpDlg;
 import jp.clipline.clandroid.api.ToDo;
 import jp.clipline.clandroid.view.StatusView;
 
@@ -211,44 +213,43 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         mStatusViewResport.setTypeView(StatusView.STATUS_VIEW.REPORT, true);
         mStatusViewCheck.setTypeView(StatusView.STATUS_VIEW.CHECK, true);
 
-//        mStatusView.setVisibility(View.GONE);
-//        mStatusViewResport.setVisibility(View.GONE);
-//        mStatusViewCheck.setVisibility(View.GONE);
+        mStatusView.setClickListener(new StatusView.ClickListener() {
+            @Override
+            public void onListener() {
 
-//        mLinearLayoutFooterStatus = (LinearLayout) findViewById(R.id.linearLayoutFooterStatus);
-//        mImageViewFooterView = (ImageView) findViewById(R.id.imageViewFooterView);
-//        mTextViewFooterView = (TextView) findViewById(R.id.textViewFooterView);
-//        mImageViewFooterShoot = (ImageView) findViewById(R.id.imageViewFooterShoot);
-//        mTextViewFooterShoot = (TextView) findViewById(R.id.textViewFooterShoot);
-//        mImageViewFooterCompare = (ImageView) findViewById(R.id.imageViewFooterCompare);
-//        mTextViewFooterCompare = (TextView) findViewById(R.id.textViewFooterCompare);
-//
-//        // Firstly, hide the status, after getting result from api, then depend on the flags to process the view/hide
-//        mLinearLayoutFooterStatus.setVisibility(View.GONE);
-//        mImageViewFooterView.setVisibility(View.GONE);
-//        mTextViewFooterView.setVisibility(View.GONE);
-//        mImageViewFooterShoot.setVisibility(View.GONE);
-//        mTextViewFooterShoot.setVisibility(View.GONE);
-//        mImageViewFooterCompare.setVisibility(View.GONE);
-//        mTextViewFooterCompare.setVisibility(View.GONE);
+                PopUpDlg confirDlg = new PopUpDlg(SelectShootingMethodActivity.this, true);
+                confirDlg.show("", getString(R.string.confirm_retry),
+                        getString(R.string.yes),
+                        getString(R.string.no),
+                        // onOK
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                                String studentId = todoParameters.get("studentId");
+                                String categoryId = todoParameters.get("categoryId");
+                                String todoContentId = todoParameters.get("todoContentId");
+                                String url = "%s://%s/training/#/students/" + studentId
+                                        + "/todos/" + todoContentId;
+                                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                                intent.putExtra("BASE_URL", url);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                                finish();
+                            }
+                        },
+                        // onCancel
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (dialog != null) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
 
-//        imageButton = (ImageButton) findViewById(R.id.imageButtonTodoClose);
-//        imageButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // 一覧へ戻る
-//                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-//                String studentId = todoParameters.get("studentId");
-//                String categoryId = todoParameters.get("categoryId");
-//                String todoContentId = todoParameters.get("todoContentId");
-//                String url = "%s://%s/training/#/students/" + studentId
-//                        + "/todos?type=updates"; // TODO type=updates/repeat???
-//                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-//                intent.putExtra("BASE_URL", url);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
+            }
+        });
 
         LinearLayout backScreen = (LinearLayout) findViewById(R.id.imageButtonBack);
         backScreen.setOnClickListener(new View.OnClickListener() {
@@ -267,23 +268,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 finish();
             }
         });
-//        textView = (TextView) findViewById(R.id.textViewTodoBack);
-//        textView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-//                String studentId = todoParameters.get("studentId");
-//                String categoryId = todoParameters.get("categoryId");
-//                String todoContentId = todoParameters.get("todoContentId");
-//                String url = "%s://%s/training/#/students/" + studentId
-//                        + "/todos/" + todoContentId;
-//
-//                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-//                intent.putExtra("BASE_URL", url);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
 
         Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
         String studentId = todoParameters.get("studentId");

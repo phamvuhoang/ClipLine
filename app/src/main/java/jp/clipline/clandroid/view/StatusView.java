@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import jp.clipline.clandroid.R;
 
-public class StatusView extends LinearLayout {
+public class StatusView extends LinearLayout implements View.OnClickListener {
 
 
     public enum STATUS_VIEW {
@@ -21,6 +21,7 @@ public class StatusView extends LinearLayout {
     private TextView mTextViewLine;
     private TextView mTextViewStatus;
     private TextView mTextViewContent;
+    private ClickListener mClickListener;
 
 
     public StatusView(Context context) {
@@ -51,6 +52,9 @@ public class StatusView extends LinearLayout {
         mTextViewStatus = (TextView) view.findViewById(R.id.textViewStatus);
         mTextViewContent = (TextView) view.findViewById(R.id.textViewContent);
 
+        mTextViewStatus.setOnClickListener(this);
+        mTextViewContent.setOnClickListener(this);
+
     }
 
     public TextView getTextViewLine() {
@@ -75,6 +79,14 @@ public class StatusView extends LinearLayout {
 
     public void setTextViewContent(TextView content) {
         this.mTextViewContent = content;
+    }
+
+    public ClickListener getClickListener() {
+        return mClickListener;
+    }
+
+    public void setClickListener(ClickListener listener) {
+        this.mClickListener = listener;
     }
 
     public void setTypeView(STATUS_VIEW typeView, boolean isScreenSelect) {
@@ -108,6 +120,25 @@ public class StatusView extends LinearLayout {
             }
         }
 
+    }
+
+
+    public  interface ClickListener {
+        void onListener();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.textViewStatus:
+            case R.id.textViewContent:
+                if (mClickListener != null) {
+                    mClickListener.onListener();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
 

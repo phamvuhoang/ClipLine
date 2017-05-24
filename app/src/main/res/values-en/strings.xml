@@ -88,4 +88,9 @@
     <string name="login_title_error_403">Login Error</string>
     <string name="login_message_error_403">You can’t access from this terminal.</string>
 
+    <string name="confirm_try">Would you like to discard the captured report?</string>
+    <string name="confirm_retry">Would you like to discard the captured report?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
 </resources>
