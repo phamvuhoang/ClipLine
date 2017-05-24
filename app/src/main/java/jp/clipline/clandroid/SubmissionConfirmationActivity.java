@@ -2,6 +2,7 @@ package jp.clipline.clandroid;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -32,6 +33,7 @@ import java.net.URISyntaxException;
 import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
+import jp.clipline.clandroid.Utility.PopUpDlg;
 import jp.clipline.clandroid.api.MediaKey;
 import jp.clipline.clandroid.api.Report;
 import jp.clipline.clandroid.view.FullVideo;
@@ -85,12 +87,11 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
     private View mViewProgressBar;
 
     private RelativeLayout mRelativeLayoutOverlay;
-    ///// 20170521 ADD START
     private final int UPLOAD_NONE = 0;
     private final int UPLOAD_SUCCESSFULL = 1;
     private final int UPLOAD_FAILE = 2;
     private int mSubmissionConfirmation = 0;
-    ///// 20170521 ADD END
+    private PopUpDlg mConfirDlg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +106,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         File file = new File(((ClWebWrapperApplication) this.getApplication()).getTodoContentData());
         Uri uriFile = Uri.fromFile(file);
         mTodoContentData = uriFile;
-//        ImageButton imageButton;
         ImageView imageView;
         TextView textView;
 
@@ -223,50 +223,32 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         backScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-///*
-                Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-                finish();
-//*/
-//                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-//                String studentId = todoParameters.get("studentId");
-//                String categoryId = todoParameters.get("categoryId");
-//                String todoContentId = todoParameters.get("todoContentId");
-//                String url = "%s://%s/training/#/students/" + studentId
-//                        + "/todos/" + todoContentId;
-//
-//                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-//                intent.putExtra("BASE_URL", url);
-//                startActivity(intent);
-//                finish();
-//
+                mConfirDlg = new PopUpDlg(SubmissionConfirmationActivity.this, true);
+                mConfirDlg.show("", getString(R.string.confirm_retry),
+                        getString(R.string.yes),
+                        getString(R.string.no),
+                        // onOK
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                                finish();
+                            }
+                        },
+                        // onCancel
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (dialog != null) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+
             }
         });
-        ///// 20170523 MODIFY END
-
-//        textView = (TextView) findViewById(R.id.textViewTodoBack);
-//        textView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-///*
-//                Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
-//                startActivity(intent);
-//                finish();
-//*/
-//                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-//                String studentId = todoParameters.get("studentId");
-//                String categoryId = todoParameters.get("categoryId");
-//                String todoContentId = todoParameters.get("todoContentId");
-//                String url = "%s://%s/training/#/students/" + studentId
-//                        + "/todos/" + todoContentId;
-//
-//                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-//                intent.putExtra("BASE_URL", url);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
 
         mImageButtonCompareOrSubmit = (Button) findViewById(R.id.buttonCompareOrSubmit);
         mImageButtonCompareOrSubmit.setOnClickListener(this);
@@ -296,13 +278,31 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
-                startActivity(intent);
-                ///// 20170523 MODIFY START
-//                overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
-                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-                ///// 20170523 MODIFY END
-                finish();
+                mConfirDlg = new PopUpDlg(SubmissionConfirmationActivity.this, true);
+                mConfirDlg.show("", getString(R.string.confirm_retry),
+                        getString(R.string.yes),
+                        getString(R.string.no),
+                        // onOK
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                                finish();
+                            }
+                        },
+                        // onCancel
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (dialog != null) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+
+
             }
         });
 
@@ -345,7 +345,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
                 startActivity(intent);
-    ///// 20170523 MODIFY START
+                ///// 20170523 MODIFY START
 //                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 ///// 20170523 MODIFY END
@@ -397,13 +397,30 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
-                startActivity(intent);
-                ///// 20170523 MODIFY START
-//                overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
-                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-                ///// 20170523 MODIFY END
-                finish();
+                mConfirDlg = new PopUpDlg(SubmissionConfirmationActivity.this, true);
+                mConfirDlg.show("", getString(R.string.confirm_retry),
+                        getString(R.string.yes),
+                        getString(R.string.no),
+                        // onOK
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                                finish();
+                            }
+                        },
+                        // onCancel
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (dialog != null) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+
             }
         });
         ///// 20170520 MODIFY END

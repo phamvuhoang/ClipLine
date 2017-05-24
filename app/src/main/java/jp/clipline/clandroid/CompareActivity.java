@@ -2,6 +2,7 @@ package jp.clipline.clandroid;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -37,6 +38,7 @@ import java.net.URISyntaxException;
 import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
+import jp.clipline.clandroid.Utility.PopUpDlg;
 import jp.clipline.clandroid.api.MediaKey;
 import jp.clipline.clandroid.api.Report;
 import jp.clipline.clandroid.view.StatusView;
@@ -104,14 +106,13 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
     private Button mButtonSummit;
 
     private RelativeLayout mRelativeLayoutOverlay;
-    ///// 20170521 ADD START
     private final int UPLOAD_NONE = 0;
     private final int UPLOAD_SUCCESSFULL = 1;
     private final int UPLOAD_FAILE = 2;
 
     private int mSubmissionConfirmation = 0;
     private View mViewProgressBar;
-    ///// 20170521 ADD END
+    private PopUpDlg mConfirDlg;
 
 
     @Override
@@ -231,32 +232,29 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ///// 20170521 DELETE START
-//                Intent intent;
-//                Map<String, String> todoParameters;
-//                String studentId;
-//                String categoryId;
-//                String todoContentId;
-//                String url;
-//
-//                todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-//                studentId = todoParameters.get("studentId");
-//                categoryId = todoParameters.get("categoryId");
-//                todoContentId = todoParameters.get("todoContentId");
-/*
-                String url = "%s://%s/training/#/students/" + studentId
-                        + "/todos?type=caetgory&category_id=" + categoryId;
-*/
-//                url = "%s://%s/training/#/students/" + studentId
-//                        + "/todos/" + todoContentId;
-//                intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-//                intent.putExtra("BASE_URL", url);
-//                startActivity(intent);
-//                finish();
-                ///// 20170521 DELETE END
-                Intent intent = new Intent(CompareActivity.this, SelectShootingMethodActivity.class);
-                startActivity(intent);
-                finish();
+                mConfirDlg = new PopUpDlg(CompareActivity.this, true);
+                mConfirDlg.show("", getString(R.string.confirm_retry),
+                        getString(R.string.yes),
+                        getString(R.string.no),
+                        // onOK
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(CompareActivity.this, SelectShootingMethodActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        },
+                        // onCancel
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (dialog != null) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+
             }
         });
         ///// 20170521 ADD END
@@ -406,20 +404,39 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         mButtonSummit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ///// 20170523 MODIFY START
-                // First, get media key
-                // On post execute, upload file to S3 and call report submit api
-                mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
-                mProgressBar.setVisibility(View.VISIBLE);
-                mTextViewUpload.setText(getResources().getText(R.string.report_sent));
-                mImageViewSubmit.setBackground(null);
-                mTextViewError.setVisibility(View.GONE);
-                mViewProgressBar.setVisibility(View.GONE);
-                mButtonReportSentComment.setVisibility(View.GONE);
-                mButtonReportSentRetry.setVisibility(View.GONE);
-                mButtonReportSentClose.setVisibility(View.GONE);
-                ///// 20170523 MODIFY END
-                new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
+                PopUpDlg confirDlg = new PopUpDlg(CompareActivity.this, true);
+                confirDlg.show("", getString(R.string.confirm_retry),
+                        getString(R.string.yes),
+                        getString(R.string.no),
+                        // onOK
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // First, get media key
+                                // On post execute, upload file to S3 and call report submit api
+                                mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
+                                mProgressBar.setVisibility(View.VISIBLE);
+                                mTextViewUpload.setText(getResources().getText(R.string.report_sent));
+                                mImageViewSubmit.setBackground(null);
+                                mTextViewError.setVisibility(View.GONE);
+                                mViewProgressBar.setVisibility(View.GONE);
+                                mButtonReportSentComment.setVisibility(View.GONE);
+                                mButtonReportSentRetry.setVisibility(View.GONE);
+                                mButtonReportSentClose.setVisibility(View.GONE);
+                                ///// 20170523 MODIFY END
+                                new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
+                            }
+                        },
+                        // onCancel
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (dialog != null) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+
             }
         });
 
@@ -436,64 +453,30 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         String url;
         boolean isPortrait;
         switch (v.getId()) {
-//            case R.id.buttonStartAllVideo:
-//                mVideoViewContent.setMediaController(new MediaController(this));
-//                mVideoViewContent.start();
-//                mVideoViewMine.start();
-//                break;
             case R.id.backScreen:
-                intent = new Intent(CompareActivity.this, SelectShootingMethodActivity.class);
-                startActivity(intent);
-                finish();
-
-                break;
-//            case R.id.buttonSwitch:
-//                if (mIsCheckSwitch) {
-//                    mVideoViewContent.setVideoPath(mPath);
-//                    mVideoViewMine.setVideoPath(String.valueOf(mCurrentTodoContent.get("pre_signed_standard_mp4_url")));
-//                    mIsCheckSwitch = false;
-//                } else {
-//                    mVideoViewContent.setVideoPath(String.valueOf(mCurrentTodoContent.get("pre_signed_standard_mp4_url")));
-//                    mVideoViewMine.setVideoPath(mPath);
-//                    mIsCheckSwitch = true;
-//                }
-//                mVideoViewContent.start();
-//                mVideoViewMine.start();
-//
-//                break;
-            ///// 201705021 DELETE START
-//            case R.id.imageButton:
-//                todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-//                studentId = todoParameters.get("studentId");
-//                categoryId = todoParameters.get("categoryId");
-//                todoContentId = todoParameters.get("todoContentId");
-//                url = "%s://%s/training/#/students/" + studentId
-//                        + "/todos?type=updates"; // TODO type=updates/repeat???
-//                intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-//                intent.putExtra("BASE_URL", url);
-//                startActivity(intent);
-//                finish();
-//                break;
-            ///// 201705021 DELETE END
             case R.id.imageButtonBack:
-                ///// 20170521 DELETE START
-//                todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-//                studentId = todoParameters.get("studentId");
-//                categoryId = todoParameters.get("categoryId");
-//                todoContentId = todoParameters.get("todoContentId");
-/*
-                String url = "%s://%s/training/#/students/" + studentId
-                        + "/todos?type=caetgory&category_id=" + categoryId;
-*/
-//                url = "%s://%s/training/#/students/" + studentId
-//                        + "/todos/" + todoContentId;
-//                intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-//                intent.putExtra("BASE_URL", url);
-//                startActivity(intent);
-                ///// 20170521 DELETE END
-                intent = new Intent(CompareActivity.this, SelectShootingMethodActivity.class);
-                startActivity(intent);
-                finish();
+                mConfirDlg = new PopUpDlg(CompareActivity.this, true);
+                mConfirDlg.show("", getString(R.string.confirm_retry),
+                        getString(R.string.yes),
+                        getString(R.string.no),
+                        // onOK
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(CompareActivity.this, SelectShootingMethodActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        },
+                        // onCancel
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (dialog != null) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
                 break;
             case R.id.pause_img_content:
             case R.id.pause_img_mine:
@@ -653,6 +636,7 @@ public class CompareActivity extends AppCompatActivity implements View.OnClickLi
         super.onSaveInstanceState(outState);
         outState.putInt("compareActivity", mSubmissionConfirmation);
     }
+
     ///// 20170523 ADD START
     @Override
     public void finish() {
