@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">ClipLine</string>
     <string name="action_settings">設定</string>
-    <!--///// 20170519 DELETE START-->
     <!--<string name="title_activity_login">ClipLine</string>-->
-    <!--///// 20170519 DELETE END-->
 
     <!-- Strings related to login -->
     <string name="prompt_service_id">サービスID</string>
@@ -71,7 +69,6 @@
     <string name="compare_start_video">同時に見比べる</string>
     <string name="compare_switch_video">切り替え</string>
 
-    <!-- ///// 20170519 MODIFY START-->
     <string name="report_sent">投稿しています</string>
     <string name="report_sent_successful">完了しました</string>
     <string name="report_sent_failed">失敗しました</string>

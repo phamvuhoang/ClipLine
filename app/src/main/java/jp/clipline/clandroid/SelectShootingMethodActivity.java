@@ -63,11 +63,9 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ///// 20170523 ADD START
         if (!((ClWebWrapperApplication) this.getApplication()).isBack()) {
             overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
         }
-        ///// 20170523 ADD END
         setContentView(R.layout.activity_select_shooting_method);
         mProgressBar = (ProgressBar) findViewById(progressBar);
 
@@ -186,13 +184,13 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                             } else {
                                 return;
                             }
-                            ///// 20170523 MODIFY START
+
                             Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
                             ((ClWebWrapperApplication) getApplication()).setTodoContent(pathfile/*data.getData()*/, contentType);
                             startActivity(intent);
                             overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             finish();
-                            ///// 20170523 MODIFY END
+
                         } catch (URISyntaxException e) {
                             e.printStackTrace();
                         }
@@ -257,7 +255,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         backScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ///// 20170523 MODIFY START
                 Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
                 String studentId = todoParameters.get("studentId");
                 String categoryId = todoParameters.get("categoryId");
@@ -269,7 +266,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 startActivity(intent);
                 overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 finish();
-                ///// 20170523 MODIFY END
             }
         });
 
@@ -284,7 +280,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             try {
-                ///// 20170523 MODIFY START
                 if (requestCode == REQUEST_CODE_PICTURE_CAPTURE) {
                     uriPicture = (Uri) data.getExtras().get("path_result");
                     String path = AndroidUtility.getFilePath(this, uriPicture);
@@ -364,15 +359,12 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                     Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
                     ((ClWebWrapperApplication) this.getApplication()).setTodoContent(pathFile, contentType);
                     startActivity(intent);
-                    ///// 20170523 MODIFY START
 //                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                     overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-                    ///// 20170523 MODIFY END
                     finish();
 
                     return;
                 }
-                ///// 20170523 MODIFY END
 
             } catch (URISyntaxException e) {
                 e.printStackTrace();
@@ -438,11 +430,9 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 } else {
                     textView.setText("");
                 }
-                ///// 20170520 ADD START
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ///// 20170523 MODIFY START
                         Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
                         String studentId = todoParameters.get("studentId");
                         String categoryId = todoParameters.get("categoryId");
@@ -454,10 +444,8 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                         startActivity(intent);
                         overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                         finish();
-                        ///// 20170523 MODIFY END
                     }
                 });
-                ///// 20170520 ADD END
 
                 if (todoContent != null) {
                     boolean hasPlayAction = false;
@@ -547,11 +535,9 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         }
     }
 
-    ///// 20170523 ADD START
     @Override
     protected void onDestroy() {
         super.onDestroy();
         AndroidUtility.setBack(SelectShootingMethodActivity.this, true);
     }
-    ///// 20170523 ADD END
 }

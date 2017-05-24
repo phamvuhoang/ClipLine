@@ -6,10 +6,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PersistableBundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -19,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -27,12 +32,15 @@ import android.widget.VideoView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;
 import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.PopUpDlg;
+import jp.clipline.clandroid.api.MediaKey;
+import jp.clipline.clandroid.api.Report;
 import jp.clipline.clandroid.view.StatusView;
 
 
@@ -95,7 +103,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare);
-        ///// 20170521 ADD START
         if (savedInstanceState != null) {
             mSubmissionConfirmation = savedInstanceState.getInt("compareActivity");
         }
@@ -119,7 +126,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
 
         mCurrentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
         TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);
-        ///// 20170521 ADD START
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,7 +154,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
 
             }
         });
-        ///// 20170521 ADD END
 
         mIsCheckSwitch = true;
         if (mCurrentTodoContent != null && mCurrentTodoContent.get("title") != null) {
@@ -494,7 +499,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    ///// 20170521 ADD START
     @Override
     protected void onResume() {
         super.onResume();
@@ -511,13 +515,11 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         outState.putInt("compareActivity", mSubmissionConfirmation);
     }
 
-    ///// 20170523 ADD START
     @Override
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
     }
-    ///// 20170523 ADD END
 
     private void findViewById() {
         mCurrentTimeContent = (TextView) findViewById(R.id.current_time_tv_content);
