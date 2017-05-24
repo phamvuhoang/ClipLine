@@ -1,0 +1,116 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayoutOverlay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="500dp"
+        android:layout_height="300dp"
+        android:background="@android:color/white">
+
+
+        <ImageView
+            android:id="@+id/imageViewStatusSubmit"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignBottom="@+id/textViewUpload"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="55dp" />
+
+        <TextView
+            android:id="@+id/textViewUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/linearLayout5"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:text="@string/report_sent"
+            android:textColor="#000"
+            android:textSize="35sp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:indeterminate="true" />
+
+            <View
+                android:id="@+id/viewProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout5"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/error_submit"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonReportSentInputComment"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/border_color_gray"
+                android:text="@string/report_sent_input_comment"
+                android:textColor="#808080"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/buttonReportSentRetry"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/border_color_gray"
+                android:text="@string/report_sent_retry"
+                android:textColor="#808080"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/buttonReportSentClose"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/border_color_gray"
+                android:text="@string/report_sent_back"
+                android:textColor="#808080"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
