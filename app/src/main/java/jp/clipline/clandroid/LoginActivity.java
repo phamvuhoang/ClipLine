@@ -119,6 +119,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
+
+        Map<String, String> loginSetting = AndroidUtility.getLoginSetting(getApplicationContext());
+        if (loginSetting != null) {
+            mServiceId.setText(loginSetting.get("serviceId"));
+            mBranchId.setText(loginSetting.get("branchId"));
+            mPasswordView.setText(loginSetting.get("password"));
+        }
         mAndroidId = (TextView) findViewById(R.id.androidId);
         mAndroidId.setText(String.format(getString(R.string.android_id_format), AndroidUtility.getAndroidId(getContentResolver())));
         mAndroidId.setText(String.format("[%s] %s", BuildConfig.ANDROID_ENV, mAndroidId.getText()));

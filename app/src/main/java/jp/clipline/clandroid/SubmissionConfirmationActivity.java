@@ -7,39 +7,30 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;
 import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.PopUpDlg;
-import jp.clipline.clandroid.api.MediaKey;
-import jp.clipline.clandroid.api.Report;
 import jp.clipline.clandroid.view.FullVideo;
 import jp.clipline.clandroid.view.StatusView;
 
-public class SubmissionConfirmationActivity extends AppCompatActivity implements View.OnClickListener {
+public class SubmissionConfirmationActivity extends BaseActivity implements View.OnClickListener {
 
     private String mTodoContentType = null;
     private Uri mTodoContentData = null;
@@ -77,20 +68,8 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
     private Button mImageButtonCompareOrSubmit;
     private boolean mHasMyReportPlayAction = false;
     private RelativeLayout mRelativeLayoutContentVideo;
-    private ImageView mImageViewSubmit;
-    private TextView mTextViewUpload;
-    private Button mButtonReportSentComment;
-    private Button mButtonReportSentClose;
-    private Button mButtonReportSentRetry;
-    private TextView mTextViewError;
-    private ProgressBar mProgressBar;
-    private View mViewProgressBar;
 
-    private RelativeLayout mRelativeLayoutOverlay;
-    private final int UPLOAD_NONE = 0;
-    private final int UPLOAD_SUCCESSFULL = 1;
-    private final int UPLOAD_FAILE = 2;
-    private int mSubmissionConfirmation = 0;
+
     private PopUpDlg mConfirDlg;
 
     @Override
@@ -109,98 +88,18 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         ImageView imageView;
         TextView textView;
 
-        // レポート完成画面
-        mRelativeLayoutOverlay = (RelativeLayout) findViewById(R.id.relativeLayoutOverlay);
-        mRelativeLayoutOverlay.setVisibility(View.GONE);
-        ///// 20170521 DELETE START
-//        imageButton = (ImageButton) findViewById(R.id.imageButtonReportSentClose);
-//        imageButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mRelativeLayoutOverlay.setVisibility(View.GONE);
-//            }
-//        });
-        ///// 20170521 DELETE END
-        ///// 20170520 ADD START
-        mTextViewError = (TextView) findViewById(R.id.textViewError);
-        mButtonReportSentRetry = (Button) findViewById(R.id.buttonReportSentRetry);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        mViewProgressBar = findViewById(R.id.viewProgressBar);
-        mProgressBar.setVisibility(View.VISIBLE);
-        mProgressBar.setIndeterminate(true);
-        mButtonReportSentRetry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mProgressBar.setVisibility(View.VISIBLE);
-                mTextViewUpload.setText(getResources().getText(R.string.report_sent));
-                mImageViewSubmit.setBackground(null);
-                mTextViewError.setVisibility(View.GONE);
-                mViewProgressBar.setVisibility(View.GONE);
-                new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
-            }
-        });
-        ///// 20170520 ADD END
-
-        ///// 20170521 MODIFY START
-        // レポート完成：もどるボタン
-        mButtonReportSentClose = (Button) findViewById(R.id.buttonReportSentClose);
-        mButtonReportSentClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mRelativeLayoutOverlay.setVisibility(View.GONE);
-                mSubmissionConfirmation = UPLOAD_NONE;
-//                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-//                String studentId = todoParameters.get("studentId");
-//                String categoryId = todoParameters.get("categoryId");
-//                String todoContentId = todoParameters.get("todoContentId");
-//                String url = "%s://%s/training/#/students/" + studentId
-//                        + "/todos?type=updates"; // TODO type=updates/repeat???
-//                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-//                intent.putExtra("BASE_URL", url);
-//                startActivity(intent);
-//                finish();
-            }
-        });
-///// 20170521 MODIFY END
-        // レポート完成：コメントを入れるボタン
-        mButtonReportSentComment = (Button) findViewById(R.id.buttonReportSentInputComment);
-        mButtonReportSentComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                String studentId = todoParameters.get("studentId");
-                String categoryId = todoParameters.get("categoryId");
-                String todoContentId = todoParameters.get("todoContentId");
-                String url = "%s://%s/training/#/students/" + studentId
-                        + "/todos/" + todoContentId;
-
-                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-                intent.putExtra("BASE_URL", url);
-                startActivity(intent);
-                ///// 20170523 ADD START
-                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-                ///// 20170523 ADD END
-                finish();
-            }
-        });
-
         imageView = (ImageView) findViewById(R.id.imageView);
 
         findViewById();
-//        VideoView videoView = (VideoView) findViewById(R.id.videoView);
         mWebView = (WebView) findViewById(R.id.webView);
         if (mTodoContentType.equals("image/png")) {
             // 画像が撮影or選択された場合
             imageView.setImageURI(mTodoContentData);
-//            videoView.setVisibility(View.GONE);
             mWebView.setVisibility(View.GONE);
             mRelativeLayoutContentVideo.setVisibility(View.GONE);
         } else if (mTodoContentType.equals("video/mp4")) {
             // 動画が撮影or選択された場合
             playVideo(mTodoContentData);
-//            videoView.setVideoURI(mTodoContentData);
-//            videoView.start();
             imageView.setVisibility(View.GONE);
             mWebView.setVisibility(View.GONE);
         } else {
@@ -209,7 +108,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                 mWebView.getSettings().setJavaScriptEnabled(true);
                 mWebView.loadUrl(path);
                 mWebView.setVisibility(View.VISIBLE);
-//                videoView.setVisibility(View.GONE);
                 imageView.setVisibility(View.GONE);
             } catch (URISyntaxException e) {
                 e.printStackTrace();
@@ -409,7 +307,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         } else {
             textView.setText("");
         }
-        ///// 20170520 MODIFY START
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -439,7 +337,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
 
             }
         });
-        ///// 20170520 MODIFY END
+
     }
 
     private void findViewById() {
@@ -451,8 +349,6 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
         mPlayAndPause = (ImageView) findViewById(R.id.pause_img);
         mChangeFullScreen = (ImageView) findViewById(R.id.change_screen);
         mRelativeLayoutContentVideo = (RelativeLayout) findViewById(R.id.relativeLayoutContentVideo);
-        mImageViewSubmit = (ImageView) findViewById(R.id.imageViewStatusSubmit);
-        mTextViewUpload = (TextView) findViewById(R.id.textViewUpload);
         setListener();
         init();
     }
@@ -681,19 +577,7 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
                     finish();
                 } else { // post
                     // First, get media key
-                    // On post execute, upload file to S3 and call report submit api
-                    ///// 20170523 MODIFY START
-                    mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
-                    mProgressBar.setVisibility(View.VISIBLE);
-                    mTextViewUpload.setText(getResources().getText(R.string.report_sent));
-                    mImageViewSubmit.setBackground(null);
-                    mTextViewError.setVisibility(View.GONE);
-                    mViewProgressBar.setVisibility(View.GONE);
-                    mButtonReportSentComment.setVisibility(View.GONE);
-                    mButtonReportSentRetry.setVisibility(View.GONE);
-                    mButtonReportSentClose.setVisibility(View.GONE);
-                    new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
-                    ///// 20170523 MODIFY END
+                    handlerUpload();
                 }
                 break;
             ///// 20170520 MODIFY END
@@ -707,28 +591,9 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         if (mSubmissionConfirmation == UPLOAD_SUCCESSFULL) {
-            mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
-            mProgressBar.setVisibility(View.GONE);
-            mViewProgressBar.setBackground(ContextCompat.getDrawable(SubmissionConfirmationActivity.this, R.color.green));
-            mViewProgressBar.setVisibility(View.VISIBLE);
-            mImageViewSubmit.setBackground(ContextCompat.getDrawable(SubmissionConfirmationActivity.this, R.drawable.icon_status_complete));
-            mTextViewUpload.setText(getResources().getText(R.string.report_sent_successful));
-            mButtonReportSentComment.setVisibility(View.VISIBLE);
-            mButtonReportSentClose.setVisibility(View.VISIBLE);
-            mButtonReportSentRetry.setVisibility(View.GONE);
+            UploadSuccessfull();
         } else if (mSubmissionConfirmation == UPLOAD_FAILE) {
-            mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
-            mProgressBar.setVisibility(View.GONE);
-            mViewProgressBar.setBackground(ContextCompat.getDrawable(SubmissionConfirmationActivity.this, R.color.colorRed));
-            mViewProgressBar.setVisibility(View.VISIBLE);
-            mImageViewSubmit.setBackground(ContextCompat.getDrawable(SubmissionConfirmationActivity.this, R.drawable.icon_error));
-            mTextViewUpload.setText(getResources().getText(R.string.report_sent_failed));
-            mButtonReportSentComment.setVisibility(View.GONE);
-            mButtonReportSentClose.setVisibility(View.VISIBLE);
-            mButtonReportSentRetry.setVisibility(View.VISIBLE);
-            mTextViewError.setVisibility(View.VISIBLE);
-        } else {
-            mRelativeLayoutOverlay.setVisibility(View.GONE);
+            UploadFaile();
         }
     }
 
@@ -752,125 +617,5 @@ public class SubmissionConfirmationActivity extends AppCompatActivity implements
     }
     ///// 20170521 ADD END
 
-    /**
-     * Get media key to send file to S3 and send report
-     */
-    public class GetMediaKeyTask extends AsyncTask<String, Void, Boolean> {
-
-        Map<String, Object> mediaKey = null;
-
-        GetMediaKeyTask() {
-        }
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            try {
-                String cookie = params[0];
-
-                mediaKey = MediaKey.getMediaKeyContent(cookie);
-                return Boolean.TRUE;
-            } catch (IOException e) {
-                return Boolean.FALSE;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            if (success) {
-                // TODO send file to S3???
-
-                if ((mediaKey != null)
-                        && (mediaKey.get("object_key") != null)) {
-                    Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                    String todoContentId = todoParameters.get("todoContentId");
-
-                    String objectKey = (String) mediaKey.get("object_key");
-
-                    // TODO change to right value
-                    String contentType = "video/mp4";
-                    String mediaURLInDevice = "//content:/....";
-                    String mediaDuration = "10:00";
-                    String takenAt = "2016-05-07 10:11:12";
-
-                    // Call report API
-                    new SendReportTask().execute(AndroidUtility.getCookie(getApplicationContext()),
-                            objectKey, contentType, mediaURLInDevice, mediaDuration, takenAt, todoContentId);
-
-                }
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-        }
-    }
-
-
-    public class SendReportTask extends AsyncTask<String, Void, Boolean> {
-
-        Map<String, Object> reponseData = null;
-
-        SendReportTask() {
-        }
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            try {
-                String cookie = params[0];
-                String mediaKey = params[1];
-                String contentType = params[2];
-                String mediaURLInDevice = params[3];
-                String mediaDuration = params[4];
-                String takenAt = params[5];
-                String todoContentId = params[6];
-
-                reponseData = Report.sendStudentReport(cookie, mediaKey, contentType, mediaURLInDevice, mediaDuration, takenAt, todoContentId);
-
-                return Boolean.TRUE;
-            } catch (IOException e) {
-                return Boolean.FALSE;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            //TODO TEST
-            ///// 20170523 ADD START
-            success = true;
-            ///// 20170523 ADD END
-
-            ///// 20170521 MODIFY START
-            if (success) {
-                mProgressBar.setVisibility(View.GONE);
-                mViewProgressBar.setBackground(ContextCompat.getDrawable(SubmissionConfirmationActivity.this, R.color.green));
-                mViewProgressBar.setVisibility(View.VISIBLE);
-                mImageViewSubmit.setBackground(ContextCompat.getDrawable(SubmissionConfirmationActivity.this, R.drawable.icon_status_complete));
-                mTextViewUpload.setText(getResources().getText(R.string.report_sent_successful));
-                mButtonReportSentComment.setVisibility(View.VISIBLE);
-                mButtonReportSentClose.setVisibility(View.VISIBLE);
-                mButtonReportSentRetry.setVisibility(View.GONE);
-                mSubmissionConfirmation = UPLOAD_SUCCESSFULL;
-
-            } else {
-                mProgressBar.setVisibility(View.GONE);
-                mViewProgressBar.setBackground(ContextCompat.getDrawable(SubmissionConfirmationActivity.this, R.color.colorRed));
-                mViewProgressBar.setVisibility(View.VISIBLE);
-                mImageViewSubmit.setBackground(ContextCompat.getDrawable(SubmissionConfirmationActivity.this, R.drawable.icon_error));
-                mTextViewUpload.setText(getResources().getText(R.string.report_sent_failed));
-                mButtonReportSentComment.setVisibility(View.GONE);
-                mButtonReportSentClose.setVisibility(View.VISIBLE);
-                mButtonReportSentRetry.setVisibility(View.VISIBLE);
-                mTextViewError.setVisibility(View.VISIBLE);
-                mSubmissionConfirmation = UPLOAD_FAILE;
-            }
-            ///// 20170521 MODIFY END
-            // TODO Just show complete screen for now, need to modify later
-            mRelativeLayoutOverlay.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected void onCancelled() {
-        }
-    }
 
 }

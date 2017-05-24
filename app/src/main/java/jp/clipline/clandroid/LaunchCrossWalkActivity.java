@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceResponse;
@@ -255,7 +254,7 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
 
         // ex) NativeInterface.studentToDo(92680,988,15532);
         @JavascriptInterface
-        public void studentToDo(String studentId, String categoryId, String todoContentId) {
+        public void studentToDo(String studentId, String categoryId, String todoContentId, String type) {
             ///// 20170523 MODIFY START
             categoryId = "988";
             AndroidUtility.setBack(LaunchCrossWalkActivity.this, false);
