@@ -1,7 +1,5 @@
 package jp.clipline.clandroid.api;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -38,6 +36,7 @@ public class Branch {
                 .post(requestBody)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .addHeader("Accept-Language", language)
+                .addHeader("X-ClipLine-AppType", "android")
                 .build();
 
         Response response = new OkHttpClient().newCall(request).execute();

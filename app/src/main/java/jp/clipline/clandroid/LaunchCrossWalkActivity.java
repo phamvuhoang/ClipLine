@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceResponse;
@@ -280,6 +279,17 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
             startActivity(intent);
 
 //            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        }
+
+        @JavascriptInterface
+        public void studentLogin(String user_id, String password) {
+            Log.e("studentLogin", user_id + "\n" + password);
+        }
+
+
+        @JavascriptInterface
+        public void coachLogin(String user_id, String password) {
+            Log.e("coachLogin", user_id + "\n" + password);
         }
     }
 
