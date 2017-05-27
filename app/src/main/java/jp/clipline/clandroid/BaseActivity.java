@@ -245,6 +245,8 @@ public class BaseActivity extends AppCompatActivity {
                 mTextViewUpload.setText(getResources().getText(R.string.report_sent_successful));
                 mButtonReportSentComment.setVisibility(View.VISIBLE);
                 mButtonReportSentClose.setVisibility(View.VISIBLE);
+                //TODO bug 26
+                mButtonReportSentClose.setText(getResources().getText(R.string.report_sent_retry));
                 mButtonReportSentRetry.setVisibility(View.GONE);
                 mSubmissionConfirmation = UPLOAD_SUCCESSFULL;
 

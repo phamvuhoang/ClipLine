@@ -73,7 +73,7 @@
     <string name="report_sent_successful">完了しました</string>
     <string name="report_sent_failed">失敗しました</string>
     <string name="report_sent_input_comment">コメントする</string>
-    <string name="report_sent_back">もどる</string>
+    <string name="report_sent_back">再投稿</string>
     <string name="report_sent_retry">閉じる</string>
     <string name="error_submit">通信環境をご確認の上、再投稿してください。</string>
 
@@ -89,4 +89,5 @@
     <string name="confirm_retry">撮影したレポートを破棄しますか。</string>
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
+    <string name="remember_login">Remember Login</string>
 </resources>

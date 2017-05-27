@@ -33,7 +33,6 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
-            android:padding="1dp"
             app:cardCornerRadius="3dp"
             app:cardElevation="5dp">
 
@@ -74,53 +73,52 @@
         android:layout_height="0dp"
         android:layout_centerInParent="true" />
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:id="@+id/linearLayoutStatus"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/relativeLayoutHeader"
-        app:cardCornerRadius="1dp"
-        app:cardElevation="5dp">
+        android:layout_centerHorizontal="true"
+        android:background="#FFFFFF"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:weightSum="2.5">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <jp.clipline.clandroid.view.StatusView
+            android:id="@+id/statusView"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"
-            android:background="#FFFFFF"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:weightSum="2.5">
+            android:layout_gravity="center"
+            android:layout_weight="0.5" />
 
-            <jp.clipline.clandroid.view.StatusView
-                android:id="@+id/statusView"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="0.5" />
+        <jp.clipline.clandroid.view.StatusView
+            android:id="@+id/statusResport"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
 
-            <jp.clipline.clandroid.view.StatusView
-                android:id="@+id/statusResport"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1" />
+        <jp.clipline.clandroid.view.StatusView
+            android:id="@+id/statusCheck"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
 
-            <jp.clipline.clandroid.view.StatusView
-                android:id="@+id/statusCheck"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1" />
+    </LinearLayout>
 
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@+id/linearLayoutStatus"
+        android:background="@drawable/line" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="310dp"
-        android:layout_below="@+id/linearLayoutStatus"
+        android:layout_below="@+id/view"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
@@ -431,211 +429,5 @@
 
             />
     </LinearLayout>
-
-    <!--<RelativeLayout-->
-    <!--android:id="@+id/relativeLayoutBottom"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="64dp"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:layout_centerInParent="true"-->
-    <!--android:background="#E8E8E8"-->
-    <!--android:padding="10dp">-->
-
-    <!--<LinearLayout-->
-    <!--android:id="@+id/linearLayoutFooterStatus"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:gravity="center_vertical"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_alignParentLeft="true">-->
-
-    <!--<ImageView-->
-    <!--android:id="@+id/imageViewFooterView"-->
-    <!--android:layout_width="28dp"-->
-    <!--android:layout_height="28dp"-->
-    <!--app:srcCompat="@drawable/ic_sample_svg"-->
-    <!--/>-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/textViewFooterView"-->
-    <!--android:layout_width="50dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="5dp"-->
-    <!--android:text="@string/footer_view"-->
-    <!--android:textSize="12sp"-->
-    <!--android:textColor="#61B5Ab"-->
-    <!--android:textStyle="normal"-->
-    <!--/>-->
-
-    <!--<ImageView-->
-    <!--android:id="@+id/imageViewFooterShoot"-->
-    <!--android:layout_width="28dp"-->
-    <!--android:layout_height="28dp"-->
-    <!--app:srcCompat="@drawable/ic_sample_svg"-->
-    <!--/>-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/textViewFooterShoot"-->
-    <!--android:layout_width="50dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="5dp"-->
-    <!--android:text="@string/footer_shoot"-->
-    <!--android:textSize="12sp"-->
-    <!--android:textColor="#61B5Ab"-->
-    <!--android:textStyle="normal"-->
-    <!--/>-->
-
-    <!--<ImageView-->
-    <!--android:id="@+id/imageViewFooterCompare"-->
-    <!--android:layout_width="28dp"-->
-    <!--android:layout_height="28dp"-->
-    <!--app:srcCompat="@drawable/ic_sample_svg"-->
-    <!--/>-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/textViewFooterCompare"-->
-    <!--android:layout_width="50dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="5dp"-->
-    <!--android:text="@string/footer_compare"-->
-    <!--android:textSize="12sp"-->
-    <!--android:textColor="#61B5Ab"-->
-    <!--android:textStyle="normal"-->
-    <!--/>-->
-
-    <!--</LinearLayout>-->
-
-    <!--<Button-->
-    <!--android:id="@+id/buttonSubmit"-->
-    <!--android:layout_width="150dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_marginRight="16dp"-->
-    <!--android:background="#33CC66"-->
-    <!--android:text="@string/select_shooting_method_submit"-->
-    <!--android:textColor="#FFFFFF" />-->
-
-    <!--</RelativeLayout>-->
-
-    <RelativeLayout
-        android:id="@+id/relativeLayoutOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#66000000"
-        android:visibility="gone">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="100dp"
-            android:background="@android:color/white">
-
-
-            <ImageView
-                android:id="@+id/imageViewStatusSubmit"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignBottom="@+id/textViewUpload"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="55dp" />
-
-            <TextView
-                android:id="@+id/textViewUpload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/linearLayout5"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="25dp"
-                android:text="@string/report_sent"
-                android:textColor="#000"
-                android:textSize="35sp" />
-
-            <LinearLayout
-                android:id="@+id/linearLayout5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:orientation="vertical">
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:indeterminate="true" />
-
-                <View
-                    android:id="@+id/viewProgressBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp" />
-            </LinearLayout>
-
-
-            <TextView
-                android:id="@+id/textViewError"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/linearLayout5"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
-                android:gravity="center"
-                android:text="@string/error_submit"
-                android:textSize="20sp"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="20dp"
-                android:gravity="right"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/buttonReportSentInputComment"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/border_color_gray"
-                    android:text="@string/report_sent_input_comment"
-                    android:textColor="#808080"
-                    android:visibility="gone" />
-
-
-                <Button
-                    android:id="@+id/buttonReportSentRetry"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/border_color_gray"
-                    android:text="@string/report_sent_retry"
-                    android:textColor="#808080"
-                    android:visibility="gone" />
-
-                <Button
-                    android:id="@+id/buttonReportSentClose"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/border_color_gray"
-                    android:text="@string/report_sent_back"
-                    android:textColor="#808080"
-                    android:visibility="gone" />
-            </LinearLayout>
-        </RelativeLayout>
-
-
-    </RelativeLayout>
-
 
 </RelativeLayout>
