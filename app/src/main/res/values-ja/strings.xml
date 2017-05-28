@@ -73,8 +73,8 @@
     <string name="report_sent_successful">完了しました</string>
     <string name="report_sent_failed">失敗しました</string>
     <string name="report_sent_input_comment">コメントする</string>
-    <string name="report_sent_back">もどる</string>
-    <string name="report_sent_retry">閉じる</string>
+    <string name="report_sent_back">閉最高等じる</string>
+    <string name="report_sent_retry"></string>
     <string name="error_submit">通信環境をご確認の上、再投稿してください。</string>
 
     <string name="for_student">学習者用</string>
