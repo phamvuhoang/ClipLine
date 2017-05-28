@@ -212,6 +212,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         mStatusView.setTypeView(StatusView.STATUS_VIEW.VIEW, true);
         mStatusViewResport.setTypeView(StatusView.STATUS_VIEW.REPORT, true);
         mStatusViewCheck.setTypeView(StatusView.STATUS_VIEW.CHECK, true);
+/*
 
         mStatusView.setClickListener(new StatusView.ClickListener() {
             @Override
@@ -250,6 +251,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
 
             }
         });
+*/
 
         LinearLayout backScreen = (LinearLayout) findViewById(R.id.imageButtonBack);
         backScreen.setOnClickListener(new View.OnClickListener() {
