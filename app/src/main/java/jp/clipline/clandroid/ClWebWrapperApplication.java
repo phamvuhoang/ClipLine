@@ -24,11 +24,12 @@ public class ClWebWrapperApplication extends Application {
     // ------------------------------------------------------------------------------------------ //
     private Map<String, String> todoParameters = new HashMap<String, String>();
 
-    public void setTodoParameters(String studentId, String categoryId, String todoContentId) {
+    public void setTodoParameters(String studentId, String categoryId, String todoContentId, String type) {
         todoParameters.clear();
         todoParameters.put("studentId", studentId);
         todoParameters.put("categoryId", categoryId);
         todoParameters.put("todoContentId", todoContentId);
+        todoParameters.put("type", type);
     }
 
     public Map<String, String> getTodoParameters() {
