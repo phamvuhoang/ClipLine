@@ -15,4 +15,6 @@
     <color name="rounded_container_border">#3b3f44</color>
     <color name="light_gray_header_color">#646663</color>
     <color name="green">#23bcae</color>
+
+    <color name="clipline_default_bg">#35b6ac</color>
 </resources>

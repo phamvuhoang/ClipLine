@@ -98,6 +98,20 @@ public class BaseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mAlertDialog.dismiss();
                 mSubmissionConfirmation = UPLOAD_NONE;
+
+                // 一覧へ戻る
+                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                // TODO add check student or coach and add param properly
+                String studentId = todoParameters.get("studentId");
+                String categoryId = todoParameters.get("categoryId");
+                String todoContentId = todoParameters.get("todoContentId");
+                String type = todoParameters.get("type");
+                String url = "%s://%s/training/#/students/" + studentId
+                        + "/todos?type=" + type;
+                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                intent.putExtra("BASE_URL", url);
+                startActivity(intent);
+                finish();
             }
         });
 
