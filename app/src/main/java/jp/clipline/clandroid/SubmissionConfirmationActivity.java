@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,9 +19,13 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
+import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
+
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.net.URISyntaxException;
 import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
@@ -30,22 +33,14 @@ import jp.clipline.clandroid.Utility.PopUpDlg;
 import jp.clipline.clandroid.view.FullVideo;
 import jp.clipline.clandroid.view.StatusView;
 
-public class SubmissionConfirmationActivity extends BaseActivity implements View.OnClickListener {
+public class SubmissionConfirmationActivity extends BaseActivity implements View.OnClickListener, OnPageChangeListener, OnLoadCompleteListener {
 
     private String mTodoContentType = null;
     private Uri mTodoContentData = null;
-    private WebView mWebView;
 
     private StatusView mStatusView;
     private StatusView mStatusViewResport;
     private StatusView mStatusViewCheck;
-//    private LinearLayout mLinearLayoutFooterStatus;
-//    private ImageView mImageViewFooterView;
-//    private TextView mTextViewFooterView;
-//    private ImageView mImageViewFooterShoot;
-//    private TextView mTextViewFooterShoot;
-//    private ImageView mImageViewFooterCompare;
-//    private TextView mTextViewFooterCompare;
 
     //VIDEO
     private FullVideo mVideoView;
@@ -68,9 +63,8 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
     private Button mImageButtonCompareOrSubmit;
     private boolean mHasMyReportPlayAction = false;
     private RelativeLayout mRelativeLayoutContentVideo;
-
-
     private PopUpDlg mConfirDlg;
+    private PDFView mPdfView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,27 +81,36 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
         TextView textView;
 
         imageView = (ImageView) findViewById(R.id.imageView);
+        mPdfView = (PDFView) findViewById(R.id.pdfView);
 
         findViewById();
-        mWebView = (WebView) findViewById(R.id.webView);
         if (mTodoContentType.equals("image/png")) {
             // 画像が撮影or選択された場合
             imageView.setImageURI(mTodoContentData);
-            mWebView.setVisibility(View.GONE);
+            imageView.setVisibility(View.VISIBLE);
             mRelativeLayoutContentVideo.setVisibility(View.GONE);
+            mPdfView.setVisibility(View.GONE);
         } else if (mTodoContentType.equals("video/mp4")) {
             // 動画が撮影or選択された場合
             playVideo(mTodoContentData);
             imageView.setVisibility(View.GONE);
-            mWebView.setVisibility(View.GONE);
+            mRelativeLayoutContentVideo.setVisibility(View.VISIBLE);
+            mPdfView.setVisibility(View.GONE);
         } else {
             try {
-                String path = "file:///" + AndroidUtility.getFilePath(this, mTodoContentData);
-                mWebView.getSettings().setJavaScriptEnabled(true);
-                mWebView.loadUrl(path);
-                mWebView.setVisibility(View.VISIBLE);
                 imageView.setVisibility(View.GONE);
-            } catch (URISyntaxException e) {
+                mRelativeLayoutContentVideo.setVisibility(View.GONE);
+                mPdfView.setVisibility(View.VISIBLE);
+                String path = AndroidUtility.getFilePath(this, mTodoContentData);
+                mPdfView.fromFile(new File(path))
+                        .defaultPage(0)
+                        .onPageChange(this)
+                        .enableAnnotationRendering(true)
+                        .onLoad(this)
+                        .scrollHandle(new DefaultScrollHandle(this))
+                        .load();
+                ;
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -426,6 +429,16 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
                 mCurrentTimeTv.setText("00:00");
             }
         });
+
+    }
+
+    @Override
+    public void loadComplete(int nbPages) {
+
+    }
+
+    @Override
+    public void onPageChanged(int page, int pageCount) {
 
     }
 

@@ -67,7 +67,7 @@
     <LinearLayout
         android:id="@+id/linearLayoutStatus"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="80dp"
         android:layout_below="@+id/relativeLayoutHeader"
         android:layout_centerHorizontal="true"
         android:background="#FFFFFF"
@@ -128,17 +128,16 @@
 
             <ImageView
                 android:id="@+id/imageView"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true" />
 
-            <WebView
-                android:id="@+id/webView"
+            <com.github.barteksc.pdfviewer.PDFView
+                android:id="@+id/pdfView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
         </RelativeLayout>
 

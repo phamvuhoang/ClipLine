@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -183,5 +184,9 @@ public class AndroidUtility {
 
     public static void setBack(Activity context, boolean back) {
         ((ClWebWrapperApplication) context.getApplication()).setBack(back);
+    }
+
+    public static boolean isPortrait(Context context) {
+        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? true : false;
     }
 }

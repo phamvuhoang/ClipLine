@@ -1,7 +1,6 @@
 package jp.clipline.clandroid;
 
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,7 +11,6 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,7 +28,6 @@ import java.util.Map;
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.CameraUtil;
 import jp.clipline.clandroid.Utility.FileChooser;
-import jp.clipline.clandroid.Utility.PopUpDlg;
 import jp.clipline.clandroid.api.ToDo;
 import jp.clipline.clandroid.view.StatusView;
 
@@ -45,13 +42,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
     private static int REQUEST_CODE_SELECT_FILE = 5;
 
     private Uri uriPicture = null;
-    //    private LinearLayout mLinearLayoutFooterStatus;
-//    private ImageView mImageViewFooterView;
-//    private TextView mTextViewFooterView;
-//    private ImageView mImageViewFooterShoot;
-//    private TextView mTextViewFooterShoot;
-//    private ImageView mImageViewFooterCompare;
-//    private TextView mTextViewFooterCompare;
     private ProgressBar mProgressBar;
     public final String APP_DIR = "Clipline";
     public final String COMPRESSED_VIDEOS_DIR = "/Compressed Videos/";
