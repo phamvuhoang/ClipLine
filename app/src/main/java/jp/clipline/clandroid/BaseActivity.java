@@ -246,11 +246,8 @@ public class BaseActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean success) {
             //TODO TEST
-            ///// 20170523 ADD START
             success = true;
-            ///// 20170523 ADD END
 
-            ///// 20170521 MODIFY START
             if (success) {
                 mProgressBar.setVisibility(View.GONE);
                 mViewProgressBar.setBackground(ContextCompat.getDrawable(BaseActivity.this, R.color.green));
@@ -259,8 +256,6 @@ public class BaseActivity extends AppCompatActivity {
                 mTextViewUpload.setText(getResources().getText(R.string.report_sent_successful));
                 mButtonReportSentComment.setVisibility(View.VISIBLE);
                 mButtonReportSentClose.setVisibility(View.VISIBLE);
-                //TODO bug 26
-                mButtonReportSentClose.setText(getResources().getText(R.string.report_sent_retry));
                 mButtonReportSentRetry.setVisibility(View.GONE);
                 mSubmissionConfirmation = UPLOAD_SUCCESSFULL;
 
@@ -271,7 +266,7 @@ public class BaseActivity extends AppCompatActivity {
                 mImageViewSubmit.setBackground(ContextCompat.getDrawable(BaseActivity.this, R.drawable.icon_error));
                 mTextViewUpload.setText(getResources().getText(R.string.report_sent_failed));
                 mButtonReportSentComment.setVisibility(View.GONE);
-                mButtonReportSentClose.setVisibility(View.VISIBLE);
+                //mButtonReportSentClose.setVisibility(View.VISIBLE);
                 mButtonReportSentRetry.setVisibility(View.VISIBLE);
                 mTextViewError.setVisibility(View.VISIBLE);
                 mSubmissionConfirmation = UPLOAD_FAILE;

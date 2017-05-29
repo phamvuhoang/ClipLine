@@ -11,7 +11,7 @@
     <RelativeLayout
         android:id="@+id/relativeLayoutHeader"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:layout_alignParentTop="true"
         android:background="#61B5Ab">
 
@@ -76,7 +76,7 @@
     <LinearLayout
         android:id="@+id/linearLayoutStatus"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/relativeLayoutHeader"
         android:layout_centerHorizontal="true"
         android:background="#FFFFFF"

@@ -202,46 +202,23 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         mStatusView.setTypeView(StatusView.STATUS_VIEW.VIEW, true);
         mStatusViewResport.setTypeView(StatusView.STATUS_VIEW.REPORT, true);
         mStatusViewCheck.setTypeView(StatusView.STATUS_VIEW.CHECK, true);
-/*
 
         mStatusView.setClickListener(new StatusView.ClickListener() {
             @Override
             public void onListener() {
-
-                PopUpDlg confirDlg = new PopUpDlg(SelectShootingMethodActivity.this, true);
-                confirDlg.show("", getString(R.string.confirm_retry),
-                        getString(R.string.yes),
-                        getString(R.string.no),
-                        // onOK
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                                String studentId = todoParameters.get("studentId");
-                                String categoryId = todoParameters.get("categoryId");
-                                String todoContentId = todoParameters.get("todoContentId");
-                                String url = "%s://%s/training/#/students/" + studentId
-                                        + "/todos/" + todoContentId;
-                                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-                                intent.putExtra("BASE_URL", url);
-                                startActivity(intent);
-                                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-                                finish();
-                            }
-                        },
-                        // onCancel
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (dialog != null) {
-                                    dialog.dismiss();
-                                }
-                            }
-                        });
-
+                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                String studentId = todoParameters.get("studentId");
+                String categoryId = todoParameters.get("categoryId");
+                String todoContentId = todoParameters.get("todoContentId");
+                String url = "%s://%s/training/#/students/" + studentId
+                        + "/todos/" + todoContentId;
+                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                intent.putExtra("BASE_URL", url);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                finish();
             }
         });
-*/
 
         LinearLayout backScreen = (LinearLayout) findViewById(R.id.imageButtonBack);
         backScreen.setOnClickListener(new View.OnClickListener() {
