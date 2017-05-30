@@ -40,7 +40,7 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
     private void showDisplay() {
         if (mTodoContentType.equals("image/png")) {
             // 画像が撮影or選択された場合
-            mImageView.setVisibility(View.VISIBLE);
+            mPhotoView.setVisibility(View.VISIBLE);
             mRelativeLayoutContentVideo.setVisibility(View.GONE);
             mPdfView.setVisibility(View.GONE);
             mButtonFullScreen.setVisibility(View.VISIBLE);
