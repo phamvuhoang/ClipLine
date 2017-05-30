@@ -117,7 +117,6 @@
         android:layout_marginTop="5dp">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/card_view"
             android:layout_width="450dp"
             android:layout_height="270dp"
             android:layout_centerHorizontal="true"
@@ -126,30 +125,33 @@
             app:cardCornerRadius="1dp">
 
             <RelativeLayout
-                android:id="@+id/relativeLayoutPlayer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:background="#FFFFFF">
-
-                <include layout="@layout/layout_video_view" />
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerHorizontal="true" />
+                android:padding="10dp">
 
                 <com.github.barteksc.pdfviewer.PDFView
                     android:id="@+id/pdfView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"/>
+                    android:layout_height="match_parent" />
 
+                <ImageView
+                    android:id="@+id/imageViewSelect"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <include layout="@layout/layout_video_view" />
+
+                <Button
+                    android:id="@+id/buttonFullScreen"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/big_screen_df" />
             </RelativeLayout>
 
-        </android.support.v7.widget.CardView>
 
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 

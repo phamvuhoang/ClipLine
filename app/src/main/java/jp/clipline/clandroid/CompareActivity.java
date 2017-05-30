@@ -6,14 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.PersistableBundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -23,7 +19,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -32,15 +27,12 @@ import android.widget.VideoView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;
 import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.PopUpDlg;
-import jp.clipline.clandroid.api.MediaKey;
-import jp.clipline.clandroid.api.Report;
 import jp.clipline.clandroid.view.StatusView;
 
 
@@ -461,9 +453,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                 // Only when has_play_action is true, then all status will be visible
                 if (hasPlayAction) {
                     mStatusView.setVisibility(View.VISIBLE);
-//                  mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
-//                  mImageViewFooterView.setVisibility(View.VISIBLE);
-//                  mTextViewFooterView.setVisibility(View.VISIBLE);
                     // TODO 点灯
                     // TODO 点灯
                     if ((todoContent.get("is_play_action_cleared") != null)
@@ -479,10 +468,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
 
                 // 表示
                 mStatusViewResport.setVisibility(View.VISIBLE);
-
-//              mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
-//              mImageViewFooterShoot.setVisibility(View.VISIBLE);
-//              mTextViewFooterShoot.setVisibility(View.VISIBLE);
             }
 
             // check has_my_report_play_action
@@ -491,10 +476,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
 
                 // 表示
                 mStatusViewCheck.setVisibility(View.VISIBLE);
-
-//               mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
-//               mImageViewFooterCompare.setVisibility(View.VISIBLE);
-//               mTextViewFooterCompare.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -542,51 +523,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         mTotalTimeMine.setVisibility(View.GONE);
         mPosSeekBarMine.setVisibility(View.GONE);
         mPlayAndPauseMine.setVisibility(View.GONE);
-
-    }
-
-    private void setListener() {
-        mPlayAndPauseContent.setOnClickListener(this);
-        mPlayAndPauseMine.setOnClickListener(this);
-        mChangeFullScreen.setOnClickListener(this);
-        mImageViewSwitch.setOnClickListener(this);
-
-        mPosSeekBarContent.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeContent, progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                mHandlerContent.removeMessages(UPDATE_UI);
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress();
-                mVideoViewContent.seekTo(progress);
-                mHandlerContent.sendEmptyMessage(UPDATE_UI);
-            }
-        });
-        mPosSeekBarMine.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeMine, progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                mHandlerMine.removeMessages(UPDATE_UI);
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress();
-                mVideoViewMine.seekTo(progress);
-                mHandlerMine.sendEmptyMessage(UPDATE_UI);
-            }
-        });
 
     }
 
@@ -642,6 +578,48 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                 mVideoViewMine.pause();
                 mPlayAndPauseMine.setImageResource(R.drawable.video_start_style);
                 mCurrentTimeMine.setText("00:00");
+            }
+        });
+
+        mPlayAndPauseContent.setOnClickListener(this);
+        mPlayAndPauseMine.setOnClickListener(this);
+        mChangeFullScreen.setOnClickListener(this);
+        mImageViewSwitch.setOnClickListener(this);
+
+        mPosSeekBarContent.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeContent, progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                mHandlerContent.removeMessages(UPDATE_UI);
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int progress = seekBar.getProgress();
+                mVideoViewContent.seekTo(progress);
+                mHandlerContent.sendEmptyMessage(UPDATE_UI);
+            }
+        });
+        mPosSeekBarMine.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeMine, progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                mHandlerMine.removeMessages(UPDATE_UI);
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int progress = seekBar.getProgress();
+                mVideoViewMine.seekTo(progress);
+                mHandlerMine.sendEmptyMessage(UPDATE_UI);
             }
         });
     }

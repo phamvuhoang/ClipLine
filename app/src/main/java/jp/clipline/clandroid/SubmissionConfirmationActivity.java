@@ -1,25 +1,17 @@
 package jp.clipline.clandroid;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
@@ -30,41 +22,17 @@ import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.PopUpDlg;
-import jp.clipline.clandroid.view.FullVideo;
 import jp.clipline.clandroid.view.StatusView;
 
 public class SubmissionConfirmationActivity extends BaseActivity implements View.OnClickListener, OnPageChangeListener, OnLoadCompleteListener {
 
-    private String mTodoContentType = null;
-    private Uri mTodoContentData = null;
-
     private StatusView mStatusView;
     private StatusView mStatusViewResport;
     private StatusView mStatusViewCheck;
-
-    //VIDEO
-    private FullVideo mVideoView;
-    private TextView mCurrentTimeTv;
-    private TextView mTotalTimeTv;
-    private SeekBar mPosSeekBar;
-    private SeekBar mVolumeSeekBar;
-    private ImageView mPlayAndPause;
-    private ImageView mChangeFullScreen;
-    private AudioManager mAudioManager;
-    private int currentVolume;
-    private int maxVolume;
-    private final int SEEKTOTIME = 1111;
-    private final int UPDATE_UI = 1;
-    private final MyHandler mHandler = new MyHandler(this);
-
     private Button mButtonCompareToModel;
-    //    private Button mButtonCompare;
-//    private Button mButtonSummit;
     private Button mImageButtonCompareOrSubmit;
     private boolean mHasMyReportPlayAction = false;
-    private RelativeLayout mRelativeLayoutContentVideo;
     private PopUpDlg mConfirDlg;
-    private PDFView mPdfView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,49 +41,11 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
         if (savedInstanceState != null) {
             mSubmissionConfirmation = savedInstanceState.getInt("submissionConfirmation");
         }
-        mTodoContentType = ((ClWebWrapperApplication) this.getApplication()).getTodoContentType();
-        File file = new File(((ClWebWrapperApplication) this.getApplication()).getTodoContentData());
-        Uri uriFile = Uri.fromFile(file);
-        mTodoContentData = uriFile;
-        ImageView imageView;
-        TextView textView;
 
-        imageView = (ImageView) findViewById(R.id.imageView);
-        mPdfView = (PDFView) findViewById(R.id.pdfView);
+        findViewByIdVideo();
+        setListener();
 
-        findViewById();
-        if (mTodoContentType.equals("image/png")) {
-            // 画像が撮影or選択された場合
-            imageView.setImageURI(mTodoContentData);
-            imageView.setVisibility(View.VISIBLE);
-            mRelativeLayoutContentVideo.setVisibility(View.GONE);
-            mPdfView.setVisibility(View.GONE);
-        } else if (mTodoContentType.equals("video/mp4")) {
-            // 動画が撮影or選択された場合
-            playVideo(mTodoContentData);
-            imageView.setVisibility(View.GONE);
-            mRelativeLayoutContentVideo.setVisibility(View.VISIBLE);
-            mPdfView.setVisibility(View.GONE);
-        } else {
-            try {
-                imageView.setVisibility(View.GONE);
-                mRelativeLayoutContentVideo.setVisibility(View.GONE);
-                mPdfView.setVisibility(View.VISIBLE);
-                String path = AndroidUtility.getFilePath(this, mTodoContentData);
-                mPdfView.fromFile(new File(path))
-                        .defaultPage(0)
-                        .onPageChange(this)
-                        .enableAnnotationRendering(true)
-                        .onLoad(this)
-                        .scrollHandle(new DefaultScrollHandle(this))
-                        .load();
-                ;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
+        mHandler = new MyHandler(this);
         // 戻るボタン
         LinearLayout backScreen = (LinearLayout) findViewById(R.id.imageButtonBack);
         backScreen.setOnClickListener(new View.OnClickListener() {
@@ -150,27 +80,7 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
 
         mImageButtonCompareOrSubmit = (Button) findViewById(R.id.buttonCompareOrSubmit);
         mImageButtonCompareOrSubmit.setOnClickListener(this);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-        // 一覧へ戻る
-//                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-//                String studentId = todoParameters.get("studentId");
-//                String categoryId = todoParameters.get("categoryId");
-//                String todoContentId = todoParameters.get("todoContentId");
-//                String url = "%s://%s/training/#/students/" + studentId
-//                        + "/todos?type=updates"; // TODO type=updates/repeat???
-//                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-//                intent.putExtra("BASE_URL", url);
-//                startActivity(intent);
-//                finish();
-
-
-//            }
-//        });
-
-        // やり直す: back to SelectShooting
-        textView = (TextView) findViewById(R.id.textViewBack);
+        TextView textView = (TextView) findViewById(R.id.textViewBack);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,7 +167,6 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
                 startActivity(intent);
-//                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
                 overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 finish();
 
@@ -327,110 +236,94 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
                                 }
                             }
                         });
-
             }
         });
 
+        showDisplay();
+
     }
 
-    private void findViewById() {
-        mVideoView = (FullVideo) findViewById(R.id.video_view);
-        mCurrentTimeTv = (TextView) findViewById(R.id.current_time_tv);
-        mTotalTimeTv = (TextView) findViewById(R.id.total_time_tv);
-        mPosSeekBar = (SeekBar) findViewById(R.id.pos_seekBar);
-        mVolumeSeekBar = (SeekBar) findViewById(R.id.volume_seek);
-        mPlayAndPause = (ImageView) findViewById(R.id.pause_img);
-        mChangeFullScreen = (ImageView) findViewById(R.id.change_screen);
-        mRelativeLayoutContentVideo = (RelativeLayout) findViewById(R.id.relativeLayoutContentVideo);
-        setListener();
-        init();
-    }
+    private void showDisplay() {
+        if (mTodoContentType.equals("image/png")) {
+            // 画像が撮影or選択された場合
+            mImageView.setVisibility(View.VISIBLE);
+            mRelativeLayoutContentVideo.setVisibility(View.GONE);
+            mPdfView.setVisibility(View.GONE);
+            mButtonFullScreen.setVisibility(View.GONE);
 
-    private void setListener() {
+            mImageView.setImageURI(mTodoContentData);
+            mImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mButtonFullScreen.getVisibility() == View.GONE) {
+                        mButtonFullScreen.setVisibility(View.VISIBLE);
+                    } else {
+                        mButtonFullScreen.setVisibility(View.GONE);
+                    }
+
+                }
+            });
+        } else if (mTodoContentType.equals("video/mp4")) {
+            // 動画が撮影or選択された場合
+            mImageView.setVisibility(View.GONE);
+            mRelativeLayoutContentVideo.setVisibility(View.INVISIBLE);
+            mPdfView.setVisibility(View.GONE);
+            mButtonFullScreen.setVisibility(View.GONE);
+
+            playVideo(mTodoContentData);
+            mVideoView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (mRelativeLayoutContentVideo.getVisibility() == View.INVISIBLE) {
+                        mRelativeLayoutContentVideo.setVisibility(View.VISIBLE);
+                    } else {
+                        mRelativeLayoutContentVideo.setVisibility(View.INVISIBLE);
+                    }
+                    return false;
+                }
+            });
+        } else { //content type is pdf
+            try {
+                mImageView.setVisibility(View.GONE);
+                mRelativeLayoutContentVideo.setVisibility(View.GONE);
+                mPdfView.setVisibility(View.VISIBLE);
+                mButtonFullScreen.setVisibility(View.GONE);
+
+                mPdfView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mButtonFullScreen.getVisibility() == View.GONE) {
+                            mButtonFullScreen.setVisibility(View.VISIBLE);
+                        } else {
+                            mButtonFullScreen.setVisibility(View.GONE);
+                        }
+                    }
+                });
+                String path = AndroidUtility.getFilePath(this, mTodoContentData);
+                mPdfView.fromFile(new File(path))
+                        .defaultPage(0)
+                        .onPageChange(this)
+                        .enableAnnotationRendering(true)
+                        .onLoad(this)
+                        .scrollHandle(new DefaultScrollHandle(this))
+                        .load();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        mButtonFullScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SubmissionConfirmationActivity.this, FullVideoActivity.class);
+                startActivity(intent);
+            }
+        });
+
         mPlayAndPause.setOnClickListener(this);
         mChangeFullScreen.setOnClickListener(this);
-
-        mPosSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeTv, progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                mHandler.removeMessages(UPDATE_UI);
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress();
-                mVideoView.seekTo(progress);
-                mHandler.sendEmptyMessage(UPDATE_UI);
-            }
-        });
-
-        mVolumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
     }
 
-    private void init() {
-        ViewTreeObserver viewObserver = mVideoView.getViewTreeObserver();
-        viewObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                mVideoView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-            }
-        });
 
-        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        mVolumeSeekBar.setMax(maxVolume);
-        mVolumeSeekBar.setProgress(currentVolume);
-
-
-    }
-
-    private void playVideo(Uri uri) {
-//        mVideoView.setVideoPath(path);
-//        mVideoView.setVideoURI(Uri.parse(path));
-        mVideoView.setVideoURI(uri);
-        mVideoView.requestFocus();
-        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.seekTo(1);
-                AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeTv, mVideoView.getDuration());
-                mHandler.sendEmptyMessage(UPDATE_UI);
-            }
-        });
-
-        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                mHandler.removeMessages(UPDATE_UI);
-                mVideoView.pause();
-                mPlayAndPause.setImageResource(R.drawable.video_start_style);
-                mPosSeekBar.setProgress(0);
-                mCurrentTimeTv.setText("00:00");
-            }
-        });
-
-    }
 
     @Override
     public void loadComplete(int nbPages) {
@@ -562,8 +455,7 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
                 break;
             case R.id.change_screen:
                 intent = new Intent(this, FullVideoActivity.class);
-                intent.putExtra("seekto", mVideoView.getDuration());
-                startActivityForResult(intent, SEEKTOTIME);
+                startActivity(intent);
 
                 break;
             case R.id.buttonCompareOrSubmit:
@@ -610,6 +502,5 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
         super.onSaveInstanceState(outState);
         outState.putInt("submissionConfirmation", mSubmissionConfirmation);
     }
-
 
 }

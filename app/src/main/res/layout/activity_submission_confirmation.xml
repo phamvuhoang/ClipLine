@@ -124,20 +124,29 @@
             android:layout_marginBottom="50dp"
             android:background="#FFFFFF">
 
-            <include layout="@layout/layout_video_view" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerHorizontal="true" />
-
             <com.github.barteksc.pdfviewer.PDFView
                 android:id="@+id/pdfView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"/>
+                android:layout_margin="10dp" />
+
+            <ImageView
+                android:id="@+id/imageViewSelect"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp" />
+
+            <include layout="@layout/layout_video_view" />
+
+            <Button
+                android:id="@+id/buttonFullScreen"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/big_screen_df" />
 
         </RelativeLayout>
 

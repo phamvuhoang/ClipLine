@@ -1,6 +1,10 @@
 package jp.clipline.clandroid;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,21 +13,28 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.github.barteksc.pdfviewer.PDFView;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.api.MediaKey;
 import jp.clipline.clandroid.api.Report;
-
+import jp.clipline.clandroid.view.FullVideo;
 
 public class BaseActivity extends AppCompatActivity {
 
+    //DIALOG CONFORM
     private ImageView mImageViewSubmit;
     private TextView mTextViewUpload;
     private Button mButtonReportSentComment;
@@ -38,10 +49,96 @@ public class BaseActivity extends AppCompatActivity {
     protected final int UPLOAD_FAILE = 2;
     protected int mSubmissionConfirmation = 0;
 
+    //VIDEO
+    protected FullVideo mVideoView;
+    protected TextView mCurrentTimeTv;
+    protected TextView mTotalTimeTv;
+    protected TextView mTextLine;
+    protected SeekBar mPosSeekBar;
+    protected SeekBar mVolumeSeekBar;
+    protected ImageView mPlayAndPause;
+    protected ImageView mChangeFullScreen;
+    protected AudioManager mAudioManager;
+    protected int currentVolume;
+    protected int maxVolume;
+    protected final int SEEKTOTIME = 1111;
+    protected final int UPDATE_UI = 1;
+    protected RelativeLayout mRelativeLayoutContentVideo;
+
+    //PDF
+    protected PDFView mPdfView;
+
+    //Image
+    protected ImageView mImageView;
+
+    //data
+    protected String mTodoContentType = null;
+    protected Uri mTodoContentData = null;
+
+    protected SubmissionConfirmationActivity.MyHandler mHandler;
+    protected Button mButtonFullScreen;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initDialog();
+        mTodoContentType = ((ClWebWrapperApplication) this.getApplication()).getTodoContentType();
+        File file = new File(((ClWebWrapperApplication) this.getApplication()).getTodoContentData());
+        mTodoContentData = Uri.fromFile(file);
 
+    }
+
+    /**
+     * -------------------------DIALOG-------------------------
+     */
+
+    public void showReport() {
+        mAlertDialog.show();
+    }
+
+    public void hideReport() {
+        mAlertDialog.dismiss();
+    }
+
+    public void UploadSuccessfull() {
+        mAlertDialog.show();
+        mProgressBar.setVisibility(View.GONE);
+        mViewProgressBar.setBackground(ContextCompat.getDrawable(BaseActivity.this, R.color.green));
+        mViewProgressBar.setVisibility(View.VISIBLE);
+        mImageViewSubmit.setBackground(ContextCompat.getDrawable(BaseActivity.this, R.drawable.icon_status_complete));
+        mTextViewUpload.setText(getResources().getText(R.string.report_sent_successful));
+        mButtonReportSentComment.setVisibility(View.VISIBLE);
+        mButtonReportSentClose.setVisibility(View.VISIBLE);
+        mButtonReportSentRetry.setVisibility(View.GONE);
+    }
+
+    public void UploadFaile() {
+        mAlertDialog.show();
+        mProgressBar.setVisibility(View.GONE);
+        mViewProgressBar.setBackground(ContextCompat.getDrawable(BaseActivity.this, R.color.colorRed));
+        mViewProgressBar.setVisibility(View.VISIBLE);
+        mImageViewSubmit.setBackground(ContextCompat.getDrawable(BaseActivity.this, R.drawable.icon_error));
+        mTextViewUpload.setText(getResources().getText(R.string.report_sent_failed));
+        mButtonReportSentComment.setVisibility(View.GONE);
+        mButtonReportSentClose.setVisibility(View.VISIBLE);
+        mButtonReportSentRetry.setVisibility(View.VISIBLE);
+        mTextViewError.setVisibility(View.VISIBLE);
+    }
+
+    public void handlerUpload() {
+        mAlertDialog.show();
+        mProgressBar.setVisibility(View.VISIBLE);
+        mTextViewUpload.setText(getResources().getText(R.string.report_sent));
+        mImageViewSubmit.setBackground(null);
+        mTextViewError.setVisibility(View.GONE);
+        mViewProgressBar.setVisibility(View.GONE);
+        mButtonReportSentComment.setVisibility(View.GONE);
+        mButtonReportSentRetry.setVisibility(View.GONE);
+        mButtonReportSentClose.setVisibility(View.GONE);
+        new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
+    }
+
+    private void initDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.layout_report, null);
@@ -114,54 +211,8 @@ public class BaseActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
-    public void showReport() {
-        mAlertDialog.show();
-    }
-
-    public void hideReport() {
-        mAlertDialog.dismiss();
-    }
-
-    public void UploadSuccessfull() {
-        mAlertDialog.show();
-        mProgressBar.setVisibility(View.GONE);
-        mViewProgressBar.setBackground(ContextCompat.getDrawable(BaseActivity.this, R.color.green));
-        mViewProgressBar.setVisibility(View.VISIBLE);
-        mImageViewSubmit.setBackground(ContextCompat.getDrawable(BaseActivity.this, R.drawable.icon_status_complete));
-        mTextViewUpload.setText(getResources().getText(R.string.report_sent_successful));
-        mButtonReportSentComment.setVisibility(View.VISIBLE);
-        mButtonReportSentClose.setVisibility(View.VISIBLE);
-        mButtonReportSentRetry.setVisibility(View.GONE);
-    }
-
-    public void UploadFaile() {
-        mAlertDialog.show();
-        mProgressBar.setVisibility(View.GONE);
-        mViewProgressBar.setBackground(ContextCompat.getDrawable(BaseActivity.this, R.color.colorRed));
-        mViewProgressBar.setVisibility(View.VISIBLE);
-        mImageViewSubmit.setBackground(ContextCompat.getDrawable(BaseActivity.this, R.drawable.icon_error));
-        mTextViewUpload.setText(getResources().getText(R.string.report_sent_failed));
-        mButtonReportSentComment.setVisibility(View.GONE);
-        mButtonReportSentClose.setVisibility(View.VISIBLE);
-        mButtonReportSentRetry.setVisibility(View.VISIBLE);
-        mTextViewError.setVisibility(View.VISIBLE);
-    }
-
-    public void handlerUpload() {
-        mAlertDialog.show();
-        mProgressBar.setVisibility(View.VISIBLE);
-        mTextViewUpload.setText(getResources().getText(R.string.report_sent));
-        mImageViewSubmit.setBackground(null);
-        mTextViewError.setVisibility(View.GONE);
-        mViewProgressBar.setVisibility(View.GONE);
-        mButtonReportSentComment.setVisibility(View.GONE);
-        mButtonReportSentRetry.setVisibility(View.GONE);
-        mButtonReportSentClose.setVisibility(View.GONE);
-        new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
-    }
 
     /**
      * Get media key to send file to S3 and send report
@@ -277,4 +328,103 @@ public class BaseActivity extends AppCompatActivity {
         protected void onCancelled() {
         }
     }
+
+    /**
+     * -------------------------VIDEO and PDF and Image-------------------------
+     */
+    protected void findViewByIdVideo() {
+        mVideoView = (FullVideo) findViewById(R.id.video_view);
+        mCurrentTimeTv = (TextView) findViewById(R.id.current_time_tv);
+        mTotalTimeTv = (TextView) findViewById(R.id.total_time_tv);
+        mTextLine = (TextView) findViewById(R.id.textLine);
+        mPosSeekBar = (SeekBar) findViewById(R.id.pos_seekBar);
+        mVolumeSeekBar = (SeekBar) findViewById(R.id.volume_seek);
+        mPlayAndPause = (ImageView) findViewById(R.id.pause_img);
+        mChangeFullScreen = (ImageView) findViewById(R.id.change_screen);
+        mRelativeLayoutContentVideo = (RelativeLayout) findViewById(R.id.relativeLayoutContentVideo);
+        mPdfView = (PDFView) findViewById(R.id.pdfView);
+        mImageView = (ImageView) findViewById(R.id.imageViewSelect);
+        mButtonFullScreen = (Button) findViewById(R.id.buttonFullScreen);
+    }
+
+    protected void playVideo(Uri uri) {
+        mVideoView.setVideoURI(uri);
+        mVideoView.requestFocus();
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.seekTo(1);
+                AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeTv, mVideoView.getDuration());
+                mHandler.sendEmptyMessage(UPDATE_UI);
+            }
+        });
+
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                mHandler.removeMessages(UPDATE_UI);
+                mVideoView.pause();
+                mPlayAndPause.setImageResource(R.drawable.video_start_style);
+                mPosSeekBar.setProgress(0);
+                mCurrentTimeTv.setText("00:00");
+            }
+        });
+
+
+    }
+
+    protected void setListener() {
+
+
+        mPosSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeTv, progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                mHandler.removeMessages(UPDATE_UI);
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int progress = seekBar.getProgress();
+                mVideoView.seekTo(progress);
+                mHandler.sendEmptyMessage(UPDATE_UI);
+            }
+        });
+
+        mVolumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        ViewTreeObserver viewObserver = mVideoView.getViewTreeObserver();
+        viewObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mVideoView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            }
+        });
+
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        mVolumeSeekBar.setMax(maxVolume);
+        mVolumeSeekBar.setProgress(currentVolume);
+    }
+
 }
