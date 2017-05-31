@@ -273,7 +273,7 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                             } else {
                                 mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
                             }
-                            return true;
+                            return false;
                         }
                     });
 
