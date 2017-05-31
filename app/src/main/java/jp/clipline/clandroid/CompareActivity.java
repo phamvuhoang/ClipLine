@@ -46,9 +46,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
     private WebView mWebViewContent;
     private WebView mWebViewMine;
 
-//    private Button mButtonStartAllVideo;
-//    private Button mButtonSwitch;
-
     private TextView mBackScreen;
     private ImageButton mButtonClose;
     private LinearLayout mButtonBack;
@@ -62,13 +59,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
     private StatusView mStatusView;
     private StatusView mStatusViewResport;
     private StatusView mStatusViewCheck;
-    //    private LinearLayout mLinearLayoutFooterStatus;
-//    private ImageView mImageViewFooterView;
-//    private TextView mTextViewFooterView;
-//    private ImageView mImageViewFooterShoot;
-//    private TextView mTextViewFooterShoot;
-//    private ImageView mImageViewFooterCompare;
-//    private TextView mTextViewFooterCompare;
 
     //Video
     private TextView mCurrentTimeContent;
