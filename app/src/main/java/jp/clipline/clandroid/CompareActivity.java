@@ -104,6 +104,7 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         mVideoViewMine = (VideoView) findViewById(R.id.videoViewMine);
         mRelativeLayoutVideoController = (LinearLayout) findViewById(R.id.bottom_layout);
         mButtonFullScreen = (Button) findViewById(R.id.buttonFullScreen);
+        mButtonFullScreen.setOnClickListener(this);
         mBackScreen = (TextView) findViewById(R.id.backScreen);
         mButtonBack = (LinearLayout) findViewById(R.id.imageButtonBack);
         mBackScreen.setOnClickListener(this);
@@ -550,6 +551,7 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                     mHandlerMine.sendEmptyMessage(UPDATE_UI);
                 }
                 break;
+            case R.id.buttonFullScreen:
             case R.id.change_screen:
 
                 intent = new Intent(this, FullVideoActivity.class);
