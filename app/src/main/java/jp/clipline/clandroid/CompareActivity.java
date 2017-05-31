@@ -10,11 +10,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,6 +24,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
+import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -36,15 +40,15 @@ import jp.clipline.clandroid.Utility.PopUpDlg;
 import jp.clipline.clandroid.view.StatusView;
 
 
-public class CompareActivity extends BaseActivity implements View.OnClickListener {
+public class CompareActivity extends BaseActivity implements View.OnClickListener, OnPageChangeListener, OnLoadCompleteListener {
 
     private final static String TAG = "clwebwrapperapplication";
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 99999;
 
     private String mTodoContentType = null;
     private Uri mTodoContentData = null;
-    private WebView mWebViewContent;
-    private WebView mWebViewMine;
+//    private WebView mWebViewContent;
+//    private WebView mWebViewMine;
 
     private TextView mBackScreen;
     private ImageButton mButtonClose;
@@ -80,6 +84,11 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
     private Button mButtonSummit;
     private PopUpDlg mConfirDlg;
 
+    private ImageView mImageViewContent;
+    private ImageView mImageViewMine;
+    private PDFView mPdfViewContent;
+    private PDFView mPdfViewMine;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,16 +98,25 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
             mSubmissionConfirmation = savedInstanceState.getInt("compareActivity");
         }
 
-        mWebViewContent = (WebView) findViewById(R.id.webViewContent);
-        mWebViewMine = (WebView) findViewById(R.id.webViewMine);
+//        mWebViewContent = (WebView) findViewById(R.id.webViewContent);
+//        mWebViewMine = (WebView) findViewById(R.id.webViewMine);
         mVideoViewContent = (VideoView) findViewById(R.id.videoViewContent);
         mVideoViewMine = (VideoView) findViewById(R.id.videoViewMine);
+        mRelativeLayoutVideoController = (LinearLayout) findViewById(R.id.bottom_layout);
+        mButtonFullScreen = (Button) findViewById(R.id.buttonFullScreen);
         mBackScreen = (TextView) findViewById(R.id.backScreen);
         mButtonBack = (LinearLayout) findViewById(R.id.imageButtonBack);
         mBackScreen.setOnClickListener(this);
         mButtonBack.setOnClickListener(this);
-        mWebViewContent.getSettings().setJavaScriptEnabled(true);
-        mWebViewMine.getSettings().setJavaScriptEnabled(true);
+
+        mImageViewContent = (ImageView) findViewById(R.id.imageViewContent);
+        mImageViewMine = (ImageView) findViewById(R.id.imageViewMine);
+
+        mPdfViewContent = (PDFView) findViewById(R.id.pdfViewContent);
+        mPdfViewMine = (PDFView) findViewById(R.id.pdfViewMine);
+
+//        mWebViewContent.getSettings().setJavaScriptEnabled(true);
+//        mWebViewMine.getSettings().setJavaScriptEnabled(true);
 
         mTodoContentType = ((ClWebWrapperApplication) this.getApplication()).getTodoContentType();
         File file = new File(((ClWebWrapperApplication) this.getApplication()).getTodoContentData());
@@ -146,31 +164,185 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         try {
             mPath = "file://" + AndroidUtility.getFilePath(this, mTodoContentData);
             if (mTodoContentType.equals("image/png")) {
-                mWebViewMine.removeAllViews();
-                ImageView imageView = new ImageView(this);
-                Picasso.with(this).load(mPath).into(imageView);
-                mWebViewMine.addView(imageView);
-                mWebViewMine.setVisibility(View.VISIBLE);
+//                mWebViewMine.removeAllViews();
+//                ImageView imageView = new ImageView(this);
+//                Picasso.with(this).load(mPath).into(imageView);
+//                mWebViewMine.addView(imageView);
+//                mWebViewMine.setVisibility(View.VISIBLE);
+                mImageViewMine.setVisibility(View.VISIBLE);
+                mPdfViewMine.setVisibility(View.GONE);
+                mVideoViewMine.setVisibility(View.GONE);
+                mRelativeLayoutVideoController.setVisibility(View.GONE);
+                mButtonFullScreen.setVisibility(View.INVISIBLE);
+                Picasso.with(this)
+                        .load(mPath)
+                        .into(mImageViewMine);
+                mImageViewMine.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mIsCheckSwitch = true;
+                        mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                        mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                        mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
+                        if (mButtonFullScreen.getVisibility() == View.INVISIBLE) {
+                            mButtonFullScreen.setVisibility(View.VISIBLE);
+                        } else {
+                            mButtonFullScreen.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                });
+
+
             } else if (mTodoContentType.equals("video/mp4")) {
-                mVideoViewMine.setVideoPath(mPath);
+                mImageViewMine.setVisibility(View.GONE);
+                mPdfViewMine.setVisibility(View.GONE);
                 mVideoViewMine.setVisibility(View.VISIBLE);
+                mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
+                mButtonFullScreen.setVisibility(View.GONE);
+                mVideoViewMine.setVideoPath(mPath);
+                mVideoViewMine.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        mIsCheckSwitch = true;
+                        mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                        mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                        mButtonFullScreen.setVisibility(View.INVISIBLE);
+                        if (mRelativeLayoutVideoController.getVisibility() == View.INVISIBLE) {
+                            mRelativeLayoutVideoController.setVisibility(View.VISIBLE);
+                        } else {
+                            mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
+                        }
+                        return false;
+                    }
+                });
+            } else {
+                mImageViewMine.setVisibility(View.GONE);
+                mPdfViewMine.setVisibility(View.VISIBLE);
+                mVideoViewMine.setVisibility(View.GONE);
+                mRelativeLayoutVideoController.setVisibility(View.GONE);
+                mButtonFullScreen.setVisibility(View.INVISIBLE);
+                mPdfViewMine.fromUri(Uri.parse(mPath))
+                        .defaultPage(0)
+                        .onPageChange(this)
+                        .enableAnnotationRendering(true)
+                        .onLoad(this)
+                        .scrollHandle(new DefaultScrollHandle(this))
+                        .load();
+                mPdfViewMine.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mIsCheckSwitch = true;
+                        mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                        mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                        mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
+                        if (mButtonFullScreen.getVisibility() == View.INVISIBLE) {
+                            mButtonFullScreen.setVisibility(View.VISIBLE);
+                        } else {
+                            mButtonFullScreen.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                });
             }
 
             if (mCurrentTodoContent != null) {
-                boolean isVideo = (boolean) mCurrentTodoContent.get("is_video");
-                boolean isImage = (boolean) mCurrentTodoContent.get("is_image");
+                final boolean isVideo = (boolean) mCurrentTodoContent.get("is_video");
+                final boolean isImage = (boolean) mCurrentTodoContent.get("is_image");
                 boolean isPdf = (boolean) mCurrentTodoContent.get("is_pdf");
 
                 if (isVideo) {
+                    mImageViewContent.setVisibility(View.VISIBLE);
+                    mPdfViewContent.setVisibility(View.GONE);
+                    mVideoViewContent.setVisibility(View.INVISIBLE);
+                    mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
+                    mButtonFullScreen.setVisibility(View.GONE);
+                    //thumbnail
+                    Picasso.with(this)
+                            .load(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")))
+                            .into(mImageViewContent);
                     mVideoViewContent.setVideoPath((String) mCurrentTodoContent.get("pre_signed_standard_mp4_url"));
-                    mVideoViewContent.setVisibility(View.VISIBLE);
+                    mVideoViewContent.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            mIsCheckSwitch = false;
+                            mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                            mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                            mButtonFullScreen.setVisibility(View.INVISIBLE);
+                            if (mRelativeLayoutVideoController.getVisibility() == View.INVISIBLE) {
+                                mRelativeLayoutVideoController.setVisibility(View.VISIBLE);
+                            } else {
+                                mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
+                            }
+                            return true;
+                        }
+                    });
+
                 } else if (isImage) { //TODO contact (media_thumb_pre_signed_url)
-                    mWebViewContent.loadUrl(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")));
-                    mWebViewContent.setVisibility(View.VISIBLE);
+                    mImageViewContent.setVisibility(View.VISIBLE);
+                    mPdfViewContent.setVisibility(View.GONE);
+                    mVideoViewContent.setVisibility(View.GONE);
+                    mRelativeLayoutVideoController.setVisibility(View.GONE);
+                    mButtonFullScreen.setVisibility(View.INVISIBLE);
+
+                    Picasso.with(this)
+                            .load(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")))
+                            .into(mImageViewContent);
+//                    mWebViewContent.loadUrl(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")));
+//                    mWebViewContent.setVisibility(View.VISIBLE);
                 } else if (isPdf) {
-                    mWebViewContent.loadUrl(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")));
-                    mWebViewContent.setVisibility(View.VISIBLE);
+                    mImageViewContent.setVisibility(View.GONE);
+                    mPdfViewContent.setVisibility(View.VISIBLE);
+                    mVideoViewContent.setVisibility(View.GONE);
+                    mRelativeLayoutVideoController.setVisibility(View.GONE);
+                    mButtonFullScreen.setVisibility(View.INVISIBLE);
+                    mPdfViewContent.fromUri(Uri.parse(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url"))))
+                            .defaultPage(0)
+                            .onPageChange(this)
+                            .enableAnnotationRendering(true)
+                            .onLoad(this)
+                            .scrollHandle(new DefaultScrollHandle(this))
+                            .load();
+                    mPdfViewContent.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mIsCheckSwitch = false;
+                            mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                            mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                            mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
+                            if (mButtonFullScreen.getVisibility() == View.INVISIBLE) {
+                                mButtonFullScreen.setVisibility(View.VISIBLE);
+                            } else {
+                                mButtonFullScreen.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                    });
+//                    mWebViewContent.loadUrl(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")));
+//                    mWebViewContent.setVisibility(View.VISIBLE);
                 }
+                mImageViewContent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mIsCheckSwitch = false;
+                        mButtonFullScreen.setVisibility(View.INVISIBLE);
+                        if (!getRotation()) {
+                            mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                            mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                        }
+                        if (isVideo) {
+
+                            if (mRelativeLayoutVideoController.getVisibility() == View.INVISIBLE) {
+                                mRelativeLayoutVideoController.setVisibility(View.VISIBLE);
+                            } else {
+                                mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
+                            }
+                        } else if (isImage) {
+                            if (mButtonFullScreen.getVisibility() == View.INVISIBLE) {
+                                mButtonFullScreen.setVisibility(View.VISIBLE);
+                            } else {
+                                mButtonFullScreen.setVisibility(View.INVISIBLE);
+                            }
+                        }
+                    }
+                });
             }
 
         } catch (URISyntaxException e) {
@@ -360,7 +532,9 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.pause_img_content:
             case R.id.pause_img_mine:
-                if (mVideoViewContent.isPlaying() && mVideoViewMine.isPlaying()) {
+                mImageViewContent.setVisibility(View.GONE);
+                mVideoViewContent.setVisibility(View.VISIBLE);
+                if (mVideoViewContent.isPlaying() || mVideoViewMine.isPlaying()) {
                     mPlayAndPauseContent.setImageResource(R.drawable.video_start_style);
                     mPlayAndPauseMine.setImageResource(R.drawable.video_start_style);
                     mVideoViewContent.pause();
@@ -505,7 +679,7 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         mImageViewSwitch = (ImageView) findViewById(R.id.imageViewSwitch);
         mRelativeLayoutPreviewLeft = (RelativeLayout) findViewById(R.id.relativeLayoutPreviewLeft);
         mRelativeLayoutPreviewRight = (RelativeLayout) findViewById(R.id.relativeLayoutPreviewRight);
-        setListener();
+//        setListener();
         init();
 
         //Default
@@ -529,6 +703,7 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
                 mediaPlayer.seekTo(1);
+                mVideoViewContent.pause();
                 AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeContent, mVideoViewContent.getDuration());
                 mHandlerContent.sendEmptyMessage(UPDATE_UI);
             }
@@ -556,6 +731,7 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
                 mediaPlayer.seekTo(1);
+                mVideoViewMine.pause();
                 AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeMine, mVideoViewMine.getDuration());
                 mHandlerMine.sendEmptyMessage(UPDATE_UI);
             }
@@ -612,6 +788,16 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                 mHandlerMine.sendEmptyMessage(UPDATE_UI);
             }
         });
+    }
+
+    @Override
+    public void loadComplete(int nbPages) {
+
+    }
+
+    @Override
+    public void onPageChanged(int page, int pageCount) {
+
     }
 
     public class MyHandlerContent extends Handler {

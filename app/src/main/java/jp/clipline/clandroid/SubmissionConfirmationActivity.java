@@ -3,6 +3,8 @@ package jp.clipline.clandroid;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -485,6 +487,32 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
         } else if (mSubmissionConfirmation == UPLOAD_FAILE) {
             UploadFaile();
         }
+    }
+
+    private void playVideo(Uri uri) {
+        mVideoView.setVideoURI(uri);
+        mVideoView.requestFocus();
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.seekTo(1);
+                AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeTv, mVideoView.getDuration());
+                mHandler.sendEmptyMessage(UPDATE_UI);
+            }
+        });
+
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                mHandler.removeMessages(UPDATE_UI);
+                mVideoView.pause();
+                mPlayAndPause.setImageResource(R.drawable.video_start_style);
+                mPosSeekBar.setProgress(0);
+                mCurrentTimeTv.setText("00:00");
+            }
+        });
+
+
     }
 
     @Override

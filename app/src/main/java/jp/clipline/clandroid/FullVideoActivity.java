@@ -1,6 +1,8 @@
 package jp.clipline.clandroid;
 
 import android.app.Activity;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -49,7 +51,7 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
         } else if (mTodoContentType.equals("video/mp4")) {
             // 動画が撮影or選択された場合
             mPhotoView.setVisibility(View.GONE);
-            mRelativeLayoutContentVideo.setVisibility(View.INVISIBLE);
+            mRelativeLayoutContentVideo.setVisibility(View.VISIBLE);
             mPdfView.setVisibility(View.GONE);
             mButtonFullScreen.setVisibility(View.GONE);
 
@@ -140,4 +142,29 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    private void playVideo(Uri uri) {
+        mVideoView.setVideoPath(String.valueOf(uri));
+        mVideoView.requestFocus();
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.seekTo(1);
+                AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeTv, mVideoView.getDuration());
+                mHandler.sendEmptyMessage(UPDATE_UI);
+            }
+        });
+
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                mHandler.removeMessages(UPDATE_UI);
+                mVideoView.pause();
+                mPlayAndPause.setImageResource(R.drawable.video_start_style);
+                mPosSeekBar.setProgress(0);
+                mCurrentTimeTv.setText("00:00");
+            }
+        });
+
+
+    }
 }
