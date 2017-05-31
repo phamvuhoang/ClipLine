@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -55,7 +56,6 @@ public class BaseActivity extends AppCompatActivity {
     protected TextView mTotalTimeTv;
     protected TextView mTextLine;
     protected SeekBar mPosSeekBar;
-    protected SeekBar mVolumeSeekBar;
     protected ImageView mPlayAndPause;
     protected ImageView mChangeFullScreen;
     protected AudioManager mAudioManager;
@@ -64,6 +64,7 @@ public class BaseActivity extends AppCompatActivity {
     protected final int SEEKTOTIME = 1111;
     protected final int UPDATE_UI = 1;
     protected RelativeLayout mRelativeLayoutContentVideo;
+    protected LinearLayout mRelativeLayoutVideoController;
 
     //PDF
     protected PDFView mPdfView;
@@ -338,10 +339,10 @@ public class BaseActivity extends AppCompatActivity {
         mTotalTimeTv = (TextView) findViewById(R.id.total_time_tv);
         mTextLine = (TextView) findViewById(R.id.textLine);
         mPosSeekBar = (SeekBar) findViewById(R.id.pos_seekBar);
-        mVolumeSeekBar = (SeekBar) findViewById(R.id.volume_seek);
         mPlayAndPause = (ImageView) findViewById(R.id.pause_img);
         mChangeFullScreen = (ImageView) findViewById(R.id.change_screen);
         mRelativeLayoutContentVideo = (RelativeLayout) findViewById(R.id.relativeLayoutContentVideo);
+        mRelativeLayoutVideoController = (LinearLayout) findViewById(R.id.bottom_layout);
         mPdfView = (PDFView) findViewById(R.id.pdfView);
         mImageView = (ImageView) findViewById(R.id.imageViewSelect);
         mButtonFullScreen = (Button) findViewById(R.id.buttonFullScreen);
@@ -395,22 +396,6 @@ public class BaseActivity extends AppCompatActivity {
             }
         });
 
-        mVolumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
 
         ViewTreeObserver viewObserver = mVideoView.getViewTreeObserver();
         viewObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -423,8 +408,6 @@ public class BaseActivity extends AppCompatActivity {
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        mVolumeSeekBar.setMax(maxVolume);
-        mVolumeSeekBar.setProgress(currentVolume);
     }
 
 }

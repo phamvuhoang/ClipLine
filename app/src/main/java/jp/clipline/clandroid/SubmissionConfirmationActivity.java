@@ -266,18 +266,19 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
         } else if (mTodoContentType.equals("video/mp4")) {
             // 動画が撮影or選択された場合
             mImageView.setVisibility(View.GONE);
-            mRelativeLayoutContentVideo.setVisibility(View.INVISIBLE);
+            mRelativeLayoutContentVideo.setVisibility(View.VISIBLE);
             mPdfView.setVisibility(View.GONE);
             mButtonFullScreen.setVisibility(View.GONE);
+            mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
 
             playVideo(mTodoContentData);
             mVideoView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if (mRelativeLayoutContentVideo.getVisibility() == View.INVISIBLE) {
-                        mRelativeLayoutContentVideo.setVisibility(View.VISIBLE);
+                    if (mRelativeLayoutVideoController.getVisibility() == View.INVISIBLE) {
+                        mRelativeLayoutVideoController.setVisibility(View.VISIBLE);
                     } else {
-                        mRelativeLayoutContentVideo.setVisibility(View.INVISIBLE);
+                        mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
                     }
                     return false;
                 }
