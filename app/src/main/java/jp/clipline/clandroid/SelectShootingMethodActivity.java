@@ -3,6 +3,7 @@ package jp.clipline.clandroid;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -487,7 +488,12 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         @Override
         protected Boolean doInBackground(String... params) {
             mContentype = params[2];
-            return MediaController.getInstance().convertVideo(params[0], params[1]);
+            MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
+            metaRetriever.setDataSource(params[0]);
+            String height = metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
+            String width = metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
+            Log.e("doInBackground", height + "\n" + width);
+            return MediaController.getInstance().convertVideo(params[0], params[1], Integer.parseInt(width),Integer.parseInt(height));
         }
 
         @Override

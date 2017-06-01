@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.github.barteksc.pdfviewer.PDFView;
 
@@ -30,7 +31,6 @@ import java.util.Map;
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.api.MediaKey;
 import jp.clipline.clandroid.api.Report;
-import jp.clipline.clandroid.view.FullVideo;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -50,7 +50,7 @@ public class BaseActivity extends AppCompatActivity {
     protected int mSubmissionConfirmation = 0;
 
     //VIDEO
-    protected FullVideo mVideoView;
+    protected VideoView mVideoView;
     protected TextView mCurrentTimeTv;
     protected TextView mTotalTimeTv;
     protected TextView mTextLine;
@@ -333,7 +333,7 @@ public class BaseActivity extends AppCompatActivity {
      * -------------------------VIDEO and PDF and Image-------------------------
      */
     protected void findViewByIdVideo() {
-        mVideoView = (FullVideo) findViewById(R.id.video_view);
+        mVideoView = (VideoView) findViewById(R.id.video_view);
         mCurrentTimeTv = (TextView) findViewById(R.id.current_time_tv);
         mTotalTimeTv = (TextView) findViewById(R.id.total_time_tv);
         mTextLine = (TextView) findViewById(R.id.textLine);

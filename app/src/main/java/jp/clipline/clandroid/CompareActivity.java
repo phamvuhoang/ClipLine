@@ -182,8 +182,10 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                     @Override
                     public void onClick(View v) {
                         mIsCheckSwitch = true;
-                        mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
-                        mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                        if(!getRotation()){
+                            mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                            mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                        }
                         mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
                         if (mButtonFullScreen.getVisibility() == View.INVISIBLE) {
                             mButtonFullScreen.setVisibility(View.VISIBLE);
@@ -205,8 +207,11 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         mIsCheckSwitch = true;
-                        mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
-                        mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                        if(!getRotation()){
+                            mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                            mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                        }
+
                         mButtonFullScreen.setVisibility(View.INVISIBLE);
                         if (mRelativeLayoutVideoController.getVisibility() == View.INVISIBLE) {
                             mRelativeLayoutVideoController.setVisibility(View.VISIBLE);
@@ -233,8 +238,11 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                     @Override
                     public void onClick(View v) {
                         mIsCheckSwitch = true;
-                        mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
-                        mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                        if(!getRotation()){
+                            mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                            mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                        }
+
                         mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
                         if (mButtonFullScreen.getVisibility() == View.INVISIBLE) {
                             mButtonFullScreen.setVisibility(View.VISIBLE);
@@ -265,8 +273,11 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
                             mIsCheckSwitch = false;
-                            mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
-                            mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                            if(!getRotation()){
+                                mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                                mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                            }
+
                             mButtonFullScreen.setVisibility(View.INVISIBLE);
                             if (mRelativeLayoutVideoController.getVisibility() == View.INVISIBLE) {
                                 mRelativeLayoutVideoController.setVisibility(View.VISIBLE);
@@ -306,8 +317,11 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                         @Override
                         public void onClick(View v) {
                             mIsCheckSwitch = false;
-                            mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
-                            mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                            if(!getRotation()){
+                                mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                                mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                            }
+
                             mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
                             if (mButtonFullScreen.getVisibility() == View.INVISIBLE) {
                                 mButtonFullScreen.setVisibility(View.VISIBLE);

@@ -172,7 +172,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
 
-                        <jp.clipline.clandroid.view.FullVideo
+                        <VideoView
                             android:id="@+id/videoViewContent"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -216,7 +216,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
 
-                        <jp.clipline.clandroid.view.FullVideo
+                        <VideoView
                             android:id="@+id/videoViewMine"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
