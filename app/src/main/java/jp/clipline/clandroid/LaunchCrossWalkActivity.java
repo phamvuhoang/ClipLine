@@ -255,7 +255,6 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
         // ex) NativeInterface.studentToDo(92680,988,15532);
         @JavascriptInterface
         public void studentToDo(String studentId, String categoryId, String todoContentId, String type) {
-            ///// 20170523 MODIFY START
             categoryId = "988";
             AndroidUtility.setBack(LaunchCrossWalkActivity.this, false);
             ((ClWebWrapperApplication) getApplication()).setTodoParameters(studentId, categoryId, todoContentId, type);

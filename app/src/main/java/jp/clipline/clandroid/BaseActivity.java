@@ -169,9 +169,7 @@ public class BaseActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                 intent.putExtra("BASE_URL", url);
                 startActivity(intent);
-                ///// 20170523 ADD START
                 overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-                ///// 20170523 ADD END
                 finish();
             }
         });
