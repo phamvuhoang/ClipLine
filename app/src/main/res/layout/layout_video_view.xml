@@ -3,7 +3,7 @@
     android:id="@+id/relativeLayoutContentVideo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone"
+
     android:orientation="vertical">
 
     <VideoView
@@ -12,6 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
         android:layout_above="@+id/bottom_layout" />
 
     <LinearLayout
