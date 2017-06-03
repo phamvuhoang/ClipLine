@@ -14,6 +14,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
+import android.media.ExifInterface;
 import android.media.MediaRecorder;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -142,7 +143,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
             if (temp != null) {
                 mIntentParameters = new Gson().fromJson(temp, IntentParameters.class);
             }
-        }else {
+        } else {
             mIntentParameters = new IntentParameters(getIntent(), CameraUtil.isStandardAspectHardWare(getWindowManager()));
         }
 
@@ -732,6 +733,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
             mCamera = null;
         }
     }
+
     private void teardownCamera() {
         if (mCamera != null) {
             Log.d(TAG, "teardownCamera - Release Camera");
@@ -1301,7 +1303,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                         // intent.setData();
                         intent.setData(Uri.fromFile(new File(mNextVideoAbsolutePath)));
 
-                        intent.putExtra("path_result",Uri.fromFile(new File(mNextVideoAbsolutePath)));
+                        intent.putExtra("path_result", Uri.fromFile(new File(mNextVideoAbsolutePath)));
 
                         setResult(RESULT_OK, intent);
 //                    }
@@ -1374,32 +1376,41 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                 startPictureTakeThread();
 
                 // Bitmapの回転（縦横を補完する為）とPngへの変換を行う
+                int rotate = 0;
                 Matrix matrix = new Matrix();
                 if (mIntentParameters.isBackShooting()) {
                     matrix.setRotate(adjustDisplayOrientation());
+                    rotate = adjustDisplayOrientation();
+
                 } else {
                     switch (adjustDisplayOrientation()) {
                         case 0:
+                            rotate = 0;
                             matrix.setRotate(0);
                             break;
                         case 90:
+                            rotate = 270;
                             matrix.setRotate(270);
                             break;
                         case 270:
+                            rotate = 90;
                             matrix.setRotate(90);
                             break;
                         case 180:
+                            rotate = 180;
                             matrix.setRotate(180);
                             break;
                         default:
+                            rotate = adjustDisplayOrientation();
                             matrix.setRotate(adjustDisplayOrientation());
+
                             break;
                     }
                 }
                 Bitmap original = BitmapFactory.decodeByteArray(originalBytesData, 0, originalBytesData.length);
                 Bitmap rotated = Bitmap.createBitmap(original, 0, 0, original.getWidth(), original.getHeight(), matrix, true);
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                rotated.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                rotated.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                 byte[] bytesData = byteArrayOutputStream.toByteArray();
 
                 String filename = CameraUtil.getPhotoFilePath();
@@ -1420,14 +1431,19 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
 
                     if (uri != null) {
                         try {
+
+                            Log.e("ExifInterface", "" + rotate);
                             // 出力ファイル指定がある場合には、出力
                             OutputStream outputStream = getContentResolver().openOutputStream(uri);
                             outputStream.write(originalBytesData);
                             outputStream.close();
 
+                            ExifInterface ef = new ExifInterface(String.valueOf(uri).replace("file:/", ""));
+                            ef.setAttribute(ExifInterface.TAG_ORIENTATION, String.valueOf(rotate));
+                            ef.saveAttributes();
                             // @FIXME
                             Intent returnIntent = new Intent();
-                            returnIntent.putExtra("path_result",uri);
+                            returnIntent.putExtra("path_result", uri);
                             setResult(RESULT_OK, returnIntent);
                         } catch (IOException ex) {
                             ex.printStackTrace();

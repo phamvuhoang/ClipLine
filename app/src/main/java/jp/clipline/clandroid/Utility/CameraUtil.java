@@ -91,7 +91,7 @@ public class CameraUtil {
 
     public static String getPhotoFilePath() {
         Log.v(TAG, "getPhotoFilePath");
-        return CameraUtil.getPhotoStorageDir("SimpleCamera").toString() + "/CLIP_" + System.currentTimeMillis() + ".png";
+        return CameraUtil.getPhotoStorageDir("SimpleCamera").toString() + "/CLIP_" + System.currentTimeMillis() + ".JPEG";
     }
 
     // リアルな画面解像度を取得します
