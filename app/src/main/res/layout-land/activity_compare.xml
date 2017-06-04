@@ -228,7 +228,7 @@
                 <LinearLayout
                     android:id="@+id/bottom_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentBottom="true"
                     android:background="#FFF"
                     android:orientation="vertical">
@@ -339,8 +339,8 @@
 
                             <ImageView
                                 android:id="@+id/imageViewSwitch"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
                                 android:background="@drawable/icon_switch" />
 
                             <View

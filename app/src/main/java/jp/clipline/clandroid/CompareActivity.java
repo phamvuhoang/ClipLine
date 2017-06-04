@@ -4,11 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.view.Surface;
 import android.view.View;
@@ -28,8 +33,10 @@ import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -46,9 +53,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
 
     private String mTodoContentType = null;
     private Uri mTodoContentData = null;
-//    private WebView mWebViewContent;
-//    private WebView mWebViewMine;
-
     private LinearLayout mBackScreen;
     private ImageButton mButtonClose;
     private LinearLayout mButtonBack;
@@ -71,7 +75,8 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
     private ImageView mPlayAndPauseMine;
     private ImageView mChangeFullScreen;
     private final int SEEKTOTIME = 1111;
-    private final int UPDATE_UI = 1;
+    private final int UPDATE_UI_CONTENT = 1;
+    private final int UPDATE_UI_MINE = 2;
     private final MyHandlerContent mHandlerContent = new MyHandlerContent(this);
     private final MyHandlerMine mHandlerMine = new MyHandlerMine(this);
     private ImageView mImageViewSwitch;
@@ -84,6 +89,9 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
     private ImageView mImageViewMine;
     private PDFView mPdfViewContent;
     private PDFView mPdfViewMine;
+
+    private Bitmap mThumbnailContent;
+    private Bitmap mThumbnailMine;
 
 
     @Override
@@ -159,23 +167,36 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
             textView.setText("");
         }
         try {
-            mPath = "file://" + AndroidUtility.getFilePath(this, mTodoContentData);
+            String path = AndroidUtility.getFilePath(this, mTodoContentData);
+            mPath = "file://" + path;
             if (mTodoContentType.equals("image/png")) {
                 mImageViewMine.setVisibility(View.VISIBLE);
                 mPdfViewMine.setVisibility(View.GONE);
                 mVideoViewMine.setVisibility(View.GONE);
-//                mRelativeLayoutVideoController.setVisibility(View.GONE);
                 mButtonFullScreen.setVisibility(View.INVISIBLE);
+
+                ExifInterface exif = null;
+                try {
+                    exif = new ExifInterface(path);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                float rotate = Integer.parseInt(exif.getAttribute(ExifInterface.TAG_ORIENTATION));
                 Picasso.with(this)
                         .load(mPath)
+                        .rotate(rotate)
                         .into(mImageViewMine);
 
             } else if (mTodoContentType.equals("video/mp4")) {
-                mImageViewMine.setVisibility(View.GONE);
+                mImageViewMine.setVisibility(View.VISIBLE);
                 mPdfViewMine.setVisibility(View.GONE);
-                mVideoViewMine.setVisibility(View.VISIBLE);
+                mVideoViewMine.setVisibility(View.GONE);
                 mButtonFullScreen.setVisibility(View.GONE);
                 mVideoViewMine.setVideoPath(mPath);
+                mThumbnailMine = ThumbnailUtils.createVideoThumbnail(path,
+                        MediaStore.Images.Thumbnails.MINI_KIND);
+                mImageViewMine.setImageBitmap(mThumbnailMine);
+
             } else {
                 mImageViewMine.setVisibility(View.GONE);
                 mPdfViewMine.setVisibility(View.VISIBLE);
@@ -203,7 +224,23 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                     //thumbnail
                     Picasso.with(this)
                             .load(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")))
-                            .into(mImageViewContent);
+                            .into(new Target() {
+                                @Override
+                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                    mThumbnailContent = bitmap;
+                                    mImageViewContent.setImageBitmap(bitmap);
+                                }
+
+                                @Override
+                                public void onBitmapFailed(Drawable errorDrawable) {
+
+                                }
+
+                                @Override
+                                public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                                }
+                            });
                     mVideoViewContent.setVideoPath((String) mCurrentTodoContent.get("pre_signed_standard_mp4_url"));
 
                 } else if (isImage) { //TODO contact (media_thumb_pre_signed_url)
@@ -384,7 +421,7 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         String categoryId;
         String todoContentId;
         String url;
-        boolean isPortrait;
+        boolean isPortrait = getRotation();
         switch (v.getId()) {
             case R.id.backScreen:
             case R.id.imageButtonBack:
@@ -415,20 +452,24 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
             case R.id.pause_img_mine:
                 mImageViewContent.setVisibility(View.GONE);
                 mVideoViewContent.setVisibility(View.VISIBLE);
+
+                mImageViewMine.setVisibility(View.GONE);
+                mVideoViewMine.setVisibility(View.VISIBLE);
                 if (mVideoViewContent.isPlaying() || mVideoViewMine.isPlaying()) {
                     mPlayAndPauseContent.setImageResource(R.drawable.video_start_style);
                     mPlayAndPauseMine.setImageResource(R.drawable.video_start_style);
                     mVideoViewContent.pause();
                     mVideoViewMine.pause();
-                    mHandlerContent.removeMessages(UPDATE_UI);
-                    mHandlerMine.removeMessages(UPDATE_UI);
+                    mHandlerContent.removeMessages(UPDATE_UI_CONTENT);
+                    mHandlerMine.removeMessages(UPDATE_UI_MINE);
+
                 } else {
                     mPlayAndPauseContent.setImageResource(R.drawable.video_stop_style);
                     mPlayAndPauseMine.setImageResource(R.drawable.video_stop_style);
                     mVideoViewContent.start();
                     mVideoViewMine.start();
-                    mHandlerContent.sendEmptyMessage(UPDATE_UI);
-                    mHandlerMine.sendEmptyMessage(UPDATE_UI);
+                    mHandlerContent.sendEmptyMessage(UPDATE_UI_CONTENT);
+                    mHandlerMine.sendEmptyMessage(UPDATE_UI_MINE);
                 }
                 break;
             case R.id.buttonFullScreen:
@@ -444,38 +485,67 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                 break;
 
             case R.id.imageViewSwitch:
-                isPortrait = getRotation();
-                if (isPortrait) {  // screen portrait
-                    if (mIsCheckSwitch) {
-                        mIsCheckSwitch = false;
-                        mVideoViewContent.setVideoPath(mPath);
-                        mVideoViewMine.setVideoPath(String.valueOf(mCurrentTodoContent.get("pre_signed_standard_mp4_url")));
-                    } else {
-                        mIsCheckSwitch = true;
-                        mVideoViewContent.setVideoPath(String.valueOf(mCurrentTodoContent.get("pre_signed_standard_mp4_url")));
-                        mVideoViewMine.setVideoPath(mPath);
-                    }
-                } else { // screen landscape
-                    if (mIsCheckSwitch) {
-                        mIsCheckSwitch = false;
+                mVideoViewContent.stopPlayback();
+                mVideoViewMine.stopPlayback();
+                mPlayAndPauseContent.setImageResource(R.drawable.video_start_style);
+                mPlayAndPauseMine.setImageResource(R.drawable.video_start_style);
+                if (mIsCheckSwitch) {
+                    mIsCheckSwitch = false;
+                    mImageViewContent.setImageBitmap(mThumbnailMine);
+                    mImageViewMine.setImageBitmap(mThumbnailContent);
+
+                    mImageViewContent.setVisibility(View.VISIBLE);
+                    mImageViewMine.setVisibility(View.VISIBLE);
+                    mVideoViewContent.setVisibility(View.GONE);
+                    mVideoViewMine.setVisibility(View.GONE);
+
+                    mVideoViewContent.setVideoPath(mPath);
+                    mVideoViewMine.setVideoPath(String.valueOf(mCurrentTodoContent.get("pre_signed_standard_mp4_url")));
+
+                    mCurrentTimeContent.setVisibility(View.VISIBLE);
+                    mTotalTimeContent.setVisibility(View.VISIBLE);
+                    mPosSeekBarContent.setVisibility(View.VISIBLE);
+                    mCurrentTimeMine.setVisibility(View.GONE);
+                    mTotalTimeMine.setVisibility(View.GONE);
+                    mPosSeekBarMine.setVisibility(View.GONE);
+
+                    mCurrentTimeContent.setText("00:00");
+                    mTotalTimeContent.setText("00:00");
+                    mCurrentTimeMine.setText("00:00");
+                    mTotalTimeMine.setText("00:00");
+
+                    if (!isPortrait) {
                         mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(this, R.drawable.border_color_green_select));
                         mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(this, R.drawable.border_color_green));
-                        mCurrentTimeContent.setVisibility(View.VISIBLE);
-                        mTotalTimeContent.setVisibility(View.VISIBLE);
-                        mPosSeekBarContent.setVisibility(View.VISIBLE);
-                        mCurrentTimeMine.setVisibility(View.GONE);
-                        mTotalTimeMine.setVisibility(View.GONE);
-                        mPosSeekBarMine.setVisibility(View.GONE);
-                    } else {
-                        mIsCheckSwitch = true;
+                    }
+                } else {
+                    mIsCheckSwitch = true;
+                    mImageViewContent.setImageBitmap(mThumbnailContent);
+                    mImageViewMine.setImageBitmap(mThumbnailMine);
+
+                    mImageViewContent.setVisibility(View.VISIBLE);
+                    mImageViewMine.setVisibility(View.VISIBLE);
+                    mVideoViewContent.setVisibility(View.GONE);
+                    mVideoViewMine.setVisibility(View.GONE);
+
+                    mVideoViewContent.setVideoPath(String.valueOf(mCurrentTodoContent.get("pre_signed_standard_mp4_url")));
+                    mVideoViewMine.setVideoPath(mPath);
+
+                    mCurrentTimeContent.setVisibility(View.GONE);
+                    mTotalTimeContent.setVisibility(View.GONE);
+                    mPosSeekBarContent.setVisibility(View.GONE);
+                    mCurrentTimeMine.setVisibility(View.VISIBLE);
+                    mTotalTimeMine.setVisibility(View.VISIBLE);
+                    mPosSeekBarMine.setVisibility(View.VISIBLE);
+
+                    mCurrentTimeContent.setText("00:00");
+                    mTotalTimeContent.setText("00:00");
+                    mCurrentTimeMine.setText("00:00");
+                    mTotalTimeMine.setText("00:00");
+
+                    if (!isPortrait) {
                         mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(this, R.drawable.border_color_green));
                         mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(this, R.drawable.border_color_green_select));
-                        mCurrentTimeContent.setVisibility(View.GONE);
-                        mTotalTimeContent.setVisibility(View.GONE);
-                        mPosSeekBarContent.setVisibility(View.GONE);
-                        mCurrentTimeMine.setVisibility(View.VISIBLE);
-                        mTotalTimeMine.setVisibility(View.VISIBLE);
-                        mPosSeekBarMine.setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -563,10 +633,15 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         init();
 
         //Default
-        mCurrentTimeMine.setVisibility(View.GONE);
-        mTotalTimeMine.setVisibility(View.GONE);
-        mPosSeekBarMine.setVisibility(View.GONE);
-        mPlayAndPauseMine.setVisibility(View.GONE);
+        mCurrentTimeContent.setVisibility(View.GONE);
+        mTotalTimeContent.setVisibility(View.GONE);
+        mPosSeekBarContent.setVisibility(View.GONE);
+        mPlayAndPauseContent.setVisibility(View.GONE);
+
+        mCurrentTimeMine.setVisibility(View.VISIBLE);
+        mTotalTimeMine.setVisibility(View.VISIBLE);
+        mPosSeekBarMine.setVisibility(View.VISIBLE);
+        mPlayAndPauseMine.setVisibility(View.VISIBLE);
 
     }
 
@@ -583,17 +658,15 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
                 mediaPlayer.seekTo(1);
-                mVideoViewContent.pause();
                 AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeContent, mVideoViewContent.getDuration());
-                mHandlerContent.sendEmptyMessage(UPDATE_UI);
+                mHandlerContent.sendEmptyMessage(UPDATE_UI_CONTENT);
             }
         });
 
         mVideoViewContent.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                mHandlerContent.removeMessages(UPDATE_UI);
-                mVideoViewContent.pause();
+                mHandlerContent.removeMessages(UPDATE_UI_CONTENT);
                 mPlayAndPauseContent.setImageResource(R.drawable.video_start_style);
                 mCurrentTimeContent.setText("00:00");
             }
@@ -611,17 +684,15 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
                 mediaPlayer.seekTo(1);
-                mVideoViewMine.pause();
                 AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeMine, mVideoViewMine.getDuration());
-                mHandlerMine.sendEmptyMessage(UPDATE_UI);
+                mHandlerMine.sendEmptyMessage(UPDATE_UI_MINE);
             }
         });
 
         mVideoViewMine.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                mHandlerMine.removeMessages(UPDATE_UI);
-                mVideoViewMine.pause();
+                mHandlerMine.removeMessages(UPDATE_UI_MINE);
                 mPlayAndPauseMine.setImageResource(R.drawable.video_start_style);
                 mCurrentTimeMine.setText("00:00");
             }
@@ -640,14 +711,14 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                mHandlerContent.removeMessages(UPDATE_UI);
+                mHandlerContent.removeMessages(UPDATE_UI_CONTENT);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int progress = seekBar.getProgress();
                 mVideoViewContent.seekTo(progress);
-                mHandlerContent.sendEmptyMessage(UPDATE_UI);
+                mHandlerContent.sendEmptyMessage(UPDATE_UI_CONTENT);
             }
         });
         mPosSeekBarMine.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -658,14 +729,14 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                mHandlerMine.removeMessages(UPDATE_UI);
+                mHandlerMine.removeMessages(UPDATE_UI_MINE);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int progress = seekBar.getProgress();
                 mVideoViewMine.seekTo(progress);
-                mHandlerMine.sendEmptyMessage(UPDATE_UI);
+                mHandlerMine.sendEmptyMessage(UPDATE_UI_MINE);
             }
         });
     }
@@ -692,13 +763,13 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
             final Activity activity = mActivityReference.get();
             if (activity != null) {
                 switch (msg.what) {
-                    case UPDATE_UI:
+                    case UPDATE_UI_CONTENT:
                         int currentPosition = mVideoViewContent.getCurrentPosition();
                         int totalPosition = mVideoViewContent.getDuration();
                         AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeContent, currentPosition);
                         mPosSeekBarContent.setMax(totalPosition);
                         mPosSeekBarContent.setProgress(currentPosition);
-                        mHandlerContent.sendEmptyMessageDelayed(UPDATE_UI, 500);
+                        mHandlerContent.sendEmptyMessageDelayed(UPDATE_UI_CONTENT, 500);
                         break;
                     default:
                         break;
@@ -719,13 +790,13 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
             final Activity activity = mActivityReference.get();
             if (activity != null) {
                 switch (msg.what) {
-                    case UPDATE_UI:
+                    case UPDATE_UI_MINE:
                         int currentPosition = mVideoViewMine.getCurrentPosition();
                         int totalPosition = mVideoViewMine.getDuration();
                         AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeMine, currentPosition);
                         mPosSeekBarMine.setMax(totalPosition);
                         mPosSeekBarMine.setProgress(currentPosition);
-                        mHandlerMine.sendEmptyMessageDelayed(UPDATE_UI, 500);
+                        mHandlerMine.sendEmptyMessageDelayed(UPDATE_UI_MINE, 500);
                         break;
                     default:
                         break;
