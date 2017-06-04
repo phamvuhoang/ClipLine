@@ -111,25 +111,38 @@
         android:background="#FF000000"
         >
 
-        <ImageButton
-            android:id="@+id/icSettings"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/ic_settings"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="16dp"
-            />
+        <!--<ImageButton-->
+            <!--android:id="@+id/icSettings"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:background="@drawable/ic_settings"-->
+            <!--android:layout_width="32dp"-->
+            <!--android:layout_height="32dp"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_margin="16dp"-->
+            <!--/>-->
 
-        <ImageView
-            android:layout_gravity="top|left"
-            android:scaleType="centerCrop"
+        <!--<ImageView-->
+            <!--android:layout_gravity="top|left"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_width="32dp"-->
+            <!--android:layout_height="32dp"-->
+            <!--android:layout_margin="16dp"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:id="@+id/imageViewOpenGallery" />-->
+
+        <TextView
+            android:text="@string/button_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_gravity="top|left"
             android:layout_margin="16dp"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/imageViewOpenGallery" />
+            android:id="@+id/textViewClose"
+            android:textSize="15sp"
+            android:textColor="@android:color/background_light"
+            android:textStyle="normal"
+            android:layout_marginTop="12dp" />
 
     </RelativeLayout>
 

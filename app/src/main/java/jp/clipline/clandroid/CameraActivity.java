@@ -93,8 +93,9 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     private ImageButton mImageButtonChangePicture;
     private ImageButton mImageButtonChangeVideo;
     private Button mButtonFocus;
-    private ImageButton mImageButtonIcSettingsButton;
-    private ImageView mImageViewOpenGallery;
+    //private ImageButton mImageButtonIcSettingsButton;
+    //private ImageView mImageViewOpenGallery;
+    private TextView mTextViewButtonClose;
     private SeekBar mSeekBarZoom;
     private SeekBar mSeekBarBrightness;
     private Timer mTimerVideoRecordingTimeUpdate;
@@ -202,9 +203,16 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mImageButtonChangeVideo.setOnClickListener(mImageButtonChangeVideoListener);
         mImageButtonChangeVideo.setVisibility(View.INVISIBLE);
         mButtonFocus = (Button) findViewById(R.id.buttonFocus);
-        mImageViewOpenGallery = (ImageView) findViewById(R.id.imageViewOpenGallery);
-        mImageViewOpenGallery.setOnClickListener(mImageViewOpenGalleryListener);
-        applyThumbnailToGalleryButton();
+        //mImageViewOpenGallery = (ImageView) findViewById(R.id.imageViewOpenGallery);
+        //mImageViewOpenGallery.setOnClickListener(mImageViewOpenGalleryListener);
+        //applyThumbnailToGalleryButton();
+        mTextViewButtonClose = (TextView) findViewById(R.id.textViewClose);
+        mTextViewButtonClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         mSeekBarZoom = (SeekBar) findViewById(R.id.seekBarZoom);
         mSeekBarZoom.setOnSeekBarChangeListener(mSeekBarChangeListenerZoom);
@@ -248,17 +256,17 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mNavigationView.setNavigationItemSelectedListener(this);
         mNavigationView.setVisibility(View.VISIBLE);
 
-        mImageButtonIcSettingsButton = (ImageButton) findViewById(R.id.icSettings);
-        mImageButtonIcSettingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-                navigationView.setVisibility(View.VISIBLE);
-
-                DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
+//        mImageButtonIcSettingsButton = (ImageButton) findViewById(R.id.icSettings);
+//        mImageButtonIcSettingsButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//                navigationView.setVisibility(View.VISIBLE);
+//
+//                DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//                drawerLayout.openDrawer(GravityCompat.START);
+//            }
+//        });
         Log.v(TAG, String.format("onCreate - End"));
     }
 
@@ -266,7 +274,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     public void onDestroy() {
         Log.v(TAG, String.format("onDestroy - Start"));
         super.onDestroy();
-        mImageViewOpenGallery = null;
+        //mImageViewOpenGallery = null;
         mImageButtonChangeAspectStandard = null;
         mImageButtonChangeAspectWide = null;
         mImageButtonChangePicture = null;
@@ -514,8 +522,8 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mImageButtonChangeAspectWide.setEnabled(bool);
         mImageButtonChangeAspectStandard.setEnabled(bool);
         mImageButtonBackFront.setEnabled(bool);
-        mImageButtonIcSettingsButton.setEnabled(bool);
-        mImageViewOpenGallery.setEnabled(bool);
+        //mImageButtonIcSettingsButton.setEnabled(bool);
+        //mImageViewOpenGallery.setEnabled(bool);
     }
 
     private void disableOperation() {
@@ -548,25 +556,25 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         return mIntentParameters.isVideo();
     }
 
-    private void applyThumbnailToGalleryButton() {
-        SharedPreferences data = getSharedPreferences("settings", MODE_PRIVATE);
-        String filename = data.getString("lastCreatedFile", null);
-        String type = data.getString("lastCreatedFileType", null);
-
-        if (type == null) {
-            return;
-        }
-
-        mImageViewOpenGallery.setImageBitmap(null);
-        mImageViewOpenGallery.setImageURI(null);
-        mImageViewOpenGallery.destroyDrawingCache();
-        if (type.equals("Video")) {
-            Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(filename, MediaStore.Video.Thumbnails.MINI_KIND);
-            mImageViewOpenGallery.setImageBitmap(bitmap);
-        } else {
-            mImageViewOpenGallery.setImageURI(Uri.parse(filename));
-        }
-    }
+//    private void applyThumbnailToGalleryButton() {
+//        SharedPreferences data = getSharedPreferences("settings", MODE_PRIVATE);
+//        String filename = data.getString("lastCreatedFile", null);
+//        String type = data.getString("lastCreatedFileType", null);
+//
+//        if (type == null) {
+//            return;
+//        }
+//
+//        mImageViewOpenGallery.setImageBitmap(null);
+//        mImageViewOpenGallery.setImageURI(null);
+//        mImageViewOpenGallery.destroyDrawingCache();
+//        if (type.equals("Video")) {
+//            Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(filename, MediaStore.Video.Thumbnails.MINI_KIND);
+//            mImageViewOpenGallery.setImageBitmap(bitmap);
+//        } else {
+//            mImageViewOpenGallery.setImageURI(Uri.parse(filename));
+//        }
+//    }
 
     private String collectionTerminalInformation() {
 
@@ -1278,7 +1286,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
 
                     holdSettingForGalleryButton(mNextVideoAbsolutePath, true);
 
-                    applyThumbnailToGalleryButton();
+                    //applyThumbnailToGalleryButton();
 
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
                     Log.v(TAG, "onClick - RecordStop - Start");
@@ -1418,7 +1426,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
 
                 holdSettingForGalleryButton(filename, false);
 
-                mImageViewOpenGallery.setImageBitmap(BitmapFactory.decodeByteArray(bytesData, 0, bytesData.length));
+                //mImageViewOpenGallery.setImageBitmap(BitmapFactory.decodeByteArray(bytesData, 0, bytesData.length));
 
                 // プレビューを再開する
                 camera.startPreview();

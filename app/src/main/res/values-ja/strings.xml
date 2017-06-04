@@ -90,4 +90,7 @@
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
     <string name="remember_login">Remember Login</string>
+
+    <string name="button_close">閉じる</string>
+
 </resources>

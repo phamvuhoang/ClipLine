@@ -95,15 +95,15 @@
             android:background="#FF000000"
             >
 
-            <ImageButton
-                android:id="@+id/icSettings"
-                android:background="@drawable/ic_settings"
-                android:layout_alignParentLeft="true"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                android:layout_margin="16dp"
-                />
+            <!--<ImageButton-->
+                <!--android:id="@+id/icSettings"-->
+                <!--android:background="@drawable/ic_settings"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_width="32dp"-->
+                <!--android:layout_height="32dp"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_margin="16dp"-->
+                <!--/>-->
 
             <TextView
                 android:text="0:00:00"
@@ -118,14 +118,27 @@
                 android:textStyle="normal"
                 android:layout_marginTop="12dp" />
 
-            <ImageView
-                android:layout_gravity="top|right"
-                android:scaleType="centerCrop"
+            <!--<ImageView-->
+                <!--android:layout_gravity="top|right"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_width="32dp"-->
+                <!--android:layout_height="32dp"-->
+                <!--android:layout_margin="16dp"-->
+                <!--android:id="@+id/imageViewOpenGallery" />-->
+
+            <TextView
+                android:text="@string/button_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_gravity="top|right"
                 android:layout_margin="16dp"
-                android:id="@+id/imageViewOpenGallery" />
+                android:id="@+id/textViewClose"
+                android:textSize="15sp"
+                android:textColor="@android:color/background_light"
+                android:textStyle="normal"
+                android:layout_marginTop="12dp" />
 
         </RelativeLayout>
 
