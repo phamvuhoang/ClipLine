@@ -450,6 +450,9 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.pause_img_content:
             case R.id.pause_img_mine:
+                if (!mTodoContentType.equals("video/mp4")) {
+                    return;
+                }
                 mImageViewContent.setVisibility(View.GONE);
                 mVideoViewContent.setVisibility(View.VISIBLE);
 
@@ -485,6 +488,9 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                 break;
 
             case R.id.imageViewSwitch:
+                if (!mTodoContentType.equals("video/mp4")) {
+                    return;
+                }
                 mVideoViewContent.stopPlayback();
                 mVideoViewMine.stopPlayback();
                 mPlayAndPauseContent.setImageResource(R.drawable.video_start_style);
