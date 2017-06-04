@@ -1,6 +1,7 @@
 package jp.clipline.clandroid;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -28,6 +29,7 @@ import java.util.Map;
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.CameraUtil;
 import jp.clipline.clandroid.Utility.FileChooser;
+import jp.clipline.clandroid.Utility.PopUpDlg;
 import jp.clipline.clandroid.api.ToDo;
 import jp.clipline.clandroid.view.StatusView;
 
@@ -47,8 +49,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
     public final String COMPRESSED_VIDEOS_DIR = "/Compressed Videos/";
     private String mOutPathVideoSelect;
     private StatusView mStatusView;
-    private StatusView mStatusViewResport;
-    private StatusView mStatusViewCheck;
+    private PopUpDlg mConfirDlg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,29 +197,48 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         });
 
         mStatusView = (StatusView) findViewById(R.id.statusView);
-        mStatusViewResport = (StatusView) findViewById(R.id.statusResport);
-        mStatusViewCheck = (StatusView) findViewById(R.id.statusCheck);
-
-        mStatusView.setTypeView(StatusView.STATUS_VIEW.VIEW, true);
-        mStatusViewResport.setTypeView(StatusView.STATUS_VIEW.REPORT, true);
-        mStatusViewCheck.setTypeView(StatusView.STATUS_VIEW.CHECK, true);
-
+        mStatusView.setTypeView(StatusView.STATUS_VIEW.SELECT);
         mStatusView.setClickListener(new StatusView.ClickListener() {
             @Override
-            public void onListener() {
-                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                String studentId = todoParameters.get("studentId");
-                String categoryId = todoParameters.get("categoryId");
-                String todoContentId = todoParameters.get("todoContentId");
-                String url = "%s://%s/training/#/students/" + studentId
-                        + "/todos/" + todoContentId;
-                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-                intent.putExtra("BASE_URL", url);
-                startActivity(intent);
-                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-                finish();
+            public void onListenerView() {
+                mConfirDlg = new PopUpDlg(SelectShootingMethodActivity.this, true);
+                mConfirDlg.show("", getString(R.string.confirm_retry),
+                        getString(R.string.yes),
+                        getString(R.string.no),
+                        // onOK
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                                String studentId = todoParameters.get("studentId");
+                                String categoryId = todoParameters.get("categoryId");
+                                String todoContentId = todoParameters.get("todoContentId");
+                                String url = "%s://%s/training/#/students/" + studentId
+                                        + "/todos/" + todoContentId;
+                                Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                                intent.putExtra("BASE_URL", url);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                                finish();
+                            }
+                        },
+                        // onCancel
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (dialog != null) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+            }
+
+            @Override
+            public void onListenerReport() {
+
             }
         });
+
 
         LinearLayout backScreen = (LinearLayout) findViewById(R.id.imageButtonBack);
         backScreen.setOnClickListener(new View.OnClickListener() {
@@ -441,8 +461,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                             && ((boolean) todoContent.get("has_report_action"))) {
 
                         // 表示
-                        mStatusViewResport.setVisibility(View.VISIBLE);
-
 //                        mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
 //                        mImageViewFooterShoot.setVisibility(View.VISIBLE);
 //                        mTextViewFooterShoot.setVisibility(View.VISIBLE);
@@ -453,8 +471,6 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                             && ((boolean) todoContent.get("has_my_report_play_action"))) {
 
                         // 表示
-                        mStatusViewCheck.setVisibility(View.VISIBLE);
-
 //                        mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
 //                        mImageViewFooterCompare.setVisibility(View.VISIBLE);
 //                        mTextViewFooterCompare.setVisibility(View.VISIBLE);

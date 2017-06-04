@@ -71,30 +71,16 @@
         android:layout_below="@+id/relativeLayoutHeader"
         android:layout_centerHorizontal="true"
         android:background="#FFFFFF"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:weightSum="2.5">
 
         <jp.clipline.clandroid.view.StatusView
             android:id="@+id/statusView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
+            android:gravity="center"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.5" />
-
-        <jp.clipline.clandroid.view.StatusView
-            android:id="@+id/statusResport"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1" />
-
-        <jp.clipline.clandroid.view.StatusView
-            android:id="@+id/statusCheck"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1" />
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 
@@ -151,7 +137,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
+        android:id="@+id/textViewBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativeLayoutBody"
@@ -167,7 +153,6 @@
             android:gravity="center" />
 
         <TextView
-            android:id="@+id/textViewBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -182,7 +167,7 @@
         android:id="@+id/buttonCompareWithModel"
         android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout3"
+        android:layout_below="@+id/textViewBack"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/border_color_gray"

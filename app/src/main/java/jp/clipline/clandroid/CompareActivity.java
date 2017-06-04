@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
-import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -50,7 +49,7 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
 //    private WebView mWebViewContent;
 //    private WebView mWebViewMine;
 
-    private TextView mBackScreen;
+    private LinearLayout mBackScreen;
     private ImageButton mButtonClose;
     private LinearLayout mButtonBack;
 
@@ -61,9 +60,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
     private boolean mIsCheckSwitch = true;
 
     private StatusView mStatusView;
-    private StatusView mStatusViewResport;
-    private StatusView mStatusViewCheck;
-
     //Video
     private TextView mCurrentTimeContent;
     private TextView mCurrentTimeMine;
@@ -102,10 +98,10 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
 //        mWebViewMine = (WebView) findViewById(R.id.webViewMine);
         mVideoViewContent = (VideoView) findViewById(R.id.videoViewContent);
         mVideoViewMine = (VideoView) findViewById(R.id.videoViewMine);
-        mRelativeLayoutVideoController = (LinearLayout) findViewById(R.id.bottom_layout);
+//        mRelativeLayoutVideoController = (LinearLayout) findViewById(R.id.bottom_layout);
         mButtonFullScreen = (Button) findViewById(R.id.buttonFullScreen);
         mButtonFullScreen.setOnClickListener(this);
-        mBackScreen = (TextView) findViewById(R.id.backScreen);
+        mBackScreen = (LinearLayout) findViewById(R.id.backScreen);
         mButtonBack = (LinearLayout) findViewById(R.id.imageButtonBack);
         mBackScreen.setOnClickListener(this);
         mButtonBack.setOnClickListener(this);
@@ -165,67 +161,25 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         try {
             mPath = "file://" + AndroidUtility.getFilePath(this, mTodoContentData);
             if (mTodoContentType.equals("image/png")) {
-//                mWebViewMine.removeAllViews();
-//                ImageView imageView = new ImageView(this);
-//                Picasso.with(this).load(mPath).into(imageView);
-//                mWebViewMine.addView(imageView);
-//                mWebViewMine.setVisibility(View.VISIBLE);
                 mImageViewMine.setVisibility(View.VISIBLE);
                 mPdfViewMine.setVisibility(View.GONE);
                 mVideoViewMine.setVisibility(View.GONE);
-                mRelativeLayoutVideoController.setVisibility(View.GONE);
+//                mRelativeLayoutVideoController.setVisibility(View.GONE);
                 mButtonFullScreen.setVisibility(View.INVISIBLE);
                 Picasso.with(this)
                         .load(mPath)
                         .into(mImageViewMine);
-                mImageViewMine.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mIsCheckSwitch = true;
-                        if(!getRotation()){
-                            mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
-                            mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
-                        }
-                        mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
-                        if (mButtonFullScreen.getVisibility() == View.INVISIBLE) {
-                            mButtonFullScreen.setVisibility(View.VISIBLE);
-                        } else {
-                            mButtonFullScreen.setVisibility(View.INVISIBLE);
-                        }
-                    }
-                });
-
 
             } else if (mTodoContentType.equals("video/mp4")) {
                 mImageViewMine.setVisibility(View.GONE);
                 mPdfViewMine.setVisibility(View.GONE);
                 mVideoViewMine.setVisibility(View.VISIBLE);
-                mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
                 mButtonFullScreen.setVisibility(View.GONE);
                 mVideoViewMine.setVideoPath(mPath);
-                mVideoViewMine.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        mIsCheckSwitch = true;
-                        if(!getRotation()){
-                            mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
-                            mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
-                        }
-
-                        mButtonFullScreen.setVisibility(View.INVISIBLE);
-                        if (mRelativeLayoutVideoController.getVisibility() == View.INVISIBLE) {
-                            mRelativeLayoutVideoController.setVisibility(View.VISIBLE);
-                        } else {
-                            mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
-                        }
-                        return false;
-                    }
-                });
             } else {
                 mImageViewMine.setVisibility(View.GONE);
                 mPdfViewMine.setVisibility(View.VISIBLE);
                 mVideoViewMine.setVisibility(View.GONE);
-                mRelativeLayoutVideoController.setVisibility(View.GONE);
                 mButtonFullScreen.setVisibility(View.INVISIBLE);
                 mPdfViewMine.fromUri(Uri.parse(mPath))
                         .defaultPage(0)
@@ -234,23 +188,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                         .onLoad(this)
                         .scrollHandle(new DefaultScrollHandle(this))
                         .load();
-                mPdfViewMine.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mIsCheckSwitch = true;
-                        if(!getRotation()){
-                            mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
-                            mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
-                        }
-
-                        mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
-                        if (mButtonFullScreen.getVisibility() == View.INVISIBLE) {
-                            mButtonFullScreen.setVisibility(View.VISIBLE);
-                        } else {
-                            mButtonFullScreen.setVisibility(View.INVISIBLE);
-                        }
-                    }
-                });
             }
 
             if (mCurrentTodoContent != null) {
@@ -262,49 +199,28 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                     mImageViewContent.setVisibility(View.VISIBLE);
                     mPdfViewContent.setVisibility(View.GONE);
                     mVideoViewContent.setVisibility(View.INVISIBLE);
-                    mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
                     mButtonFullScreen.setVisibility(View.GONE);
                     //thumbnail
                     Picasso.with(this)
                             .load(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")))
                             .into(mImageViewContent);
                     mVideoViewContent.setVideoPath((String) mCurrentTodoContent.get("pre_signed_standard_mp4_url"));
-                    mVideoViewContent.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            mIsCheckSwitch = false;
-                            if(!getRotation()){
-                                mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
-                                mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
-                            }
-
-                            mButtonFullScreen.setVisibility(View.INVISIBLE);
-                            if (mRelativeLayoutVideoController.getVisibility() == View.INVISIBLE) {
-                                mRelativeLayoutVideoController.setVisibility(View.VISIBLE);
-                            } else {
-                                mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
-                            }
-                            return false;
-                        }
-                    });
 
                 } else if (isImage) { //TODO contact (media_thumb_pre_signed_url)
                     mImageViewContent.setVisibility(View.VISIBLE);
                     mPdfViewContent.setVisibility(View.GONE);
                     mVideoViewContent.setVisibility(View.GONE);
-                    mRelativeLayoutVideoController.setVisibility(View.GONE);
+//                    mRelativeLayoutVideoController.setVisibility(View.GONE);
                     mButtonFullScreen.setVisibility(View.INVISIBLE);
 
                     Picasso.with(this)
                             .load(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")))
                             .into(mImageViewContent);
-//                    mWebViewContent.loadUrl(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")));
-//                    mWebViewContent.setVisibility(View.VISIBLE);
                 } else if (isPdf) {
                     mImageViewContent.setVisibility(View.GONE);
                     mPdfViewContent.setVisibility(View.VISIBLE);
                     mVideoViewContent.setVisibility(View.GONE);
-                    mRelativeLayoutVideoController.setVisibility(View.GONE);
+//                    mRelativeLayoutVideoController.setVisibility(View.GONE);
                     mButtonFullScreen.setVisibility(View.INVISIBLE);
                     mPdfViewContent.fromUri(Uri.parse(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url"))))
                             .defaultPage(0)
@@ -313,51 +229,7 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                             .onLoad(this)
                             .scrollHandle(new DefaultScrollHandle(this))
                             .load();
-                    mPdfViewContent.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mIsCheckSwitch = false;
-                            if(!getRotation()){
-                                mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
-                                mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
-                            }
-
-                            mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
-                            if (mButtonFullScreen.getVisibility() == View.INVISIBLE) {
-                                mButtonFullScreen.setVisibility(View.VISIBLE);
-                            } else {
-                                mButtonFullScreen.setVisibility(View.INVISIBLE);
-                            }
-                        }
-                    });
-//                    mWebViewContent.loadUrl(String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")));
-//                    mWebViewContent.setVisibility(View.VISIBLE);
                 }
-                mImageViewContent.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mIsCheckSwitch = false;
-                        mButtonFullScreen.setVisibility(View.INVISIBLE);
-                        if (!getRotation()) {
-                            mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
-                            mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
-                        }
-                        if (isVideo) {
-
-                            if (mRelativeLayoutVideoController.getVisibility() == View.INVISIBLE) {
-                                mRelativeLayoutVideoController.setVisibility(View.VISIBLE);
-                            } else {
-                                mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
-                            }
-                        } else if (isImage) {
-                            if (mButtonFullScreen.getVisibility() == View.INVISIBLE) {
-                                mButtonFullScreen.setVisibility(View.VISIBLE);
-                            } else {
-                                mButtonFullScreen.setVisibility(View.INVISIBLE);
-                            }
-                        }
-                    }
-                });
             }
 
         } catch (URISyntaxException e) {
@@ -425,16 +297,11 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         // Statuses on Footer
 
         mStatusView = (StatusView) findViewById(R.id.statusView);
-        mStatusViewResport = (StatusView) findViewById(R.id.statusResport);
-        mStatusViewCheck = (StatusView) findViewById(R.id.statusCheck);
 
-        mStatusView.setTypeView(StatusView.STATUS_VIEW.VIEW, false);
-        mStatusViewResport.setTypeView(StatusView.STATUS_VIEW.REPORT, false);
-        mStatusViewCheck.setTypeView(StatusView.STATUS_VIEW.CHECK, false);
-
+        mStatusView.setTypeView(StatusView.STATUS_VIEW.COMPARE);
         mStatusView.setClickListener(new StatusView.ClickListener() {
             @Override
-            public void onListener() {
+            public void onListenerView() {
                 mConfirDlg = new PopUpDlg(CompareActivity.this, true);
                 mConfirDlg.show("", getString(R.string.confirm_retry),
                         getString(R.string.yes),
@@ -466,11 +333,9 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                             }
                         });
             }
-        });
 
-        mStatusViewResport.setClickListener(new StatusView.ClickListener() {
             @Override
-            public void onListener() {
+            public void onListenerReport() {
                 mConfirDlg = new PopUpDlg(CompareActivity.this, true);
                 mConfirDlg.show("", getString(R.string.confirm_retry),
                         getString(R.string.yes),
@@ -495,6 +360,7 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                         });
             }
         });
+
         updateStatus();
 
         // この内容で提出
@@ -647,7 +513,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                     && ((boolean) todoContent.get("has_report_action"))) {
 
                 // 表示
-                mStatusViewResport.setVisibility(View.VISIBLE);
             }
 
             // check has_my_report_play_action
@@ -655,7 +520,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                     && ((boolean) todoContent.get("has_my_report_play_action"))) {
 
                 // 表示
-                mStatusViewCheck.setVisibility(View.VISIBLE);
             }
         }
     }

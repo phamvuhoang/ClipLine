@@ -3,12 +3,16 @@ package jp.clipline.clandroid;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.ExifInterface;
 import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.MotionEvent;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -20,6 +24,7 @@ import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.net.URISyntaxException;
 import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
@@ -29,8 +34,6 @@ import jp.clipline.clandroid.view.StatusView;
 public class SubmissionConfirmationActivity extends BaseActivity implements View.OnClickListener, OnPageChangeListener, OnLoadCompleteListener {
 
     private StatusView mStatusView;
-    private StatusView mStatusViewResport;
-    private StatusView mStatusViewCheck;
     private Button mButtonCompareToModel;
     private Button mImageButtonCompareOrSubmit;
     private boolean mHasMyReportPlayAction = false;
@@ -82,8 +85,8 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
 
         mImageButtonCompareOrSubmit = (Button) findViewById(R.id.buttonCompareOrSubmit);
         mImageButtonCompareOrSubmit.setOnClickListener(this);
-        TextView textView = (TextView) findViewById(R.id.textViewBack);
-        textView.setOnClickListener(new View.OnClickListener() {
+        LinearLayout llRetry = (LinearLayout) findViewById(R.id.textViewBack);
+        llRetry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mConfirDlg = new PopUpDlg(SubmissionConfirmationActivity.this, true);
@@ -116,16 +119,11 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
 
         // Statuses on Footer
         mStatusView = (StatusView) findViewById(R.id.statusView);
-        mStatusViewResport = (StatusView) findViewById(R.id.statusResport);
-        mStatusViewCheck = (StatusView) findViewById(R.id.statusCheck);
-
-        mStatusView.setTypeView(StatusView.STATUS_VIEW.VIEW, true);
-        mStatusViewResport.setTypeView(StatusView.STATUS_VIEW.REPORT, true);
-        mStatusViewCheck.setTypeView(StatusView.STATUS_VIEW.CHECK, true);
-
+        mStatusView.setTypeView(StatusView.STATUS_VIEW.SUBMISS);
         mStatusView.setClickListener(new StatusView.ClickListener() {
+
             @Override
-            public void onListener() {
+            public void onListenerView() {
                 mConfirDlg = new PopUpDlg(SubmissionConfirmationActivity.this, true);
                 mConfirDlg.show("", getString(R.string.confirm_retry),
                         getString(R.string.yes),
@@ -156,6 +154,11 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
                                 }
                             }
                         });
+            }
+
+            @Override
+            public void onListenerReport() {
+
             }
         });
 
@@ -205,7 +208,7 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
         updateButtonVisible();
 
         Map<String, Object> currentTodoContent = ((ClWebWrapperApplication) getApplication()).getCurrentTodoContent();
-        textView = (TextView) findViewById(R.id.textViewToDoTitle);
+        TextView textView = (TextView) findViewById(R.id.textViewToDoTitle);
 
         if (currentTodoContent != null && currentTodoContent.get("title") != null) {
             textView.setText((String) currentTodoContent.get("title"));
@@ -251,57 +254,40 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
             mImageView.setVisibility(View.VISIBLE);
             mRelativeLayoutContentVideo.setVisibility(View.GONE);
             mPdfView.setVisibility(View.GONE);
-            mButtonFullScreen.setVisibility(View.GONE);
-
-            mImageView.setImageURI(mTodoContentData);
-            mImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mButtonFullScreen.getVisibility() == View.GONE) {
-                        mButtonFullScreen.setVisibility(View.VISIBLE);
-                    } else {
-                        mButtonFullScreen.setVisibility(View.GONE);
-                    }
-
-                }
-            });
+            mButtonFullScreen.setVisibility(View.VISIBLE);
+            try {
+                String path = AndroidUtility.getFilePath(this, mTodoContentData);
+                ExifInterface exif = new ExifInterface(path);
+                float rotate = Integer.parseInt(exif.getAttribute(ExifInterface.TAG_ORIENTATION));
+                Log.e("rotate", String.valueOf(rotate));
+                mImageView.setImageURI(mTodoContentData);
+                mImageView.setRotation(rotate);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else if (mTodoContentType.equals("video/mp4")) {
             // 動画が撮影or選択された場合
-            mImageView.setVisibility(View.GONE);
+            mImageView.setVisibility(View.VISIBLE);
             mRelativeLayoutContentVideo.setVisibility(View.VISIBLE);
             mPdfView.setVisibility(View.GONE);
             mButtonFullScreen.setVisibility(View.GONE);
-            mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
-
+            mRelativeLayoutVideoController.setVisibility(View.VISIBLE);
+            String path = null;
+            try {
+                path = AndroidUtility.getFilePath(this, mTodoContentData);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            Bitmap thumb = ThumbnailUtils.createVideoThumbnail(path,
+                    MediaStore.Images.Thumbnails.MINI_KIND);
+            mImageView.setImageBitmap(thumb);
             playVideo(mTodoContentData);
-            mVideoView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (mRelativeLayoutVideoController.getVisibility() == View.INVISIBLE) {
-                        mRelativeLayoutVideoController.setVisibility(View.VISIBLE);
-                    } else {
-                        mRelativeLayoutVideoController.setVisibility(View.INVISIBLE);
-                    }
-                    return false;
-                }
-            });
         } else { //content type is pdf
             try {
                 mImageView.setVisibility(View.GONE);
                 mRelativeLayoutContentVideo.setVisibility(View.GONE);
                 mPdfView.setVisibility(View.VISIBLE);
-                mButtonFullScreen.setVisibility(View.GONE);
-
-                mPdfView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mButtonFullScreen.getVisibility() == View.GONE) {
-                            mButtonFullScreen.setVisibility(View.VISIBLE);
-                        } else {
-                            mButtonFullScreen.setVisibility(View.GONE);
-                        }
-                    }
-                });
+                mButtonFullScreen.setVisibility(View.VISIBLE);
                 String path = AndroidUtility.getFilePath(this, mTodoContentData);
                 mPdfView.fromFile(new File(path))
                         .defaultPage(0)
@@ -325,8 +311,6 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
         mPlayAndPause.setOnClickListener(this);
         mChangeFullScreen.setOnClickListener(this);
     }
-
-
 
     @Override
     public void loadComplete(int nbPages) {
@@ -395,8 +379,6 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
                     && ((boolean) todoContent.get("has_report_action"))) {
 
                 // 表示
-                mStatusViewResport.setVisibility(View.VISIBLE);
-
 //              mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
 //              mImageViewFooterShoot.setVisibility(View.VISIBLE);
 //              mTextViewFooterShoot.setVisibility(View.VISIBLE);
@@ -407,8 +389,6 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
                     && ((boolean) todoContent.get("has_my_report_play_action"))) {
 
                 // 表示
-                mStatusViewCheck.setVisibility(View.VISIBLE);
-
 //               mLinearLayoutFooterStatus.setVisibility(View.VISIBLE);
 //               mImageViewFooterCompare.setVisibility(View.VISIBLE);
 //               mTextViewFooterCompare.setVisibility(View.VISIBLE);
@@ -451,6 +431,8 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
                     mVideoView.pause();
                     mHandler.removeMessages(UPDATE_UI);
                 } else {
+                    mRelativeLayoutContentVideo.setVisibility(View.VISIBLE);
+                    mImageView.setVisibility(View.GONE);
                     mPlayAndPause.setImageResource(R.drawable.video_stop_style);
                     mVideoView.start();
                     mHandler.sendEmptyMessage(UPDATE_UI);
