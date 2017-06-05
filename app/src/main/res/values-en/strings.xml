@@ -96,5 +96,6 @@
     <string name="remember_login">Remember Login</string>
 
     <string name="button_close">Close</string>
+    <string name="button_cancel">Cancel</string>
 
 </resources>

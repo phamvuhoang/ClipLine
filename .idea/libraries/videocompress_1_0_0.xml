@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="videocompress-1.0.0">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/3f0657fa826803b90b53604da36656e310a32cd8/output/jars/libs/isoparser-1.0.6.jar!/" />
-      <root url="jar://$USER_HOME$/.android/build-cache/3f0657fa826803b90b53604da36656e310a32cd8/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/3f0657fa826803b90b53604da36656e310a32cd8/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/f91f6254ca8cbb8d288e5305c8231be41777c210/output/jars/libs/isoparser-1.0.6.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/f91f6254ca8cbb8d288e5305c8231be41777c210/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/f91f6254ca8cbb8d288e5305c8231be41777c210/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

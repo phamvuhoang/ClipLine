@@ -128,7 +128,7 @@
                 <!--android:id="@+id/imageViewOpenGallery" />-->
 
             <TextView
-                android:text="@string/button_close"
+                android:text="@string/button_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
