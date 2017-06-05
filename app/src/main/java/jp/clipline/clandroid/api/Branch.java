@@ -1,12 +1,16 @@
 package jp.clipline.clandroid.api;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 
 import jp.clipline.clandroid.BuildConfig;
+import jp.clipline.clandroid.Utility.AndroidUtility;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -58,14 +62,17 @@ public class Branch {
         return res;
     }
 
-    public static void signOut(String cookie) throws IOException {
+    public static Object signOut(String cookie) throws IOException {
         Request request = new Request.Builder()
                 .url((String.format(SIGN_OUT_URL, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST)))
                 .addHeader("Cookie", cookie)
                 .delete()
                 .build();
         Response response = new OkHttpClient().newCall(request).execute();
+        Object res = response;
         response.close();
+
+        return res;
     }
 
     public static String signInWithIdfv(String branchId, String serviceId, String password, String deviceId) throws IOException {
@@ -75,8 +82,8 @@ public class Branch {
         // @FIXME : AndroidIDは、フォーマットとして通過できない為暫定処理
 //        deviceId = "b8925c97db4db2f8";
         deviceId = "156A3A67-D0FB-41A7-B1C5-1BDFE743F595";
-//        deviceId = AndroidUtility.formatDeviceID(deviceId);
-//        Log.d("deviceId", deviceId);
+        //deviceId = AndroidUtility.formatDeviceID(deviceId);
+        Log.d("deviceId", deviceId);
         RequestBody requestBody = new FormBody.Builder()
                 .add("branch_id", branchId)
                 .add("service_id", serviceId)

@@ -3,6 +3,7 @@ package jp.clipline.clandroid;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import org.xwalk.core.XWalkResourceClient;
 import org.xwalk.core.XWalkUIClient;
 import org.xwalk.core.XWalkView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +29,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
+import jp.clipline.clandroid.api.Branch;
+import okhttp3.Response;
 
 public class LaunchCrossWalkActivity extends AppCompatActivity {
 
@@ -40,6 +44,8 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
     private ValueCallback<Uri> mUploadMessage;
 
     ProgressBar mProgressBar;
+
+    private BranchLogoutTask mLogoutTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -282,15 +288,62 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public void studentLogin(String user_id, String password) {
-            Log.e("studentLogin", user_id + "\n" + password);
+            Log.i("studentLogin", user_id + "\n" + password);
         }
 
 
         @JavascriptInterface
         public void coachLogin(String user_id, String password) {
-            Log.e("coachLogin", user_id + "\n" + password);
+            Log.i("coachLogin", user_id + "\n" + password);
+        }
+
+        @JavascriptInterface
+        public void logout() {
+            Log.i("logout", "logout");
+            mCookieManager.removeAllCookie();
+            String cookie = AndroidUtility.getCookie(getApplicationContext());
+            mLogoutTask = new BranchLogoutTask(cookie);
+            mLogoutTask.execute((Void) null);
         }
     }
 
+    /**
+     * Represents an asynchronous logout task
+     */
+    public class BranchLogoutTask extends AsyncTask<Void, Void, Boolean> {
+
+        private Response mResponse;
+        private String mCookie;
+
+        public BranchLogoutTask(String cookie) {
+            mCookie = cookie;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                mResponse = (Response) Branch.signOut(mCookie);
+                return Boolean.TRUE;
+            } catch (IOException e) {
+                return Boolean.FALSE;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            String message = null;
+            if (success) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            } else {
+                // TODO what happened?
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mLogoutTask = null;
+        }
+    }
 
 }
