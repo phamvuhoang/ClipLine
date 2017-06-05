@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="android-transcoder-0.2.0">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/a59429e871112caa1df3d209f3fd123f05cbb2e3/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/a59429e871112caa1df3d209f3fd123f05cbb2e3/output/res" />
+      <root url="file://$USER_HOME$/.android/build-cache/c1c59166433f1f1e8103bc930a6ee0892c89232e/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/c1c59166433f1f1e8103bc930a6ee0892c89232e/output/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

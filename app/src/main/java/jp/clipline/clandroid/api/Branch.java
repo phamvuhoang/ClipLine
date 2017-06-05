@@ -86,6 +86,7 @@ public class Branch {
                 .add("password", password)
                 .add("device_id", deviceId)
                 .add("device_type", "android")
+                .add("request_access", "1")
                 .build();
 
         Request request = new Request.Builder()

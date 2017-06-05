@@ -92,5 +92,6 @@
     <string name="remember_login">Remember Login</string>
 
     <string name="button_close">閉じる</string>
+    <string name="button_cancel">キャンセル</string>
 
 </resources>
