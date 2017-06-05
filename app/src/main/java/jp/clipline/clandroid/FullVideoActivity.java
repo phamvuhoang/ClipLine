@@ -1,6 +1,7 @@
 package jp.clipline.clandroid;
 
 import android.app.Activity;
+import android.media.ExifInterface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,8 +47,16 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
             mRelativeLayoutContentVideo.setVisibility(View.GONE);
             mPdfView.setVisibility(View.GONE);
             mButtonFullScreen.setVisibility(View.VISIBLE);
+            try {
+                String  path = AndroidUtility.getFilePath(this, mTodoContentData);
+                ExifInterface exif = new ExifInterface(path);
+                float rotate = Integer.parseInt(exif.getAttribute(ExifInterface.TAG_ORIENTATION));
+                mPhotoView.setImageURI(mTodoContentData);
+                mPhotoView.setRotation(rotate);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-            mPhotoView.setImageURI(mTodoContentData);
         } else if (mTodoContentType.equals("video/mp4")) {
             // 動画が撮影or選択された場合
             mPhotoView.setVisibility(View.GONE);

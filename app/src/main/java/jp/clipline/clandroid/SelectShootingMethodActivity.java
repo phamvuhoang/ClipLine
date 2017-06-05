@@ -28,7 +28,6 @@ import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.CameraUtil;
-import jp.clipline.clandroid.Utility.FileChooser;
 import jp.clipline.clandroid.Utility.PopUpDlg;
 import jp.clipline.clandroid.api.ToDo;
 import jp.clipline.clandroid.view.StatusView;
@@ -54,6 +53,32 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent;
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            String uriFile = String.valueOf(bundle.get("path_result"));
+            String type = String.valueOf(bundle.getString("type"));
+            if (uriFile != null && type != null) {
+                try {
+                    String path = AndroidUtility.getFilePath(this, Uri.parse(uriFile));
+                    if (type.equals("image/png")) {
+                        intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+                        ((ClWebWrapperApplication) getApplication()).setTodoContent(path, "image/png");
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                        finish();
+                    } else if (type.equals("video/mp4")) {
+                        intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+                        ((ClWebWrapperApplication) this.getApplication()).setTodoContent(path, "video/mp4");
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                        finish();
+                    }
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         if (!((ClWebWrapperApplication) this.getApplication()).isBack()) {
             overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
         }
@@ -75,8 +100,9 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
                 uriPicture = Uri.fromFile(new File(CameraUtil.getPhotoFilePath()));
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, String.valueOf(uriPicture));
-                startActivityForResult(intent, REQUEST_CODE_PICTURE_CAPTURE);
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                finish();
             }
         });
 
@@ -86,8 +112,9 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
                 intent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
-                startActivityForResult(intent, REQUEST_CODE_VIDEO_CAPTURE);
+                startActivity(intent);
                 overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                finish();
             }
         });
 /*
@@ -120,74 +147,73 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-/*
-            Intent intent = new Intent()
-                    .setType("image/png|image/jpg|application/pdf|video/mp4")
-                    .setAction(Intent.ACTION_PICK);
+                Intent intent = new Intent()
+                        .setType("image/png|image/jpg|application/pdf|video/mp4")
+                        .setAction(Intent.ACTION_GET_CONTENT);
 
                 startActivityForResult(Intent.createChooser(intent, "Select a file"), REQUEST_CODE_SELECT_FILE);
-*/
+
                 //startActivityForResult(intent, REQUEST_CODE_SELECT_FILE);
-                FileChooser fileChooser = new FileChooser(SelectShootingMethodActivity.this);
-                fileChooser.setFileListener(new FileChooser.FileSelectedListener() {
-                    @Override
-                    public void fileSelected(File file) {
-                        try {
-                            Log.i("selected file: ", file.getAbsolutePath());
-                            // Get the Uri of the selected file
-                            Uri uri = Uri.fromFile(file);
-                            String uriString = uri.toString();
-                            File myFile = new File(uriString);
-                            String path = myFile.getAbsolutePath();
-                            String displayName = null;
-
-                            if (uriString.startsWith("content://")) {
-                                Cursor cursor = null;
-                                try {
-                                    cursor = getContentResolver().query(uri, null, null, null, null);
-                                    if (cursor != null && cursor.moveToFirst()) {
-                                        displayName = cursor.getString(cursor.getColumnIndex(
-                                                android.provider.OpenableColumns.DISPLAY_NAME));
-                                    }
-                                } finally {
-                                    cursor.close();
-                                }
-                            } else if (uriString.startsWith("file://")) {
-                                displayName = myFile.getName();
-                            }
-
-                            String contentType = "";
-                            String pathfile = AndroidUtility.getFilePath(SelectShootingMethodActivity.this, uri);
-                            if (displayName.toLowerCase().endsWith("pdf")) {
-                                contentType = "application/pdf";
-                            } else if (displayName.toLowerCase().endsWith("mp4")) {
-                                contentType = "video/mp4";
-                                CreateCompressDir();
-                                mOutPathVideoSelect = Environment.getExternalStorageDirectory()
-                                        + File.separator
-                                        + APP_DIR
-                                        + COMPRESSED_VIDEOS_DIR
-                                        + "VIDEO_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date()) + ".mp4";
-                                new VideoCompressor().execute(pathfile, mOutPathVideoSelect, contentType);
-                                return;
-                            } else if (displayName.toLowerCase().endsWith("png") || displayName.toLowerCase().endsWith("jpg")) {
-                                contentType = "image/png";
-                            } else {
-                                return;
-                            }
-
-                            Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
-                            ((ClWebWrapperApplication) getApplication()).setTodoContent(pathfile/*data.getData()*/, contentType);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-                            finish();
-
-                        } catch (URISyntaxException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                fileChooser.showDialog();
+//                FileChooser fileChooser = new FileChooser(SelectShootingMethodActivity.this);
+//                fileChooser.setFileListener(new FileChooser.FileSelectedListener() {
+//                    @Override
+//                    public void fileSelected(File file) {
+//                        try {
+//                            Log.i("selected file: ", file.getAbsolutePath());
+//                            // Get the Uri of the selected file
+//                            Uri uri = Uri.fromFile(file);
+//                            String uriString = uri.toString();
+//                            File myFile = new File(uriString);
+//                            String path = myFile.getAbsolutePath();
+//                            String displayName = null;
+//
+//                            if (uriString.startsWith("content://")) {
+//                                Cursor cursor = null;
+//                                try {
+//                                    cursor = getContentResolver().query(uri, null, null, null, null);
+//                                    if (cursor != null && cursor.moveToFirst()) {
+//                                        displayName = cursor.getString(cursor.getColumnIndex(
+//                                                android.provider.OpenableColumns.DISPLAY_NAME));
+//                                    }
+//                                } finally {
+//                                    cursor.close();
+//                                }
+//                            } else if (uriString.startsWith("file://")) {
+//                                displayName = myFile.getName();
+//                            }
+//
+//                            String contentType = "";
+//                            String pathfile = AndroidUtility.getFilePath(SelectShootingMethodActivity.this, uri);
+//                            if (displayName.toLowerCase().endsWith("pdf")) {
+//                                contentType = "application/pdf";
+//                            } else if (displayName.toLowerCase().endsWith("mp4")) {
+//                                contentType = "video/mp4";
+//                                CreateCompressDir();
+//                                mOutPathVideoSelect = Environment.getExternalStorageDirectory()
+//                                        + File.separator
+//                                        + APP_DIR
+//                                        + COMPRESSED_VIDEOS_DIR
+//                                        + "VIDEO_" + new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date()) + ".mp4";
+//                                new VideoCompressor().execute(pathfile, mOutPathVideoSelect, contentType);
+//                                return;
+//                            } else if (displayName.toLowerCase().endsWith("png") || displayName.toLowerCase().endsWith("jpg")) {
+//                                contentType = "image/png";
+//                            } else {
+//                                return;
+//                            }
+//
+//                            Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+//                            ((ClWebWrapperApplication) getApplication()).setTodoContent(pathfile/*data.getData()*/, contentType);
+//                            startActivity(intent);
+//                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+//                            finish();
+//
+//                        } catch (URISyntaxException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+//                fileChooser.showDialog();
 /*
                 FileChooser fileChooser = new FileChooser(getParent());
                 fileChooser.setExtension("image/png|image/jpg|application/pdf|video/mp4");
@@ -263,35 +289,34 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         String categoryId = todoParameters.get("categoryId");
         String todoContentId = todoParameters.get("todoContentId");
         new GetTodoInformationTask().execute(AndroidUtility.getCookie(getApplicationContext()), studentId, categoryId, todoContentId);
-        Log.d("", "");
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             try {
-                if (requestCode == REQUEST_CODE_PICTURE_CAPTURE) {
-                    uriPicture = (Uri) data.getExtras().get("path_result");
-                    String path = AndroidUtility.getFilePath(this, uriPicture);
-                    Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
-                    ((ClWebWrapperApplication) getApplication()).setTodoContent(path, "image/png");
-                    startActivity(intent);
-//                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
-                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-                    finish();
-
-                    return;
-                }
-
-                if (requestCode == REQUEST_CODE_VIDEO_CAPTURE) {
-                    String pathVideo = AndroidUtility.getFilePath(this, data.getData());
-                    Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
-                    ((ClWebWrapperApplication) this.getApplication()).setTodoContent(pathVideo, "video/mp4");
-                    startActivity(intent);
-//                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
-                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-                    finish();
-                    return;
-                }
+//                if (requestCode == REQUEST_CODE_PICTURE_CAPTURE) {
+//                    uriPicture = (Uri) data.getExtras().get("path_result");
+//                    String path = AndroidUtility.getFilePath(this, uriPicture);
+//                    Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+//                    ((ClWebWrapperApplication) getApplication()).setTodoContent(path, "image/png");
+//                    startActivity(intent);
+////                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+//                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+//                    finish();
+//
+//                    return;
+//                }
+//
+//                if (requestCode == REQUEST_CODE_VIDEO_CAPTURE) {
+//                    String pathVideo = AndroidUtility.getFilePath(this, data.getData());
+//                    Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+//                    ((ClWebWrapperApplication) this.getApplication()).setTodoContent(pathVideo, "video/mp4");
+//                    startActivity(intent);
+////                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+//                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+//                    finish();
+//                    return;
+//                }
                 if (requestCode == REQUEST_CODE_SELECT_FILE) {
 /*
                 Uri selectedMediaUri = data.getData();

@@ -16,14 +16,12 @@ import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.ExifInterface;
 import android.media.MediaRecorder;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
@@ -44,7 +42,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -550,6 +547,13 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mButtonPicture.setVisibility(View.VISIBLE);
 
         mIntentParameters.setIsVideo(false);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(CameraActivity.this, SelectShootingMethodActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private boolean isVideoMode() {
@@ -1306,14 +1310,14 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
 //                        }
 
                         // @FIXME
-                        Intent intent = new Intent();
-                        ContentResolver contentResolver = getContentResolver();
+                        Intent intent = new Intent(CameraActivity.this, SelectShootingMethodActivity.class);
+//                        ContentResolver contentResolver = getContentResolver();
                         // intent.setData();
-                        intent.setData(Uri.fromFile(new File(mNextVideoAbsolutePath)));
-
+//                        intent.setData(Uri.fromFile(new File(mNextVideoAbsolutePath)));
                         intent.putExtra("path_result", Uri.fromFile(new File(mNextVideoAbsolutePath)));
-
-                        setResult(RESULT_OK, intent);
+                        intent.putExtra("type", "video/mp4");
+                        startActivity(intent);
+//                        setResult(RESULT_OK, intent);
 //                    }
 
                         finish();
@@ -1450,9 +1454,12 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                             ef.setAttribute(ExifInterface.TAG_ORIENTATION, String.valueOf(rotate));
                             ef.saveAttributes();
                             // @FIXME
-                            Intent returnIntent = new Intent();
+                            Intent returnIntent = new Intent(CameraActivity.this, SelectShootingMethodActivity.class);
                             returnIntent.putExtra("path_result", uri);
-                            setResult(RESULT_OK, returnIntent);
+                            returnIntent.putExtra("type", "image/png");
+                            startActivity(returnIntent);
+                            finish();
+//                            setResult(RESULT_OK, returnIntent);
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }

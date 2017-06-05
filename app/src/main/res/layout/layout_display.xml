@@ -11,6 +11,9 @@
     <uk.co.senab.photoview.PhotoView
         android:id="@+id/photoView"
         android:layout_width="match_parent"
+        android:adjustViewBounds="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:layout_height="match_parent" />
 
 

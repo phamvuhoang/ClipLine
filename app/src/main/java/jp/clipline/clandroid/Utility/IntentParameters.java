@@ -1,7 +1,6 @@
 package jp.clipline.clandroid.Utility;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -69,6 +68,8 @@ public class IntentParameters {
             mIsBackShooting = intent.getBooleanExtra("IsBackShooting", true);
             mIsAspectWide = intent.getBooleanExtra("IsAspectWide", true);
             mIsVideo = intent.getBooleanExtra("IsVideo", true);
+            mIsBrowserCalling = intent.getBooleanExtra("mIsBrowserCalling",false);
+            mExtraOutput = intent.getStringExtra("mExtraOutput");
             return;
         }
 
@@ -121,6 +122,8 @@ public class IntentParameters {
         intent.putExtra("IsAspectWide", isAspectWide());
         intent.putExtra("IsBackShooting", isBackShooting());
         intent.putExtra("IsVideo", isVideo());
+        intent.putExtra("mIsBrowserCalling", isBrowserCalling());
+        intent.putExtra("mExtraOutput", getExtraOutput());
     }
 
     public void printInfomation() {
