@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 
 import jp.clipline.clandroid.BuildConfig;
 import jp.clipline.clandroid.Utility.AndroidUtility;
@@ -61,14 +62,17 @@ public class Branch {
         return res;
     }
 
-    public static void signOut(String cookie) throws IOException {
+    public static Object signOut(String cookie) throws IOException {
         Request request = new Request.Builder()
                 .url((String.format(SIGN_OUT_URL, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST)))
                 .addHeader("Cookie", cookie)
                 .delete()
                 .build();
         Response response = new OkHttpClient().newCall(request).execute();
+        Object res = response;
         response.close();
+
+        return res;
     }
 
     public static String signInWithIdfv(String branchId, String serviceId, String password, String deviceId) throws IOException {
