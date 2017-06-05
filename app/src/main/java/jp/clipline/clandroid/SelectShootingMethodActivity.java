@@ -53,32 +53,32 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent;
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            String uriFile = String.valueOf(bundle.get("path_result"));
-            String type = String.valueOf(bundle.getString("type"));
-            if (uriFile != null && type != null) {
-                try {
-                    String path = AndroidUtility.getFilePath(this, Uri.parse(uriFile));
-                    if (type.equals("image/png")) {
-                        intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
-                        ((ClWebWrapperApplication) getApplication()).setTodoContent(path, "image/png");
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-                        finish();
-                    } else if (type.equals("video/mp4")) {
-                        intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
-                        ((ClWebWrapperApplication) this.getApplication()).setTodoContent(path, "video/mp4");
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-                        finish();
-                    }
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+//        Intent intent;
+//        Bundle bundle = getIntent().getExtras();
+//        if (bundle != null) {
+//            String uriFile = String.valueOf(bundle.get("path_result"));
+//            String type = String.valueOf(bundle.getString("type"));
+//            if (uriFile != null && type != null) {
+//                try {
+//                    String path = AndroidUtility.getFilePath(this, Uri.parse(uriFile));
+//                    if (type.equals("image/png")) {
+//                        intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+//                        ((ClWebWrapperApplication) getApplication()).setTodoContent(path, "image/png");
+//                        startActivity(intent);
+//                        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+//                        finish();
+//                    } else if (type.equals("video/mp4")) {
+//                        intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+//                        ((ClWebWrapperApplication) this.getApplication()).setTodoContent(path, "video/mp4");
+//                        startActivity(intent);
+//                        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+//                        finish();
+//                    }
+//                } catch (URISyntaxException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
         if (!((ClWebWrapperApplication) this.getApplication()).isBack()) {
             overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
         }

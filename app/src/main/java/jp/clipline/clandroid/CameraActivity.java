@@ -58,6 +58,7 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -66,6 +67,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Future;
 
+import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.CameraUtil;
 import jp.clipline.clandroid.Utility.ConstCameraActivity;
 import jp.clipline.clandroid.Utility.IntentParameters;
@@ -311,7 +313,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     public void finish() {
         super.finish();
         Log.d(TAG, "finish - Start");
-        overridePendingTransition(0, 0);
+//        overridePendingTransition(0, 0);
         Log.d(TAG, "finish - End");
     }
 
@@ -553,6 +555,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     public void onBackPressed() {
         Intent intent = new Intent(CameraActivity.this, SelectShootingMethodActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
         finish();
     }
 
@@ -1310,17 +1313,25 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
 //                        }
 
                         // @FIXME
-                        Intent intent = new Intent(CameraActivity.this, SelectShootingMethodActivity.class);
+                        try {
+//                            Intent intent = new Intent(CameraActivity.this, SelectShootingMethodActivity.class);
 //                        ContentResolver contentResolver = getContentResolver();
-                        // intent.setData();
+                            // intent.setData();
 //                        intent.setData(Uri.fromFile(new File(mNextVideoAbsolutePath)));
-                        intent.putExtra("path_result", Uri.fromFile(new File(mNextVideoAbsolutePath)));
-                        intent.putExtra("type", "video/mp4");
-                        startActivity(intent);
+//                            intent.putExtra("path_result", Uri.fromFile(new File(mNextVideoAbsolutePath)));
+//                            intent.putExtra("type", "video/mp4");
+//                            startActivity(intent);
 //                        setResult(RESULT_OK, intent);
 //                    }
-
-                        finish();
+                            String path = AndroidUtility.getFilePath(CameraActivity.this, Uri.fromFile(new File(mNextVideoAbsolutePath)));
+                            Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+                            ((ClWebWrapperApplication) getApplication()).setTodoContent(path, "video/mp4");
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+                            finish();
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } else {
@@ -1454,13 +1465,18 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
                             ef.setAttribute(ExifInterface.TAG_ORIENTATION, String.valueOf(rotate));
                             ef.saveAttributes();
                             // @FIXME
-                            Intent returnIntent = new Intent(CameraActivity.this, SelectShootingMethodActivity.class);
-                            returnIntent.putExtra("path_result", uri);
-                            returnIntent.putExtra("type", "image/png");
-                            startActivity(returnIntent);
+//                            Intent returnIntent = new Intent(CameraActivity.this, SelectShootingMethodActivity.class);
+//                            returnIntent.putExtra("path_result", uri);
+//                            returnIntent.putExtra("type", "image/png");
+//                            startActivity(returnIntent);
+                            String path = AndroidUtility.getFilePath(CameraActivity.this, uri);
+                            Intent intent = new Intent(getApplicationContext(), SubmissionConfirmationActivity.class);
+                            ((ClWebWrapperApplication) getApplication()).setTodoContent(path, "image/png");
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                             finish();
 //                            setResult(RESULT_OK, returnIntent);
-                        } catch (IOException ex) {
+                        } catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     }
