@@ -189,4 +189,18 @@ public class AndroidUtility {
     public static boolean isPortrait(Context context) {
         return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? true : false;
     }
+
+    public static String formatDeviceID(String deviceid) {
+        String deveice = "";
+        final String end = "B1C5-1BDFE743F595";
+        int lent = deviceid.length();
+        char[] data = deviceid.toCharArray();
+        for (int i = 0; i < lent; i++) {
+            deveice += data[i];
+            if (i == 7 || i == 11) {
+                deveice += "-";
+            }
+        }
+        return deveice + "-" + end;
+    }
 }
