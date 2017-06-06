@@ -17,7 +17,8 @@ public class Report {
 
     private final static String TAG = "clwebwrapperapplication";
 
-    private final static String MEDIA_KEY_URL = "%s://%s//v2/api/v2/training/student_reports/";
+    private final static String STUDENT_REPORT_URL = "%s://%s//v2/api/v2/training/student_reports/";
+    private final static String COACH_REPORT_URL = "%s://%s//v2/api/v2/training/coach_reports/";
 
     public static Map<String, Object> sendStudentReport(String cookie
             , String mediaKey, String contentType
@@ -40,7 +41,7 @@ public class Report {
         String language = Locale.getDefault().toString();
 
         Request request = new Request.Builder()
-                .url(String.format(MEDIA_KEY_URL, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST))
+                .url(String.format(STUDENT_REPORT_URL, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST))
                 .post(requestBody)
                 .addHeader("Cookie", cookie)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
