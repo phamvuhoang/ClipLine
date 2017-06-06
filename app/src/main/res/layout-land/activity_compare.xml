@@ -75,13 +75,13 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutStatus"
-        android:layout_width="match_parent"
+        android:layout_width="568dp"
         android:layout_height="70dp"
         android:layout_below="@+id/relativeLayoutHeader"
         android:layout_centerHorizontal="true"
         android:background="#FFFFFF"
-        android:paddingLeft="114dp"
-        android:paddingRight="114dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:weightSum="2.5">
 
         <jp.clipline.clandroid.view.StatusView
@@ -277,15 +277,15 @@
 
                             <ImageView
                                 android:id="@+id/pause_img_content"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
                                 android:paddingLeft="16dp"
                                 android:src="@drawable/video_start_style" />
 
                             <ImageView
                                 android:id="@+id/pause_img_mine"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
                                 android:paddingLeft="16dp"
                                 android:src="@drawable/video_start_style" />
 
