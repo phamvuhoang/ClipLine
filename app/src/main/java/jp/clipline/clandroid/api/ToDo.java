@@ -90,6 +90,7 @@ public class ToDo {
             responseBody = gson.fromJson(body, responseBody.getClass());
 
             Map<String, Object> todo_contents = (LinkedTreeMap<String, Object>) responseBody.get("todo_contents");
+            //Map<String, Object> todo_contents = (HashMap<String, Object>) responseBody.get("todo_contents");
             if (Integer.parseInt(todoContentId) == Double.valueOf((double) todo_contents.get("id")).intValue()) {
                 current_todo_content = todo_contents;
             }
