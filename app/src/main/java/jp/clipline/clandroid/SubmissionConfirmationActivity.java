@@ -30,7 +30,7 @@ import jp.clipline.clandroid.view.StatusView;
 public class SubmissionConfirmationActivity extends BaseActivity implements View.OnClickListener, OnPageChangeListener, OnLoadCompleteListener {
 
     private StatusView mStatusView;
-    private Button mButtonCompareToModel;
+    private TextView mTextViewCompareToModel;
     private Button mImageButtonCompareOrSubmit;
     private boolean mHasMyReportPlayAction = false;
     private PopUpDlg mConfirDlg;
@@ -162,8 +162,8 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
         updateStatus();
 
         // お手本を見比べる
-        mButtonCompareToModel = (Button) findViewById(R.id.buttonCompareWithModel);
-        mButtonCompareToModel.setOnClickListener(new View.OnClickListener() {
+        mTextViewCompareToModel = (TextView) findViewById(R.id.buttonCompareWithModel);
+        mTextViewCompareToModel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CompareActivity.class);
@@ -402,16 +402,16 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
             mHasMyReportPlayAction = ((boolean) todoContent.get("has_my_report_play_action"));
         }
         //TODO HARDCODE TEST
-        mHasMyReportPlayAction = false;
+        //mHasMyReportPlayAction = false;
 
         // TODO 見比べる有???
         if (mHasMyReportPlayAction) {
-            mButtonCompareToModel.setVisibility(View.GONE);
+            mTextViewCompareToModel.setVisibility(View.GONE);
             mImageButtonCompareOrSubmit.setText(getResources().getText(R.string.select_shooting_method_compare));
 //            mButtonSummit.setVisibility(View.GONE);
 //            mButtonCompare.setVisibility(View.VISIBLE);
         } else {
-            mButtonCompareToModel.setVisibility(View.VISIBLE);
+            mTextViewCompareToModel.setVisibility(View.VISIBLE);
             mImageButtonCompareOrSubmit.setText(getResources().getText(R.string.select_shooting_method_submit));
 //            mButtonSummit.setVisibility(View.VISIBLE);
 //            mButtonCompare.setVisibility(View.GONE);

@@ -164,14 +164,13 @@
             />
     </LinearLayout>
 
-    <Button
+    <TextView
         android:id="@+id/buttonCompareWithModel"
         android:layout_width="400dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@+id/textViewBack"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:background="@drawable/border_color_gray"
         android:gravity="center"
         android:text="@string/submission_confirmation_compare_with_model" />
 
