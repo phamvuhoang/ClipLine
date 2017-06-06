@@ -277,12 +277,13 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
         @JavascriptInterface
         public void coachToDo(String coachId, String categoryId, String todoId, String type) {
 
-            Log.e("coachdToDo", coachId + "\n" + categoryId + "\n" + todoId);
+            Log.i("coachdToDo", coachId + "\n" + categoryId + "\n" + todoId);
             categoryId = "988";
             ((ClWebWrapperApplication) getApplication()).setTodoParameters(coachId, categoryId, todoId, type);
             Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
             startActivity(intent);
 
+            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 //            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         }
 
@@ -305,6 +306,12 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
             mLogoutTask = new BranchLogoutTask(cookie);
             mLogoutTask.execute((Void) null);
         }
+
+        @JavascriptInterface
+        public void pdfViewer(String pdfUrl) {
+            Log.i("pdfViewer", pdfUrl);
+        }
+
     }
 
     /**
@@ -335,6 +342,7 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
             if (success) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
+                finish();
             } else {
                 // TODO what happened?
             }

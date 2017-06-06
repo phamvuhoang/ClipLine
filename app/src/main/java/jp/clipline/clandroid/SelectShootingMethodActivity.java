@@ -101,7 +101,8 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 uriPicture = Uri.fromFile(new File(CameraUtil.getPhotoFilePath()));
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, String.valueOf(uriPicture));
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+//                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 finish();
             }
         });
@@ -113,7 +114,8 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
                 intent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+//                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 finish();
             }
         });
@@ -152,7 +154,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                         .setAction(Intent.ACTION_GET_CONTENT);
 
                 startActivityForResult(Intent.createChooser(intent, "Select a file"), REQUEST_CODE_SELECT_FILE);
-
+                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 //startActivityForResult(intent, REQUEST_CODE_SELECT_FILE);
 //                FileChooser fileChooser = new FileChooser(SelectShootingMethodActivity.this);
 //                fileChooser.setFileListener(new FileChooser.FileSelectedListener() {
@@ -292,6 +294,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (resultCode == RESULT_OK) {
             try {
 //                if (requestCode == REQUEST_CODE_PICTURE_CAPTURE) {
@@ -400,9 +403,9 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 return;
             }
 */
+        }else {
+            overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
         }
-
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 

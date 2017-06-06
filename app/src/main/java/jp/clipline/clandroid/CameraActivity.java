@@ -209,6 +209,9 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mTextViewButtonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(CameraActivity.this, SelectShootingMethodActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                 finish();
             }
         });
