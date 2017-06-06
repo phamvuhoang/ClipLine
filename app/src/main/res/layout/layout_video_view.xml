@@ -18,7 +18,7 @@
     <LinearLayout
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="36dp"
         android:layout_alignParentBottom="true"
         android:background="#FFF"
         android:orientation="vertical">
@@ -49,9 +49,9 @@
 
                 <ImageView
                     android:id="@+id/pause_img"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:paddingLeft="16dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="24dp"
                     android:src="@drawable/video_start_style" />
 
                 <TextView

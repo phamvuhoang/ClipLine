@@ -94,7 +94,7 @@
     <RelativeLayout
         android:id="@+id/relativeLayoutBody"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="340dp"
         android:layout_below="@+id/view"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp">
@@ -139,11 +139,12 @@
 
     <LinearLayout
         android:id="@+id/textViewBack"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/relativeLayoutBody"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -170,7 +171,7 @@
         android:layout_height="50dp"
         android:layout_below="@+id/textViewBack"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="@string/submission_confirmation_compare_with_model" />
 
