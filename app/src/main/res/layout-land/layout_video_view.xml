@@ -16,9 +16,10 @@
     <LinearLayout
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="36dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:background="#FFF"
         android:orientation="vertical">
 
@@ -28,6 +29,7 @@
             android:layout_height="4dp"
             android:layout_marginLeft="-20dp"
             android:layout_marginRight="-20dp"
+            android:layout_marginTop="2dp"
             android:indeterminate="false"
             android:max="100"
             android:progress="0"
@@ -37,6 +39,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="2dp"
             android:layout_gravity="center_vertical">
 
             <LinearLayout
@@ -48,9 +51,9 @@
 
                 <ImageView
                     android:id="@+id/pause_img"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:paddingLeft="16dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="24dp"
                     android:src="@drawable/video_start_style" />
 
                 <TextView
