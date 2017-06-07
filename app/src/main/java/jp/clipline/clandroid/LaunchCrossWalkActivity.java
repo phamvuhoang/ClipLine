@@ -310,7 +310,32 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
         @JavascriptInterface
         public void pdfViewer(String pdfUrl) {
             Log.i("pdfViewer", pdfUrl);
+            Intent intent = new Intent(getApplicationContext(), FullVideoActivity.class);
+            intent.putExtra("pdfViewer", pdfUrl);
+            startActivity(intent);
+            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
         }
+
+        @JavascriptInterface
+        public void studentProfileCreate(String sessionId) {
+            Log.i("studentProfileCreate", sessionId);
+        }
+
+        @JavascriptInterface
+        public void coachProfileCreate(String sessionId) {
+            Log.i("coachProfileCreate", sessionId);
+        }
+
+        @JavascriptInterface
+        public void studentProfileEdit(String sessionId) {
+            Log.i("studentProfileEdit", sessionId);
+        }
+
+        @JavascriptInterface
+        public void coachProfileEdit(String sessionId) {
+            Log.i("coachProfileEdit", sessionId);
+        }
+
 
     }
 

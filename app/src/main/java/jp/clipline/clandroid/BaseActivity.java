@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -83,9 +84,11 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initDialog();
         mTodoContentType = ((ClWebWrapperApplication) this.getApplication()).getTodoContentType();
-        File file = new File(((ClWebWrapperApplication) this.getApplication()).getTodoContentData());
-        mTodoContentData = Uri.fromFile(file);
-
+        String todoContent = ((ClWebWrapperApplication) this.getApplication()).getTodoContentData();
+        if (!TextUtils.isEmpty(todoContent)) {
+            File file = new File(todoContent);
+            mTodoContentData = Uri.fromFile(file);
+        }
     }
 
     /**
@@ -344,7 +347,6 @@ public class BaseActivity extends AppCompatActivity {
         mImageView = (ImageView) findViewById(R.id.imageViewSelect);
         mButtonFullScreen = (Button) findViewById(R.id.buttonFullScreen);
     }
-
 
 
     protected void setListener() {
