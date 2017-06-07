@@ -16,6 +16,7 @@ public class MediaKey {
     private final static String TAG = "clwebwrapperapplication";
 
     private final static String MEDIA_KEY_URL = "%s://%s//v2/api/v1/media_objects/generate_media_key?object_type=student_report";
+//    private final static String MEDIA_KEY_URL = "%s://%s//v2/api/v1/media_objects/generate_media_key?object_type=coach_report";
 
     public static Map<String, Object> getMediaKeyContent(String cookie) throws IOException {
 

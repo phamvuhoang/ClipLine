@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -61,7 +62,7 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
     private VideoView mVideoViewMine;
     private String mPath;
     private Map<String, Object> mCurrentTodoContent;
-    private boolean mIsCheckSwitch = true;
+    private boolean mIsCheckSwitch = true; // default right
 
     private StatusView mStatusView;
     //Video
@@ -92,6 +93,9 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
 
     private Bitmap mThumbnailContent;
     private Bitmap mThumbnailMine;
+
+    private MediaPlayer mMediaPlayerConent;
+    private MediaPlayer mMediaPlayerMine;
 
 
     @Override
@@ -196,6 +200,25 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                 mThumbnailMine = ThumbnailUtils.createVideoThumbnail(path,
                         MediaStore.Images.Thumbnails.MINI_KIND);
                 mImageViewMine.setImageBitmap(mThumbnailMine);
+                if (!getRotation()) {
+                    mVideoViewMine.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            mIsCheckSwitch = true;
+                            mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                            mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                            return false;
+                        }
+                    });
+                    mImageViewMine.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mIsCheckSwitch = true;
+                            mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                            mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                        }
+                    });
+                }
 
             } else {
                 mImageViewMine.setVisibility(View.GONE);
@@ -242,6 +265,25 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                                 }
                             });
                     mVideoViewContent.setVideoPath((String) mCurrentTodoContent.get("pre_signed_standard_mp4_url"));
+                    if (!getRotation()) {
+                        mVideoViewContent.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                                mIsCheckSwitch = false;
+                                mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                                mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                                return false;
+                            }
+                        });
+                        mImageViewContent.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mIsCheckSwitch = false;
+                                mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green_select));
+                                mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(CompareActivity.this, R.drawable.border_color_green));
+                            }
+                        });
+                    }
 
                 } else if (isImage) { //TODO contact (media_thumb_pre_signed_url)
                     mImageViewContent.setVisibility(View.VISIBLE);
@@ -491,12 +533,22 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                 if (!mTodoContentType.equals("video/mp4")) {
                     return;
                 }
-                mVideoViewContent.stopPlayback();
-                mVideoViewMine.stopPlayback();
-                mPlayAndPauseContent.setImageResource(R.drawable.video_start_style);
-                mPlayAndPauseMine.setImageResource(R.drawable.video_start_style);
+
+
                 if (mIsCheckSwitch) {
                     mIsCheckSwitch = false;
+                    if (!isPortrait) {
+                        mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(this, R.drawable.border_color_green_select));
+                        mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(this, R.drawable.border_color_green));
+//                        mMediaPlayerConent.setVolume(100f, 100f);
+//                        mMediaPlayerMine.setVolume(0f, 0f);
+                        return;
+                    }
+                    mVideoViewContent.stopPlayback();
+                    mVideoViewMine.stopPlayback();
+                    mPlayAndPauseContent.setImageResource(R.drawable.video_start_style);
+                    mPlayAndPauseMine.setImageResource(R.drawable.video_start_style);
+
                     mImageViewContent.setImageBitmap(mThumbnailMine);
                     mImageViewMine.setImageBitmap(mThumbnailContent);
 
@@ -520,12 +572,21 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                     mCurrentTimeMine.setText("00:00");
                     mTotalTimeMine.setText("00:00");
 
-                    if (!isPortrait) {
-                        mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(this, R.drawable.border_color_green_select));
-                        mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(this, R.drawable.border_color_green));
-                    }
+
                 } else {
                     mIsCheckSwitch = true;
+                    if (!isPortrait) {
+                        mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(this, R.drawable.border_color_green));
+                        mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(this, R.drawable.border_color_green_select));
+//                        mMediaPlayerConent.setVolume(0f, 0f);
+//                        mMediaPlayerMine.setVolume(100f, 100f);
+                        return;
+                    }
+                    mVideoViewContent.stopPlayback();
+                    mVideoViewMine.stopPlayback();
+                    mPlayAndPauseContent.setImageResource(R.drawable.video_start_style);
+                    mPlayAndPauseMine.setImageResource(R.drawable.video_start_style);
+
                     mImageViewContent.setImageBitmap(mThumbnailContent);
                     mImageViewMine.setImageBitmap(mThumbnailMine);
 
@@ -548,11 +609,6 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                     mTotalTimeContent.setText("00:00");
                     mCurrentTimeMine.setText("00:00");
                     mTotalTimeMine.setText("00:00");
-
-                    if (!isPortrait) {
-                        mRelativeLayoutPreviewLeft.setBackground(ContextCompat.getDrawable(this, R.drawable.border_color_green));
-                        mRelativeLayoutPreviewRight.setBackground(ContextCompat.getDrawable(this, R.drawable.border_color_green_select));
-                    }
                 }
 
                 break;
@@ -672,6 +728,7 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         mVideoViewContent.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
+                mMediaPlayerConent = mediaPlayer;
                 mHandlerContent.removeMessages(UPDATE_UI_CONTENT);
                 mPlayAndPauseContent.setImageResource(R.drawable.video_start_style);
                 mCurrentTimeContent.setText("00:00");
@@ -698,6 +755,7 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         mVideoViewMine.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
+                mMediaPlayerMine = mediaPlayer;
                 mHandlerMine.removeMessages(UPDATE_UI_MINE);
                 mPlayAndPauseMine.setImageResource(R.drawable.video_start_style);
                 mCurrentTimeMine.setText("00:00");

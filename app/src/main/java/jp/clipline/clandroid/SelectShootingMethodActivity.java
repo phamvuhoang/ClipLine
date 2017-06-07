@@ -530,7 +530,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
 
         @Override
         protected Boolean doInBackground(String... params) {
-            mContentype = params[2];
+            mContentype = params[3];
 //            MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
 //            metaRetriever.setDataSource(params[0]);
 //            String height = metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
