@@ -238,11 +238,21 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                                String studentId = todoParameters.get("studentId");
+                                String id = todoParameters.get("id");
                                 String categoryId = todoParameters.get("categoryId");
                                 String todoContentId = todoParameters.get("todoContentId");
-                                String url = "%s://%s/training/#/students/" + studentId
-                                        + "/todos/" + todoContentId;
+                                Boolean isStudent = "student".equals(todoParameters.get("loginType"));
+
+                                String url;
+
+                                if (isStudent) {
+                                    url = "%s://%s/training/#/students/" + id
+                                            + "/todos/" + todoContentId;
+                                } else {
+                                    url = "%s://%s/training/#/coachs/" + id
+                                            + "/todos/" + todoContentId;
+                                }
+
                                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                                 intent.putExtra("BASE_URL", url);
                                 startActivity(intent);
@@ -273,11 +283,21 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
             @Override
             public void onClick(View view) {
                 Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                String studentId = todoParameters.get("studentId");
+                String id = todoParameters.get("id");
                 String categoryId = todoParameters.get("categoryId");
                 String todoContentId = todoParameters.get("todoContentId");
-                String url = "%s://%s/training/#/students/" + studentId
-                        + "/todos/" + todoContentId;
+                Boolean isStudent = "student".equals(todoParameters.get("loginType"));
+
+                String url;
+
+                if (isStudent) {
+                    url = "%s://%s/training/#/students/" + id
+                            + "/todos/" + todoContentId;
+                } else {
+                    url = "%s://%s/training/#/coachs/" + id
+                            + "/todos/" + todoContentId;
+                }
+
                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                 intent.putExtra("BASE_URL", url);
                 startActivity(intent);
@@ -287,10 +307,12 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         });
 
         Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-        String studentId = todoParameters.get("studentId");
+        String id = todoParameters.get("id");
         String categoryId = todoParameters.get("categoryId");
         String todoContentId = todoParameters.get("todoContentId");
-        new GetTodoInformationTask().execute(AndroidUtility.getCookie(getApplicationContext()), studentId, categoryId, todoContentId);
+        Boolean isStudent = "student".equals(todoParameters.get("loginType"));
+
+        new GetTodoInformationTask().execute(AndroidUtility.getCookie(getApplicationContext()), id, categoryId, todoContentId);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -425,7 +447,7 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         protected Boolean doInBackground(String... params) {
             try {
                 String cookie = params[0];
-                String studentId = params[1];
+                String id = params[1];
                 String categoryId = params[2];
                 String todoContentId = params[3];
 
@@ -451,11 +473,21 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                     @Override
                     public void onClick(View v) {
                         Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                        String studentId = todoParameters.get("studentId");
+                        String id = todoParameters.get("id");
                         String categoryId = todoParameters.get("categoryId");
                         String todoContentId = todoParameters.get("todoContentId");
-                        String url = "%s://%s/training/#/students/" + studentId
-                                + "/todos/" + todoContentId;
+                        Boolean isStudent = "student".equals(todoParameters.get("loginType"));
+
+                        String url;
+
+                        if (isStudent) {
+                            url = "%s://%s/training/#/students/" + id
+                                    + "/todos/" + todoContentId;
+                        } else {
+                            url = "%s://%s/training/#/coachs/" + id
+                                    + "/todos/" + todoContentId;
+                        }
+
                         Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                         intent.putExtra("BASE_URL", url);
                         startActivity(intent);

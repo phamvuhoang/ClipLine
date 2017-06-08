@@ -390,11 +390,21 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                                String studentId = todoParameters.get("studentId");
+                                String id = todoParameters.get("id");
                                 String categoryId = todoParameters.get("categoryId");
                                 String todoContentId = todoParameters.get("todoContentId");
-                                String url = "%s://%s/training/#/students/" + studentId
-                                        + "/todos/" + todoContentId;
+                                Boolean isStudent = "student".equals(todoParameters.get("loginType"));
+
+                                String url;
+
+                                if (isStudent) {
+                                    url = "%s://%s/training/#/students/" + id
+                                            + "/todos/" + todoContentId;
+                                } else {
+                                    url = "%s://%s/training/#/coachs/" + id
+                                            + "/todos/" + todoContentId;
+                                }
+
                                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                                 intent.putExtra("BASE_URL", url);
                                 startActivity(intent);

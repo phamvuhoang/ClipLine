@@ -165,11 +165,20 @@ public class BaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                String studentId = todoParameters.get("studentId");
+                String id = todoParameters.get("id");
                 String categoryId = todoParameters.get("categoryId");
                 String todoContentId = todoParameters.get("todoContentId");
-                String url = "%s://%s/training/#/students/" + studentId
-                        + "/todos/" + todoContentId;
+                Boolean isStudent = "student".equals(todoParameters.get("loginType"));
+
+                String url;
+
+                if (isStudent) {
+                    url = "%s://%s/training/#/students/" + id
+                            + "/todos/" + todoContentId;
+                } else {
+                    url = "%s://%s/training/#/coachs/" + id
+                            + "/todos/" + todoContentId;
+                }
 
                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                 intent.putExtra("BASE_URL", url);
@@ -201,13 +210,23 @@ public class BaseActivity extends AppCompatActivity {
 
                 // 一覧へ戻る
                 Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+
                 // TODO add check student or coach and add param properly
-                String studentId = todoParameters.get("studentId");
+                String id = todoParameters.get("id");
                 String categoryId = todoParameters.get("categoryId");
                 String todoContentId = todoParameters.get("todoContentId");
                 String type = todoParameters.get("type");
-                String url = "%s://%s/training/#/students/" + studentId
-                        + "/todos?type=" + type;
+                Boolean isStudent = "student".equals(todoParameters.get("loginType"));
+
+                String url ;
+                if (isStudent) {
+                    url = "%s://%s/training/#/students/" + id
+                            + "/todos?type=" + type;
+                } else {
+                    url = "%s://%s/training/#/coachs/" + id
+                            + "/todos?type=" + type;
+                }
+
                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                 intent.putExtra("BASE_URL", url);
                 startActivity(intent);
