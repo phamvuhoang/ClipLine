@@ -81,6 +81,11 @@ public class BaseActivity extends AppCompatActivity {
     protected SubmissionConfirmationActivity.MyHandler mHandler;
     protected Button mButtonFullScreen;
 
+    //save is video
+    protected boolean mIsPlay = false;
+    protected int mCurrentTime = 0;
+    protected boolean mIsSceenSub = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

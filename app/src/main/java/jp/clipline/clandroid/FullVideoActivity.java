@@ -3,6 +3,7 @@ package jp.clipline.clandroid;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
+import android.content.Intent;
 import android.media.ExifInterface;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -44,6 +45,7 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
     private ProgressBar mProgressBar;
     private String mPathPdfViewer;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,12 +73,18 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             String path = bundle.getString("pdfViewer");
-            mPhotoView.setVisibility(View.GONE);
-            mRelativeLayoutContentVideo.setVisibility(View.GONE);
-            mPdfView.setVisibility(View.GONE);
-            mButtonFullScreen.setVisibility(View.GONE);
-
-            new DownloadPdfAsync().execute(path);
+            mIsPlay = bundle.getBoolean("isPlaying");
+            mCurrentTime = bundle.getInt("currentTime");
+            mIsSceenSub = bundle.getBoolean("isSceenSubmiss");
+            if (!TextUtils.isEmpty(path)) {
+                mPhotoView.setVisibility(View.GONE);
+                mRelativeLayoutContentVideo.setVisibility(View.GONE);
+                mPdfView.setVisibility(View.GONE);
+                mButtonFullScreen.setVisibility(View.GONE);
+                new DownloadPdfAsync().execute(path);
+                return;
+            }
+            showDisplay();
         } else {
             showDisplay();
         }
@@ -162,7 +170,19 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
                 }
                 break;
             case R.id.change_screen:
-                finish();
+                if (mIsSceenSub) {
+                    Intent intent = new Intent(FullVideoActivity.this, SubmissionConfirmationActivity.class);
+                    intent.putExtra("isPlaying", mVideoView.isPlaying());
+                    intent.putExtra("currentTime", mVideoView.getCurrentPosition());
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(FullVideoActivity.this, CompareActivity.class);
+                    intent.putExtra("isPlaying", mVideoView.isPlaying());
+                    intent.putExtra("currentTime", mVideoView.getCurrentPosition());
+                    startActivity(intent);
+                    finish();
+                }
                 break;
         }
     }
@@ -210,7 +230,11 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.seekTo(1);
+                mVideoView.seekTo(mCurrentTime);
+                if (mIsPlay) {
+                    mVideoView.start();
+                    mPlayAndPause.setImageResource(R.drawable.video_stop_style);
+                }
                 AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeTv, mVideoView.getDuration());
                 mHandler.sendEmptyMessage(UPDATE_UI);
             }
@@ -220,7 +244,6 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 mHandler.removeMessages(UPDATE_UI);
-                mVideoView.pause();
                 mPlayAndPause.setImageResource(R.drawable.video_start_style);
                 mPosSeekBar.setProgress(0);
                 mCurrentTimeTv.setText("00:00");

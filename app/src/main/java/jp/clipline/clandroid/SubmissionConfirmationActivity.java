@@ -42,6 +42,12 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
         if (savedInstanceState != null) {
             mSubmissionConfirmation = savedInstanceState.getInt("submissionConfirmation");
         }
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mIsPlay = bundle.getBoolean("isPlaying");
+            mCurrentTime = bundle.getInt("currentTime");
+
+        }
 
         findViewByIdVideo();
         setListener();
@@ -436,8 +442,11 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
                 break;
             case R.id.change_screen:
                 intent = new Intent(this, FullVideoActivity.class);
+                intent.putExtra("isPlaying", mVideoView.isPlaying());
+                intent.putExtra("currentTime", mVideoView.getCurrentPosition());
+                intent.putExtra("isSceenSubmiss", true);
                 startActivity(intent);
-
+                finish();
                 break;
             case R.id.buttonCompareOrSubmit:
                 if (mHasMyReportPlayAction) { // check
@@ -473,7 +482,12 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.seekTo(1);
+                mVideoView.seekTo(mCurrentTime);
+                if (mIsPlay) {
+                    mVideoView.start();
+                    mPlayAndPause.setImageResource(R.drawable.video_stop_style);
+                }
+
                 AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeTv, mVideoView.getDuration());
                 mHandler.sendEmptyMessage(UPDATE_UI);
             }
@@ -483,7 +497,6 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 mHandler.removeMessages(UPDATE_UI);
-                mVideoView.pause();
                 mPlayAndPause.setImageResource(R.drawable.video_start_style);
                 mPosSeekBar.setProgress(0);
                 mCurrentTimeTv.setText("00:00");
