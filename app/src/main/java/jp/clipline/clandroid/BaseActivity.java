@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import jp.clipline.clandroid.Utility.AndroidUtility;
+import jp.clipline.clandroid.api.AmazonUpFile;
 import jp.clipline.clandroid.api.MediaKey;
 import jp.clipline.clandroid.api.Report;
 
@@ -259,6 +261,9 @@ public class BaseActivity extends AppCompatActivity {
                     new SendReportTask().execute(AndroidUtility.getCookie(getApplicationContext()),
                             objectKey, contentType, mediaURLInDevice, mediaDuration, takenAt, todoContentId);
 
+                    //Call amazon
+                    new UpFileAmazon().execute(mediaKey);
+
                 }
             }
         }
@@ -323,6 +328,35 @@ public class BaseActivity extends AppCompatActivity {
                 mTextViewError.setVisibility(View.VISIBLE);
                 mSubmissionConfirmation = UPLOAD_FAILE;
             }
+        }
+
+        @Override
+        protected void onCancelled() {
+        }
+    }
+
+    public class UpFileAmazon extends AsyncTask<Map<String, Object>, Void, Boolean> {
+
+        Map<String, Object> reponseData = null;
+
+        UpFileAmazon() {
+        }
+
+        @Override
+        protected Boolean doInBackground(Map<String, Object>... params) {
+            try {
+                String path = AndroidUtility.getFilePath(BaseActivity.this, mTodoContentData);
+                reponseData = AmazonUpFile.sendAmazonReport(params[0], path);
+                return Boolean.TRUE;
+            } catch (Exception e) {
+                return Boolean.FALSE;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            Log.i("UpFileAmazon", String.valueOf(success));
+
         }
 
         @Override
