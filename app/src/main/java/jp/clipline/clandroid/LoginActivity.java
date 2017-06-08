@@ -36,11 +36,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -310,7 +313,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                mResponse = (Response) Branch.signIn(mBranchId, mServiceId, mPassword);
+                mResponse = (Response) Branch.signInV2(mBranchId, mServiceId, mPassword, AndroidUtility.getAndroidId(getContentResolver()));
                 return Boolean.TRUE;
             } catch (IOException e) {
                 return Boolean.FALSE;
@@ -325,25 +328,33 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 code = mResponse.code();
                 try {
-                    if (mResponse.isSuccessful()) {
+                    Gson gson = new Gson();
+                    String body = mResponse.body().string();
+                    HashMap<String, Object> fields = gson.fromJson(body, HashMap.class);
+                    message = (String) fields.get("message");
+
+                    if ((null == message) || ("".equals(message))) {
                         mCookie = mResponse.headers().get("Set-Cookie");
                         AndroidUtility.setCookie(getApplicationContext(), mCookie);
-                        //new GetAgreementTask().execute((Void) null);
+
                         Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                         intent.putExtra("FROM_SCREEN_LOGIN", "from_screen_login");
                         startActivity(intent);
                         finish();
 
+                        mResponse.close();
+
                         return;
                     }
-                    ShowError(message, code);
+
+                    showError(code);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
                 code = 403;
-                ShowError(message, code);
+                showError(code);
             }
         }
 
@@ -353,8 +364,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private void ShowError(String message, int code) {
-        String title = null;
+    private void showError(int code) {
+        String title = "";
+        String message = "";
         if (code == 200) {
             title = getResources().getString(R.string.login_title_error_200);;
             message = getResources().getString(R.string.login_message_error_200)
@@ -384,45 +396,5 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         alertDialog.show();
     }
 
-
-    public class GetAgreementTask extends AsyncTask<Void, Void, Boolean> {
-
-        String message = null;
-
-        GetAgreementTask() {
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                Map<String, String> loginSetting = AndroidUtility.getLoginSetting(getApplicationContext());
-                message = Branch.signInWithIdfv(loginSetting.get("branchId"), loginSetting.get("serviceId"), loginSetting.get("password"), AndroidUtility.getAndroidId(getContentResolver()));
-                return Boolean.TRUE;
-            } catch (IOException e) {
-                return Boolean.FALSE;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            if (success) {
-                if (message == null) {
-                    Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-                    intent.putExtra("FROM_SCREEN_LOGIN", "from_screen_login");
-                    startActivity(intent);
-                    finish();
-                } else {
-//                    TextView textView = (TextView) findViewById(R.id.textView);
-//                    textView.setText(message);
-                }
-            } else {
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            showProgress(false);
-        }
-    }
 }
 
