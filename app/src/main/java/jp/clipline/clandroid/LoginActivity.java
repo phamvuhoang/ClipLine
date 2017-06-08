@@ -328,7 +328,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     if (mResponse.isSuccessful()) {
                         mCookie = mResponse.headers().get("Set-Cookie");
                         AndroidUtility.setCookie(getApplicationContext(), mCookie);
-                        new GetAgreementTask().execute((Void) null);
+                        //new GetAgreementTask().execute((Void) null);
+                        Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+                        intent.putExtra("FROM_SCREEN_LOGIN", "from_screen_login");
+                        startActivity(intent);
+                        finish();
+
                         return;
                     }
                     ShowError(message, code);

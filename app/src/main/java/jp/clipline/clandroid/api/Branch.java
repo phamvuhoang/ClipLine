@@ -81,8 +81,8 @@ public class Branch {
 
         // @FIXME : AndroidIDは、フォーマットとして通過できない為暫定処理
 //        deviceId = "b8925c97db4db2f8";
-        deviceId = "156A3A67-D0FB-41A7-B1C5-1BDFE743F595";
-        //deviceId = AndroidUtility.formatDeviceID(deviceId);
+        //deviceId = "156A3A67-D0FB-41A7-B1C5-1BDFE743F595";
+        deviceId = AndroidUtility.formatDeviceID(deviceId);
         Log.d("deviceId", deviceId);
         RequestBody requestBody = new FormBody.Builder()
                 .add("branch_id", branchId)
