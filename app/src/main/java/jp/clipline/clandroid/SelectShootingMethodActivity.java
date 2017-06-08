@@ -310,9 +310,13 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
         String id = todoParameters.get("id");
         String categoryId = todoParameters.get("categoryId");
         String todoContentId = todoParameters.get("todoContentId");
-        Boolean isStudent = "student".equals(todoParameters.get("loginType"));
+        String loginType = todoParameters.get("loginType");
 
-        new GetTodoInformationTask().execute(AndroidUtility.getCookie(getApplicationContext()), id, categoryId, todoContentId);
+        new GetTodoInformationTask().execute(AndroidUtility.getCookie(getApplicationContext()),
+                id,
+                categoryId,
+                todoContentId,
+                loginType);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -450,8 +454,9 @@ public class SelectShootingMethodActivity extends AppCompatActivity /*implements
                 String id = params[1];
                 String categoryId = params[2];
                 String todoContentId = params[3];
+                String loginType = params[4];
 
-                todoContent = ToDo.getTodoContent(cookie, categoryId, todoContentId);
+                todoContent = ToDo.getTodoContent(cookie, categoryId, todoContentId, loginType);
                 return Boolean.TRUE;
             } catch (IOException e) {
                 return Boolean.FALSE;

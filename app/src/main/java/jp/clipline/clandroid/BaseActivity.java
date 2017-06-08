@@ -140,7 +140,12 @@ public class BaseActivity extends AppCompatActivity {
         mButtonReportSentComment.setVisibility(View.GONE);
         mButtonReportSentRetry.setVisibility(View.GONE);
         mButtonReportSentClose.setVisibility(View.GONE);
-        new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
+
+        Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+        String loginType = todoParameters.get("loginType");
+        String cookie = AndroidUtility.getCookie(getApplicationContext());
+
+        new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()), cookie, loginType);
     }
 
     private void initDialog() {
@@ -199,7 +204,12 @@ public class BaseActivity extends AppCompatActivity {
                 mButtonReportSentComment.setVisibility(View.GONE);
                 mButtonReportSentRetry.setVisibility(View.GONE);
                 mButtonReportSentClose.setVisibility(View.GONE);
-                new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
+
+                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                String loginType = todoParameters.get("loginType");
+                String cookie = AndroidUtility.getCookie(getApplicationContext());
+
+                new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()), cookie, loginType);
             }
         });
         mButtonReportSentClose.setOnClickListener(new View.OnClickListener() {
@@ -250,8 +260,9 @@ public class BaseActivity extends AppCompatActivity {
         protected Boolean doInBackground(String... params) {
             try {
                 String cookie = params[0];
+                String loginType = params[1];
 
-                mediaKey = MediaKey.getMediaKeyContent(cookie);
+                mediaKey = MediaKey.getMediaKeyContent(cookie, loginType);
                 return Boolean.TRUE;
             } catch (IOException e) {
                 return Boolean.FALSE;
@@ -267,6 +278,7 @@ public class BaseActivity extends AppCompatActivity {
                         && (mediaKey.get("object_key") != null)) {
                     Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
                     String todoContentId = todoParameters.get("todoContentId");
+                    String loginType = todoParameters.get("loginType");
 
                     String objectKey = (String) mediaKey.get("object_key");
 
@@ -278,7 +290,7 @@ public class BaseActivity extends AppCompatActivity {
 
                     // Call report API
                     new SendReportTask().execute(AndroidUtility.getCookie(getApplicationContext()),
-                            objectKey, contentType, mediaURLInDevice, mediaDuration, takenAt, todoContentId);
+                            objectKey, contentType, mediaURLInDevice, mediaDuration, takenAt, todoContentId, loginType);
 
                     //Call amazon
                     new UpFileAmazon().execute(mediaKey);
@@ -310,8 +322,16 @@ public class BaseActivity extends AppCompatActivity {
                 String mediaDuration = params[4];
                 String takenAt = params[5];
                 String todoContentId = params[6];
+                String loginType = params[7];
 
-                reponseData = Report.sendStudentReport(cookie, mediaKey, contentType, mediaURLInDevice, mediaDuration, takenAt, todoContentId);
+                reponseData = Report.sendStudentReport(cookie,
+                        mediaKey,
+                        contentType,
+                        mediaURLInDevice,
+                        mediaDuration,
+                        takenAt,
+                        todoContentId,
+                        loginType);
 
                 return Boolean.TRUE;
             } catch (IOException e) {

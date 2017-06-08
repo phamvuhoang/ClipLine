@@ -24,39 +24,18 @@ public class ToDo {
     private final static String STUDENT_TODO_CONTENTS_URL = "%s://%s//v2/api/v2/training/student_todo_contents/%s";
     private final static String COACH_TODO_CONTENTS_URL = "%s://%s//v2/api/v2/training/coach_todo_contents/%s";
 
-    public static Map<String, Object> getTodoContent(String cookie, String categoryId, String todoContentId) throws IOException {
+    public static Map<String, Object> getTodoContent(String cookie, String categoryId, String todoContentId, String loginType) throws IOException {
         //TEST
 //        todoContentId = String.valueOf(15892);
-
-//        CookieJar cookieJar = new CookieJar() {
-//            private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
-//
-//            @Override
-//            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-//                cookieStore.put(url.host(), cookies);
-//            }
-//
-//            @Override
-//            public List<Cookie> loadForRequest(HttpUrl url) {
-//                List<Cookie> cookies = cookieStore.get(url.host());
-//                return cookies != null ? cookies : new ArrayList<Cookie>();
-//            }
-//        };
-
-//        cookieJar.saveFromResponse(String.format("%s://%s/", BuildConfig.API_PROTOCOL, BuildConfig.API_HOST), "");
-//
-//        OkHttpClient client = new OkHttpClient().newBuilder()
-//                .cookieJar(cookieJar)
-//                .build();
 
         Gson gson = new Gson();
         Map<String, Object> current_todo_content = null;
 
         String language = Locale.getDefault().toString();
+        String url = "student".equals(loginType) ? STUDENT_TODO_CONTENTS_URL : COACH_TODO_CONTENTS_URL;
 
         Request request = new Request.Builder()
-                //.url(String.format(STUDENT_TODO_CATEGORIES_URL, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST, categoryId))
-                .url(String.format(STUDENT_TODO_CONTENTS_URL, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST, todoContentId))
+                .url(String.format(url, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST, todoContentId))
                 .addHeader("Cookie", cookie)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .addHeader("Accept-Language", language)
@@ -66,25 +45,6 @@ public class ToDo {
         Response response = new OkHttpClient().newCall(request).execute();
         if (response.isSuccessful()) {
             String body = response.body().string();
-/*
-
-            List<Map<String, Object>> subCategories = new ArrayList<>();
-            subCategories = gson.fromJson(body, subCategories.getClass());
-            for (Map<String, Object> subCategory : subCategories) {
-                ArrayList<Map<String, Object>> todos = (ArrayList<Map<String, Object>>) subCategory.get("todos");
-                for (Map<String, Object> todo : todos) {
-                    ArrayList<Map<String, Object>> todo_contents = (ArrayList<Map<String, Object>>) todo.get("todo_contents");
-                    for (Map<String, Object> todo_content : todo_contents) {
-                        if (Integer.parseInt(todoContentId) == Double.valueOf((double) todo_content.get("id")).intValue()) {
-                            current_todo_content = todo_content;
-                        }
-                    }
-                }
-            }
-        } else {
-            throw new IOException(String.format("Todo#getCategories : failed [%d]", response.code()));
-        }
-*/
 
             Map<String, Object> responseBody = new HashMap<String, Object>();
             responseBody = gson.fromJson(body, responseBody.getClass());
@@ -103,20 +63,5 @@ public class ToDo {
 
         return current_todo_content;
     }
-
-//    private static CookieJar cookieJar = new CookieJar() {
-//        private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
-//
-//        @Override
-//        public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-//            cookieStore.put(url.host(), cookies);
-//        }
-//
-//        @Override
-//        public List<Cookie> loadForRequest(HttpUrl url) {
-//            List<Cookie> cookies = cookieStore.get(url.host());
-//            return cookies != null ? cookies : new ArrayList<Cookie>();
-//        }
-//    };
 
 }
