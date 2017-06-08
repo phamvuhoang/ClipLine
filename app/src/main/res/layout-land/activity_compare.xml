@@ -117,7 +117,9 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/relativeLayoutBottom"
             android:layout_below="@+id/linearLayoutStatus"
-            android:layout_margin="10dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:orientation="vertical">
 
             <LinearLayout
