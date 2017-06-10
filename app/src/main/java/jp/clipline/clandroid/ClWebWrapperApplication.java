@@ -31,12 +31,13 @@ public class ClWebWrapperApplication extends Application {
     // ------------------------------------------------------------------------------------------ //
     private Map<String, String> todoParameters = new HashMap<String, String>();
 
-    public void setTodoParameters(String studentId, String categoryId, String todoContentId, String type) {
+    public void setTodoParameters(String id, String categoryId, String todoContentId, String type, Boolean isStudent) {
         todoParameters.clear();
-        todoParameters.put("studentId", studentId);
+        todoParameters.put("id", id);
         todoParameters.put("categoryId", categoryId);
         todoParameters.put("todoContentId", todoContentId);
         todoParameters.put("type", type);
+        todoParameters.put("loginType", isStudent ? "student" : "coach");
     }
 
     public Map<String, String> getTodoParameters() {

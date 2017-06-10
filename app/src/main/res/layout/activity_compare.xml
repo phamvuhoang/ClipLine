@@ -193,29 +193,29 @@
             android:background="#FFF"
             android:orientation="vertical">
 
-            <SeekBar
-                android:id="@+id/pos_seekBar_content"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginLeft="-20dp"
-                android:layout_marginRight="-20dp"
-                android:indeterminate="false"
-                android:max="100"
-                android:progress="0"
-                android:progressDrawable="@drawable/seekbar_style"
-                android:thumb="@null" />
+            <!--<SeekBar-->
+                <!--android:id="@+id/pos_seekBar_content"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="4dp"-->
+                <!--android:layout_marginLeft="-20dp"-->
+                <!--android:layout_marginRight="-20dp"-->
+                <!--android:indeterminate="false"-->
+                <!--android:max="100"-->
+                <!--android:progress="0"-->
+                <!--android:progressDrawable="@drawable/seekbar_style"-->
+                <!--android:thumb="@null" />-->
 
-            <SeekBar
-                android:id="@+id/pos_seekBar_mine"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginLeft="-20dp"
-                android:layout_marginRight="-20dp"
-                android:indeterminate="false"
-                android:max="100"
-                android:progress="0"
-                android:progressDrawable="@drawable/seekbar_style"
-                android:thumb="@null" />
+            <!--<SeekBar-->
+                <!--android:id="@+id/pos_seekBar_mine"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="4dp"-->
+                <!--android:layout_marginLeft="-20dp"-->
+                <!--android:layout_marginRight="-20dp"-->
+                <!--android:indeterminate="false"-->
+                <!--android:max="100"-->
+                <!--android:progress="0"-->
+                <!--android:progressDrawable="@drawable/seekbar_style"-->
+                <!--android:thumb="@null" />-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -304,13 +304,13 @@
                         android:layout_height="25dp"
                         android:background="@drawable/icon_switch" />
 
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginTop="5dp"
-                        android:background="#1E1E1E" />
+                    <!--<View-->
+                        <!--android:layout_width="1dp"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:layout_marginBottom="5dp"-->
+                        <!--android:layout_marginLeft="32dp"-->
+                        <!--android:layout_marginTop="5dp"-->
+                        <!--android:background="#1E1E1E" />-->
 
                     <ImageView
                         android:id="@+id/change_screen"
@@ -322,19 +322,18 @@
 
                 </LinearLayout>
 
+                <Button
+                    android:id="@+id/buttonFullScreen"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/big_screen_df" />
+
             </RelativeLayout>
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/buttonFullScreen"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_below="@+id/bottom_layout"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/big_screen_df" />
 
         <LinearLayout
             android:id="@+id/backScreen"
@@ -359,6 +358,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
+                android:textSize="15sp"
                 android:gravity="center"
                 android:text="@string/try_again"
 

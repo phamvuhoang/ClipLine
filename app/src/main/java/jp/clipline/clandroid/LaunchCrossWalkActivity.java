@@ -263,7 +263,7 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
         public void studentToDo(String studentId, String categoryId, String todoContentId, String type) {
             categoryId = "988";
             AndroidUtility.setBack(LaunchCrossWalkActivity.this, false);
-            ((ClWebWrapperApplication) getApplication()).setTodoParameters(studentId, categoryId, todoContentId, type);
+            ((ClWebWrapperApplication) getApplication()).setTodoParameters(studentId, categoryId, todoContentId, type, true);
             // 学習者のログインを反映する為
 //            XWalkCookieManager mCookieManager = new XWalkCookieManager();
             AndroidUtility.setCookie(getApplicationContext(), mCookieManager.getCookie(String.format("%s://%s", BuildConfig.API_PROTOCOL, BuildConfig.API_HOST)));
@@ -279,7 +279,7 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
 
             Log.i("coachdToDo", coachId + "\n" + categoryId + "\n" + todoId);
             categoryId = "988";
-            ((ClWebWrapperApplication) getApplication()).setTodoParameters(coachId, categoryId, todoId, type);
+            ((ClWebWrapperApplication) getApplication()).setTodoParameters(coachId, categoryId, todoId, type, false);
             Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
             startActivity(intent);
 

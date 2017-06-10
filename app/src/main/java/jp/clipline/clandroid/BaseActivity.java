@@ -57,8 +57,9 @@ public class BaseActivity extends AppCompatActivity {
     protected TextView mCurrentTimeTv;
     protected TextView mTotalTimeTv;
     protected TextView mTextLine;
-    protected SeekBar mPosSeekBar;
+    //protected SeekBar mPosSeekBar;
     protected ImageView mPlayAndPause;
+    protected RelativeLayout mPlayAndPauseLayout;
     protected ImageView mChangeFullScreen;
     protected AudioManager mAudioManager;
     protected int currentVolume;
@@ -145,7 +146,12 @@ public class BaseActivity extends AppCompatActivity {
         mButtonReportSentComment.setVisibility(View.GONE);
         mButtonReportSentRetry.setVisibility(View.GONE);
         mButtonReportSentClose.setVisibility(View.GONE);
-        new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
+
+        Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+        String loginType = todoParameters.get("loginType");
+        String cookie = AndroidUtility.getCookie(getApplicationContext());
+
+        new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()), cookie, loginType);
     }
 
     private void initDialog() {
@@ -170,11 +176,20 @@ public class BaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                String studentId = todoParameters.get("studentId");
+                String id = todoParameters.get("id");
                 String categoryId = todoParameters.get("categoryId");
                 String todoContentId = todoParameters.get("todoContentId");
-                String url = "%s://%s/training/#/students/" + studentId
-                        + "/todos/" + todoContentId;
+                Boolean isStudent = "student".equals(todoParameters.get("loginType"));
+
+                String url;
+
+                if (isStudent) {
+                    url = "%s://%s/training/#/students/" + id
+                            + "/todos/" + todoContentId;
+                } else {
+                    url = "%s://%s/training/#/coachs/" + id
+                            + "/todos/" + todoContentId;
+                }
 
                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                 intent.putExtra("BASE_URL", url);
@@ -195,7 +210,12 @@ public class BaseActivity extends AppCompatActivity {
                 mButtonReportSentComment.setVisibility(View.GONE);
                 mButtonReportSentRetry.setVisibility(View.GONE);
                 mButtonReportSentClose.setVisibility(View.GONE);
-                new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()));
+
+                Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+                String loginType = todoParameters.get("loginType");
+                String cookie = AndroidUtility.getCookie(getApplicationContext());
+
+                new GetMediaKeyTask().execute(AndroidUtility.getCookie(getApplicationContext()), cookie, loginType);
             }
         });
         mButtonReportSentClose.setOnClickListener(new View.OnClickListener() {
@@ -206,13 +226,23 @@ public class BaseActivity extends AppCompatActivity {
 
                 // 一覧へ戻る
                 Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
+
                 // TODO add check student or coach and add param properly
-                String studentId = todoParameters.get("studentId");
+                String id = todoParameters.get("id");
                 String categoryId = todoParameters.get("categoryId");
                 String todoContentId = todoParameters.get("todoContentId");
                 String type = todoParameters.get("type");
-                String url = "%s://%s/training/#/students/" + studentId
-                        + "/todos?type=" + type;
+                Boolean isStudent = "student".equals(todoParameters.get("loginType"));
+
+                String url ;
+                if (isStudent) {
+                    url = "%s://%s/training/#/students/" + id
+                            + "/todos?type=" + type;
+                } else {
+                    url = "%s://%s/training/#/coachs/" + id
+                            + "/todos?type=" + type;
+                }
+
                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                 intent.putExtra("BASE_URL", url);
                 startActivity(intent);
@@ -236,8 +266,9 @@ public class BaseActivity extends AppCompatActivity {
         protected Boolean doInBackground(String... params) {
             try {
                 String cookie = params[0];
+                String loginType = params[1];
 
-                mediaKey = MediaKey.getMediaKeyContent(cookie);
+                mediaKey = MediaKey.getMediaKeyContent(cookie, loginType);
                 return Boolean.TRUE;
             } catch (IOException e) {
                 return Boolean.FALSE;
@@ -253,6 +284,7 @@ public class BaseActivity extends AppCompatActivity {
                         && (mediaKey.get("object_key") != null)) {
                     Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
                     String todoContentId = todoParameters.get("todoContentId");
+                    String loginType = todoParameters.get("loginType");
 
                     String objectKey = (String) mediaKey.get("object_key");
 
@@ -264,7 +296,7 @@ public class BaseActivity extends AppCompatActivity {
 
                     // Call report API
                     new SendReportTask().execute(AndroidUtility.getCookie(getApplicationContext()),
-                            objectKey, contentType, mediaURLInDevice, mediaDuration, takenAt, todoContentId);
+                            objectKey, contentType, mediaURLInDevice, mediaDuration, takenAt, todoContentId, loginType);
 
                     //Call amazon
                     new UpFileAmazon().execute(mediaKey);
@@ -296,8 +328,16 @@ public class BaseActivity extends AppCompatActivity {
                 String mediaDuration = params[4];
                 String takenAt = params[5];
                 String todoContentId = params[6];
+                String loginType = params[7];
 
-                reponseData = Report.sendStudentReport(cookie, mediaKey, contentType, mediaURLInDevice, mediaDuration, takenAt, todoContentId);
+                reponseData = Report.sendStudentReport(cookie,
+                        mediaKey,
+                        contentType,
+                        mediaURLInDevice,
+                        mediaDuration,
+                        takenAt,
+                        todoContentId,
+                        loginType);
 
                 return Boolean.TRUE;
             } catch (IOException e) {
@@ -377,8 +417,9 @@ public class BaseActivity extends AppCompatActivity {
         mCurrentTimeTv = (TextView) findViewById(R.id.current_time_tv);
         mTotalTimeTv = (TextView) findViewById(R.id.total_time_tv);
         mTextLine = (TextView) findViewById(R.id.textLine);
-        mPosSeekBar = (SeekBar) findViewById(R.id.pos_seekBar);
+        //mPosSeekBar = (SeekBar) findViewById(R.id.pos_seekBar);
         mPlayAndPause = (ImageView) findViewById(R.id.pause_img);
+        mPlayAndPauseLayout = (RelativeLayout) findViewById(R.id.play_button_layout);
         mChangeFullScreen = (ImageView) findViewById(R.id.change_screen);
         mRelativeLayoutContentVideo = (RelativeLayout) findViewById(R.id.relativeLayoutContentVideo);
         mRelativeLayoutVideoController = (LinearLayout) findViewById(R.id.bottom_layout);
@@ -387,28 +428,28 @@ public class BaseActivity extends AppCompatActivity {
         mButtonFullScreen = (Button) findViewById(R.id.buttonFullScreen);
     }
 
+//        mPosSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+//                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeTv, progress);
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//                mHandler.removeMessages(UPDATE_UI);
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                int progress = seekBar.getProgress();
+//                mVideoView.seekTo(progress);
+//                mHandler.sendEmptyMessage(UPDATE_UI);
+//            }
+//        });
 
     protected void setListener() {
 
 
-        mPosSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeTv, progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                mHandler.removeMessages(UPDATE_UI);
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress();
-                mVideoView.seekTo(progress);
-                mHandler.sendEmptyMessage(UPDATE_UI);
-            }
-        });
 
 
         ViewTreeObserver viewObserver = mVideoView.getViewTreeObserver();

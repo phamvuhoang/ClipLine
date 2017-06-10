@@ -157,14 +157,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/contentCardView"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/textViewBack"
             android:layout_width="200dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -180,6 +180,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
+                android:textSize="15sp"
                 android:gravity="center"
                 android:text="@string/try_again"
 
@@ -191,6 +192,7 @@
             android:layout_width="400dp"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
+            android:textSize="20sp"
             android:gravity="center"
             android:text="@string/submission_confirmation_compare_with_model"
             android:visibility="visible" />

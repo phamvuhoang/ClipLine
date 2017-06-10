@@ -135,11 +135,21 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Map<String, String> todoParameters = ((ClWebWrapperApplication) getApplication()).getTodoParameters();
-                                String studentId = todoParameters.get("studentId");
+                                String id = todoParameters.get("id");
                                 String categoryId = todoParameters.get("categoryId");
                                 String todoContentId = todoParameters.get("todoContentId");
-                                String url = "%s://%s/training/#/students/" + studentId
-                                        + "/todos/" + todoContentId;
+                                Boolean isStudent = "student".equals(todoParameters.get("loginType"));
+
+                                String url;
+
+                                if (isStudent) {
+                                    url = "%s://%s/training/#/students/" + id
+                                            + "/todos/" + todoContentId;
+                                } else {
+                                    url = "%s://%s/training/#/coachs/" + id
+                                            + "/todos/" + todoContentId;
+                                }
+
                                 Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
                                 intent.putExtra("BASE_URL", url);
                                 startActivity(intent);
@@ -310,7 +320,8 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
             }
         });
 
-        mPlayAndPause.setOnClickListener(this);
+        //mPlayAndPause.setOnClickListener(this);
+        mPlayAndPauseLayout.setOnClickListener(this);
         mChangeFullScreen.setOnClickListener(this);
     }
 
@@ -340,8 +351,8 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
                         int currentPosition = mVideoView.getCurrentPosition();
                         int totalPosition = mVideoView.getDuration();
                         AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeTv, currentPosition);
-                        mPosSeekBar.setMax(totalPosition);
-                        mPosSeekBar.setProgress(currentPosition);
+//                        mPosSeekBar.setMax(totalPosition);
+//                        mPosSeekBar.setProgress(currentPosition);
                         mHandler.sendEmptyMessageDelayed(UPDATE_UI, 500);
                         break;
                     default:
@@ -427,7 +438,7 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
-            case R.id.pause_img:
+            case R.id.play_button_layout:
                 if (mVideoView.isPlaying()) {
                     mPlayAndPause.setImageResource(R.drawable.video_start_style);
                     mVideoView.pause();
@@ -499,7 +510,7 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
             public void onCompletion(MediaPlayer mediaPlayer) {
                 mHandler.removeMessages(UPDATE_UI);
                 mPlayAndPause.setImageResource(R.drawable.video_start_style);
-                mPosSeekBar.setProgress(0);
+//                mPosSeekBar.setProgress(0);
                 mCurrentTimeTv.setText("00:00");
             }
         });

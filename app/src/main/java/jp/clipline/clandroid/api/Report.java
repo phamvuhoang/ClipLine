@@ -23,7 +23,8 @@ public class Report {
     public static Map<String, Object> sendStudentReport(String cookie
             , String mediaKey, String contentType
             , String mediaURLInDevice, String mediaDuration, String takenAt
-            , String todoContentId) throws IOException {
+            , String todoContentId
+            , String loginType) throws IOException {
 
         Gson gson = new Gson();
         Map<String, Object> responseData = null;
@@ -39,9 +40,10 @@ public class Report {
                 .build();
 
         String language = Locale.getDefault().toString();
+        String url = "student".equals(loginType) ? STUDENT_REPORT_URL : COACH_REPORT_URL;
 
         Request request = new Request.Builder()
-                .url(String.format(STUDENT_REPORT_URL, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST))
+                .url(String.format(url, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST))
                 .post(requestBody)
                 .addHeader("Cookie", cookie)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")

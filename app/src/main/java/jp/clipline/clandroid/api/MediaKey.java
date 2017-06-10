@@ -15,18 +15,19 @@ public class MediaKey {
 
     private final static String TAG = "clwebwrapperapplication";
 
-    private final static String MEDIA_KEY_URL = "%s://%s//v2/api/v1/media_objects/generate_media_key?object_type=student_report";
-//    private final static String MEDIA_KEY_URL = "%s://%s//v2/api/v1/media_objects/generate_media_key?object_type=coach_report";
+    private final static String STUDENT_MEDIA_KEY_URL = "%s://%s//v2/api/v1/media_objects/generate_media_key?object_type=student_report";
+    private final static String COACH_MEDIA_KEY_URL = "%s://%s//v2/api/v1/media_objects/generate_media_key?object_type=coach_report";
 
-    public static Map<String, Object> getMediaKeyContent(String cookie) throws IOException {
+    public static Map<String, Object> getMediaKeyContent(String cookie, String loginType) throws IOException {
 
         Gson gson = new Gson();
         Map<String, Object> mediaKeyContent = null;
 
         String language = Locale.getDefault().toString();
+        String url = "student".equals(loginType) ? STUDENT_MEDIA_KEY_URL : COACH_MEDIA_KEY_URL;
 
         Request request = new Request.Builder()
-                .url(String.format(MEDIA_KEY_URL, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST))
+                .url(String.format(url, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST))
                 .addHeader("Cookie", cookie)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .addHeader("Accept-Language", language)

@@ -220,8 +220,8 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
                         }
                         int totalPosition = mVideoView.getDuration();
                         updateTextViewWithTimeFormat(mCurrentTimeTv, currentPosition);
-                        mPosSeekBar.setMax(totalPosition);
-                        mPosSeekBar.setProgress(currentPosition);
+//                        mPosSeekBar.setMax(totalPosition);
+//                        mPosSeekBar.setProgress(currentPosition);
                         mHandler.sendEmptyMessageDelayed(UPDATE_UI, 500);
                         break;
                     default:
@@ -252,7 +252,7 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
             public void onCompletion(MediaPlayer mediaPlayer) {
                 mHandler.removeMessages(UPDATE_UI);
                 mPlayAndPause.setImageResource(R.drawable.video_start_style);
-                mPosSeekBar.setProgress(0);
+//                mPosSeekBar.setProgress(0);
                 mCurrentTimeTv.setText("00:00");
             }
         });
