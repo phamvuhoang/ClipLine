@@ -344,8 +344,8 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
                         int currentPosition = mVideoView.getCurrentPosition();
                         int totalPosition = mVideoView.getDuration();
                         AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeTv, currentPosition);
-                        mPosSeekBar.setMax(totalPosition);
-                        mPosSeekBar.setProgress(currentPosition);
+//                        mPosSeekBar.setMax(totalPosition);
+//                        mPosSeekBar.setProgress(currentPosition);
                         mHandler.sendEmptyMessageDelayed(UPDATE_UI, 500);
                         break;
                     default:
@@ -495,7 +495,7 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
                 mHandler.removeMessages(UPDATE_UI);
                 mVideoView.pause();
                 mPlayAndPause.setImageResource(R.drawable.video_start_style);
-                mPosSeekBar.setProgress(0);
+//                mPosSeekBar.setProgress(0);
                 mCurrentTimeTv.setText("00:00");
             }
         });

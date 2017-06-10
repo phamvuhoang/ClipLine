@@ -57,7 +57,7 @@ public class BaseActivity extends AppCompatActivity {
     protected TextView mCurrentTimeTv;
     protected TextView mTotalTimeTv;
     protected TextView mTextLine;
-    protected SeekBar mPosSeekBar;
+    //protected SeekBar mPosSeekBar;
     protected ImageView mPlayAndPause;
     protected ImageView mChangeFullScreen;
     protected AudioManager mAudioManager;
@@ -411,7 +411,7 @@ public class BaseActivity extends AppCompatActivity {
         mCurrentTimeTv = (TextView) findViewById(R.id.current_time_tv);
         mTotalTimeTv = (TextView) findViewById(R.id.total_time_tv);
         mTextLine = (TextView) findViewById(R.id.textLine);
-        mPosSeekBar = (SeekBar) findViewById(R.id.pos_seekBar);
+        //mPosSeekBar = (SeekBar) findViewById(R.id.pos_seekBar);
         mPlayAndPause = (ImageView) findViewById(R.id.pause_img);
         mChangeFullScreen = (ImageView) findViewById(R.id.change_screen);
         mRelativeLayoutContentVideo = (RelativeLayout) findViewById(R.id.relativeLayoutContentVideo);
@@ -421,28 +421,28 @@ public class BaseActivity extends AppCompatActivity {
         mButtonFullScreen = (Button) findViewById(R.id.buttonFullScreen);
     }
 
+//        mPosSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+//                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeTv, progress);
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//                mHandler.removeMessages(UPDATE_UI);
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                int progress = seekBar.getProgress();
+//                mVideoView.seekTo(progress);
+//                mHandler.sendEmptyMessage(UPDATE_UI);
+//            }
+//        });
 
     protected void setListener() {
 
 
-        mPosSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeTv, progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                mHandler.removeMessages(UPDATE_UI);
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress();
-                mVideoView.seekTo(progress);
-                mHandler.sendEmptyMessage(UPDATE_UI);
-            }
-        });
 
 
         ViewTreeObserver viewObserver = mVideoView.getViewTreeObserver();

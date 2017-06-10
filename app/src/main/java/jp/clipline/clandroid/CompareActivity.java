@@ -70,8 +70,8 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
     private TextView mCurrentTimeMine;
     private TextView mTotalTimeContent;
     private TextView mTotalTimeMine;
-    private SeekBar mPosSeekBarContent;
-    private SeekBar mPosSeekBarMine;
+    //private SeekBar mPosSeekBarContent;
+    //private SeekBar mPosSeekBarMine;
     private ImageView mPlayAndPauseContent;
     private ImageView mPlayAndPauseMine;
     private ImageView mChangeFullScreen;
@@ -572,10 +572,10 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
 
                     mCurrentTimeContent.setVisibility(View.VISIBLE);
                     mTotalTimeContent.setVisibility(View.VISIBLE);
-                    mPosSeekBarContent.setVisibility(View.VISIBLE);
+                    //mPosSeekBarContent.setVisibility(View.VISIBLE);
                     mCurrentTimeMine.setVisibility(View.GONE);
                     mTotalTimeMine.setVisibility(View.GONE);
-                    mPosSeekBarMine.setVisibility(View.GONE);
+                    //mPosSeekBarMine.setVisibility(View.GONE);
 
                     mCurrentTimeContent.setText("00:00");
                     mTotalTimeContent.setText("00:00");
@@ -610,10 +610,10 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
 
                     mCurrentTimeContent.setVisibility(View.GONE);
                     mTotalTimeContent.setVisibility(View.GONE);
-                    mPosSeekBarContent.setVisibility(View.GONE);
+                    //mPosSeekBarContent.setVisibility(View.GONE);
                     mCurrentTimeMine.setVisibility(View.VISIBLE);
                     mTotalTimeMine.setVisibility(View.VISIBLE);
-                    mPosSeekBarMine.setVisibility(View.VISIBLE);
+                    //mPosSeekBarMine.setVisibility(View.VISIBLE);
 
                     mCurrentTimeContent.setText("00:00");
                     mTotalTimeContent.setText("00:00");
@@ -693,8 +693,8 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         mCurrentTimeMine = (TextView) findViewById(R.id.current_time_tv_mine);
         mTotalTimeContent = (TextView) findViewById(R.id.total_time_tv_content);
         mTotalTimeMine = (TextView) findViewById(R.id.total_time_tv_mine);
-        mPosSeekBarContent = (SeekBar) findViewById(R.id.pos_seekBar_content);
-        mPosSeekBarMine = (SeekBar) findViewById(R.id.pos_seekBar_mine);
+        //mPosSeekBarContent = (SeekBar) findViewById(R.id.pos_seekBar_content);
+        //mPosSeekBarMine = (SeekBar) findViewById(R.id.pos_seekBar_mine);
         mPlayAndPauseContent = (ImageView) findViewById(R.id.pause_img_content);
         mPlayAndPauseMine = (ImageView) findViewById(R.id.pause_img_mine);
         mChangeFullScreen = (ImageView) findViewById(R.id.change_screen);
@@ -707,12 +707,12 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         //Default
         mCurrentTimeContent.setVisibility(View.GONE);
         mTotalTimeContent.setVisibility(View.GONE);
-        mPosSeekBarContent.setVisibility(View.GONE);
+        //mPosSeekBarContent.setVisibility(View.GONE);
         mPlayAndPauseContent.setVisibility(View.GONE);
 
         mCurrentTimeMine.setVisibility(View.VISIBLE);
         mTotalTimeMine.setVisibility(View.VISIBLE);
-        mPosSeekBarMine.setVisibility(View.VISIBLE);
+        //mPosSeekBarMine.setVisibility(View.VISIBLE);
         mPlayAndPauseMine.setVisibility(View.VISIBLE);
 
     }
@@ -777,42 +777,42 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         mChangeFullScreen.setOnClickListener(this);
         mImageViewSwitch.setOnClickListener(this);
 
-        mPosSeekBarContent.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeContent, progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                mHandlerContent.removeMessages(UPDATE_UI_CONTENT);
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress();
-                mVideoViewContent.seekTo(progress);
-                mHandlerContent.sendEmptyMessage(UPDATE_UI_CONTENT);
-            }
-        });
-        mPosSeekBarMine.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeMine, progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                mHandlerMine.removeMessages(UPDATE_UI_MINE);
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress();
-                mVideoViewMine.seekTo(progress);
-                mHandlerMine.sendEmptyMessage(UPDATE_UI_MINE);
-            }
-        });
+//        mPosSeekBarContent.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+//                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeContent, progress);
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//                mHandlerContent.removeMessages(UPDATE_UI_CONTENT);
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                int progress = seekBar.getProgress();
+//                mVideoViewContent.seekTo(progress);
+//                mHandlerContent.sendEmptyMessage(UPDATE_UI_CONTENT);
+//            }
+//        });
+//        mPosSeekBarMine.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+//                AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeMine, progress);
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//                mHandlerMine.removeMessages(UPDATE_UI_MINE);
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                int progress = seekBar.getProgress();
+//                mVideoViewMine.seekTo(progress);
+//                mHandlerMine.sendEmptyMessage(UPDATE_UI_MINE);
+//            }
+//        });
     }
 
     @Override
@@ -841,8 +841,8 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                         int currentPosition = mVideoViewContent.getCurrentPosition();
                         int totalPosition = mVideoViewContent.getDuration();
                         AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeContent, currentPosition);
-                        mPosSeekBarContent.setMax(totalPosition);
-                        mPosSeekBarContent.setProgress(currentPosition);
+                        //mPosSeekBarContent.setMax(totalPosition);
+                        //mPosSeekBarContent.setProgress(currentPosition);
                         mHandlerContent.sendEmptyMessageDelayed(UPDATE_UI_CONTENT, 500);
                         break;
                     default:
@@ -868,8 +868,8 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
                         int currentPosition = mVideoViewMine.getCurrentPosition();
                         int totalPosition = mVideoViewMine.getDuration();
                         AndroidUtility.updateTextViewWithTimeFormat(mCurrentTimeMine, currentPosition);
-                        mPosSeekBarMine.setMax(totalPosition);
-                        mPosSeekBarMine.setProgress(currentPosition);
+                        //mPosSeekBarMine.setMax(totalPosition);
+                        //mPosSeekBarMine.setProgress(currentPosition);
                         mHandlerMine.sendEmptyMessageDelayed(UPDATE_UI_MINE, 500);
                         break;
                     default:
