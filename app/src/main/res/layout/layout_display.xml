@@ -3,18 +3,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <com.github.barteksc.pdfviewer.PDFView
         android:id="@+id/pdfView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <LinearLayout
+        android:id="@+id/imageButtonBack"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:gravity="center"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/icon_close" />
+
+    </LinearLayout>
+
     <uk.co.senab.photoview.PhotoView
         android:id="@+id/photoView"
         android:layout_width="match_parent"
-        android:adjustViewBounds="true"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_height="match_parent" />
+        android:adjustViewBounds="true" />
 
 
     <include layout="@layout/layout_video_view" />
@@ -27,6 +43,7 @@
         android:layout_alignParentRight="true"
         android:layout_margin="10dp"
         android:background="@drawable/big_screen_df" />
+
     <ProgressBar
         android:id="@+id/progressBarPdf"
         style="?android:attr/progressBarStyleLarge"

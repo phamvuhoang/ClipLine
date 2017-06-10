@@ -15,6 +15,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
@@ -46,6 +47,7 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
     private String mPathPdfViewer;
     private boolean checkStartVideo = true;
     private String mPathVideoFromCompare = null;
+    private LinearLayout mImageButtonBack;
 
 
     @Override
@@ -54,6 +56,8 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.layout_display);
         mPhotoView = (PhotoView) findViewById(R.id.photoView);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBarPdf);
+        mImageButtonBack = (LinearLayout) findViewById(R.id.imageButtonBack);
+        mImageButtonBack.setOnClickListener(this);
         mProgressBar.setVisibility(View.GONE);
         findViewByIdVideo();
         setListener();
@@ -63,6 +67,7 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
             mRelativeLayoutContentVideo.setVisibility(View.GONE);
             mPdfView.setVisibility(View.VISIBLE);
             mButtonFullScreen.setVisibility(View.GONE);
+            mImageButtonBack.setVisibility(View.VISIBLE);
             mPdfView.fromFile(new File(mPathPdfViewer))
                     .defaultPage(0)
                     .onPageChange(FullVideoActivity.this)
@@ -112,6 +117,7 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
             mPhotoView.setVisibility(View.VISIBLE);
             mRelativeLayoutContentVideo.setVisibility(View.GONE);
             mPdfView.setVisibility(View.GONE);
+            mImageButtonBack.setVisibility(View.GONE);
             mButtonFullScreen.setVisibility(View.VISIBLE);
             try {
                 String path = AndroidUtility.getFilePath(this, mTodoContentData);
@@ -128,6 +134,7 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
             mPhotoView.setVisibility(View.GONE);
             mRelativeLayoutContentVideo.setVisibility(View.VISIBLE);
             mPdfView.setVisibility(View.GONE);
+            mImageButtonBack.setVisibility(View.GONE);
             mButtonFullScreen.setVisibility(View.GONE);
             if (TextUtils.isEmpty(mPathVideoFromCompare)) {
                 playVideo(mTodoContentData);
@@ -140,6 +147,7 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
                 mPhotoView.setVisibility(View.GONE);
                 mRelativeLayoutContentVideo.setVisibility(View.GONE);
                 mPdfView.setVisibility(View.VISIBLE);
+                mImageButtonBack.setVisibility(View.GONE);
                 mButtonFullScreen.setVisibility(View.VISIBLE);
                 String path = AndroidUtility.getFilePath(this, mTodoContentData);
                 mPdfView.fromFile(new File(path))
@@ -192,6 +200,11 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
                     startActivity(intent);
                     finish();
                 }
+                break;
+            case R.id.imageButtonBack:
+                finish();
+                break;
+            default:
                 break;
         }
     }
