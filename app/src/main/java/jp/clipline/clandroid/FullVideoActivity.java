@@ -44,6 +44,7 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
     private PhotoView mPhotoView;
     private ProgressBar mProgressBar;
     private String mPathPdfViewer;
+    private boolean checkStartVideo = true;
 
 
     @Override
@@ -210,7 +211,13 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
             if (activity != null) {
                 switch (msg.what) {
                     case UPDATE_UI:
-                        int currentPosition = mVideoView.getCurrentPosition();
+                        int currentPosition;
+                        if (mCurrentTime > 0 && checkStartVideo) {
+                            currentPosition = mCurrentTime;
+                            checkStartVideo = false;
+                        } else {
+                            currentPosition = mVideoView.getCurrentPosition();
+                        }
                         int totalPosition = mVideoView.getDuration();
                         updateTextViewWithTimeFormat(mCurrentTimeTv, currentPosition);
                         mPosSeekBar.setMax(totalPosition);

@@ -479,15 +479,16 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
     private void playVideo(Uri uri) {
         mVideoView.setVideoURI(uri);
         mVideoView.requestFocus();
+        if (mCurrentTime > 0) {
+            mVideoView.seekTo(mCurrentTime);
+        }
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                mVideoView.seekTo(mCurrentTime);
                 if (mIsPlay) {
                     mVideoView.start();
                     mPlayAndPause.setImageResource(R.drawable.video_stop_style);
                 }
-
                 AndroidUtility.updateTextViewWithTimeFormat(mTotalTimeTv, mVideoView.getDuration());
                 mHandler.sendEmptyMessage(UPDATE_UI);
             }
