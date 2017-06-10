@@ -358,6 +358,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
+                android:textSize="15sp"
                 android:gravity="center"
                 android:text="@string/try_again"
 
