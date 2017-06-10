@@ -55,48 +55,60 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
         mProgressBar = (ProgressBar) findViewById(R.id.progressBarLaunchCrossWalk);
         mProgressBar.setVisibility(View.VISIBLE);
 
-        mXWalkView = (XWalkView) findViewById(R.id.xwalkWebView);
+        //if (null == mXWalkView) {
+            mXWalkView = (XWalkView) findViewById(R.id.xwalkWebView);
 
-        mXWalkView.setVisibility(View.GONE);
+            mXWalkView.setVisibility(View.GONE);
 
-        mXWalkView.setResourceClient(new ResourceClient(mXWalkView));
-        XWalkPreferences.setValue(XWalkPreferences.REMOTE_DEBUGGING, true);
+            mXWalkView.setResourceClient(new ResourceClient(mXWalkView));
+            XWalkPreferences.setValue(XWalkPreferences.REMOTE_DEBUGGING, true);
 
-        mXWalkView.getSettings().setAllowFileAccess(true);
-        mXWalkView.getSettings().setAllowContentAccess(true);
-        // CrossWalkの気分次第で必要な場合があるかもなので、残しています
-        // mXWalkView.getSettings().setAcceptLanguages("ja");
-        mXWalkView.setUIClient(new MyUIClient(mXWalkView));
+            mXWalkView.getSettings().setAllowFileAccess(true);
+            mXWalkView.getSettings().setAllowContentAccess(true);
+            // CrossWalkの気分次第で必要な場合があるかもなので、残しています
+            // mXWalkView.getSettings().setAcceptLanguages("ja");
+            mXWalkView.setUIClient(new MyUIClient(mXWalkView));
 
 //        XWalkCookieManager mCookieManager;
 //        mCookieManager = new XWalkCookieManager();
-        mCookieManager.setAcceptCookie(true);
-        mCookieManager.setAcceptFileSchemeCookies(true);
-
-        String fromLogin = getIntent().getExtras().getString("FROM_SCREEN_LOGIN", null);
-        if (fromLogin != null) { // intent from screen login
-            mCookieManager.removeAllCookie();
-        }
+            mCookieManager.setAcceptCookie(true);
+            mCookieManager.setAcceptFileSchemeCookies(true);
 
 
-        // @see : https://cliplinedev.slack.com/archives/multiplatform/p1485911439000053
-        // String cookie = String.format("X-ClipLine-AppType=android; %s", AndroidUtility.getCookie(getApplicationContext()));
-        String cookie = String.format("%s", AndroidUtility.getCookie(getApplicationContext()));
-        // String cookie = String.format("%s",AndroidUtility.getCookie(getApplicationContext()));
-        mCookieManager.setCookie(String.format("%s://%s", BuildConfig.API_PROTOCOL, BuildConfig.API_HOST), AndroidUtility.getCookie(getApplicationContext()));
-        mCookieManager.setCookie(String.format("%s://%s", BuildConfig.API_PROTOCOL, BuildConfig.API_HOST), "X-ClipLine-AppType=android");
-        Map<String, String> extraHeaders = new HashMap<String, String>();
+            // @see : https://cliplinedev.slack.com/archives/multiplatform/p1485911439000053
+            // String cookie = String.format("X-ClipLine-AppType=android; %s", AndroidUtility.getCookie(getApplicationContext()));
+            String cookie = String.format("%s", AndroidUtility.getCookie(getApplicationContext()));
+            // String cookie = String.format("%s",AndroidUtility.getCookie(getApplicationContext()));
+            mCookieManager.setCookie(String.format("%s://%s", BuildConfig.API_PROTOCOL, BuildConfig.API_HOST), AndroidUtility.getCookie(getApplicationContext()));
+            mCookieManager.setCookie(String.format("%s://%s", BuildConfig.API_PROTOCOL, BuildConfig.API_HOST), "X-ClipLine-AppType=android");
 
-        mXWalkView.addJavascriptInterface(new NativeInterface(), "NativeInterface");
+            mXWalkView.addJavascriptInterface(new NativeInterface(), "NativeInterface");
+        //}
 
-        if (fromLogin != null) {
-            mXWalkView.load(BASE_URL, null, extraHeaders);
+        if (null != savedInstanceState) {
+            mXWalkView.restoreState(savedInstanceState);
         } else {
-            String url = (String) getIntent().getExtras().get("BASE_URL");
-            mXWalkView.load(String.format(url, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST), null, extraHeaders);
+
+            String fromLogin = getIntent().getExtras().getString("FROM_SCREEN_LOGIN", null);
+//            if (fromLogin != null) { // intent from screen login
+//                //mCookieManager.removeAllCookie();
+//            }
+
+            Map<String, String> extraHeaders = new HashMap<String, String>();
+            if (fromLogin != null) {
+                mXWalkView.load(BASE_URL, null, extraHeaders);
+            } else {
+                String url = (String) getIntent().getExtras().get("BASE_URL");
+                mXWalkView.load(String.format(url, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST), null, extraHeaders);
+            }
         }
 
         activityRequestPermissions(PERMISSION_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        mXWalkView.saveState(outState);
     }
 
     private boolean activityRequestPermissions(int requestCode) {
