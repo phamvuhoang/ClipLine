@@ -27,7 +27,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -47,8 +46,6 @@ import java.util.Map;
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.PopUpDlg;
 import jp.clipline.clandroid.view.StatusView;
-
-import static android.content.Context.WINDOW_SERVICE;
 
 
 public class CompareActivity extends BaseActivity implements View.OnClickListener, OnPageChangeListener, OnLoadCompleteListener {
@@ -555,10 +552,15 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
             case R.id.change_screen:
 
                 intent = new Intent(this, FullVideoActivity.class);
+                intent.putExtra("isSceenSubmiss", false);
                 if (mIsCheckSwitch) {
                     intent.putExtra("path_uri", mPath);
+                    intent.putExtra("isPlaying", mVideoViewMine.isPlaying());
+                    intent.putExtra("currentTime", mVideoViewMine.getCurrentPosition());
                 } else {
                     intent.putExtra("path_uri", String.valueOf(mCurrentTodoContent.get("media_thumb_pre_signed_url")));
+                    intent.putExtra("isPlaying", mVideoViewContent.isPlaying());
+                    intent.putExtra("currentTime", mVideoViewContent.getCurrentPosition());
                 }
                 startActivity(intent);
                 break;

@@ -45,6 +45,7 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
     private ProgressBar mProgressBar;
     private String mPathPdfViewer;
     private boolean checkStartVideo = true;
+    private String mPathVideoFromCompare = null;
 
 
     @Override
@@ -77,6 +78,9 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
             mIsPlay = bundle.getBoolean("isPlaying");
             mCurrentTime = bundle.getInt("currentTime");
             mIsSceenSub = bundle.getBoolean("isSceenSubmiss");
+            if (!mIsSceenSub) {
+                mPathVideoFromCompare = bundle.getString("path_uri");
+            }
             if (!TextUtils.isEmpty(path)) {
                 mPhotoView.setVisibility(View.GONE);
                 mRelativeLayoutContentVideo.setVisibility(View.GONE);
@@ -125,8 +129,12 @@ public class FullVideoActivity extends BaseActivity implements View.OnClickListe
             mRelativeLayoutContentVideo.setVisibility(View.VISIBLE);
             mPdfView.setVisibility(View.GONE);
             mButtonFullScreen.setVisibility(View.GONE);
+            if (TextUtils.isEmpty(mPathVideoFromCompare)) {
+                playVideo(mTodoContentData);
+            } else {
+                playVideo(Uri.parse(mPathVideoFromCompare));
+            }
 
-            playVideo(mTodoContentData);
         } else { //content type is pdf
             try {
                 mPhotoView.setVisibility(View.GONE);
