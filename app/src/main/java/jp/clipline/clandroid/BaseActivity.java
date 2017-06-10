@@ -59,6 +59,7 @@ public class BaseActivity extends AppCompatActivity {
     protected TextView mTextLine;
     //protected SeekBar mPosSeekBar;
     protected ImageView mPlayAndPause;
+    protected RelativeLayout mPlayAndPauseLayout;
     protected ImageView mChangeFullScreen;
     protected AudioManager mAudioManager;
     protected int currentVolume;
@@ -413,6 +414,7 @@ public class BaseActivity extends AppCompatActivity {
         mTextLine = (TextView) findViewById(R.id.textLine);
         //mPosSeekBar = (SeekBar) findViewById(R.id.pos_seekBar);
         mPlayAndPause = (ImageView) findViewById(R.id.pause_img);
+        mPlayAndPauseLayout = (RelativeLayout) findViewById(R.id.play_button_layout);
         mChangeFullScreen = (ImageView) findViewById(R.id.change_screen);
         mRelativeLayoutContentVideo = (RelativeLayout) findViewById(R.id.relativeLayoutContentVideo);
         mRelativeLayoutVideoController = (LinearLayout) findViewById(R.id.bottom_layout);

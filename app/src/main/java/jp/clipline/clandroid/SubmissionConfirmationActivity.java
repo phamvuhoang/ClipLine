@@ -314,7 +314,8 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
             }
         });
 
-        mPlayAndPause.setOnClickListener(this);
+        //mPlayAndPause.setOnClickListener(this);
+        mPlayAndPauseLayout.setOnClickListener(this);
         mChangeFullScreen.setOnClickListener(this);
     }
 
@@ -431,7 +432,7 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
-            case R.id.pause_img:
+            case R.id.play_button_layout:
                 if (mVideoView.isPlaying()) {
                     mPlayAndPause.setImageResource(R.drawable.video_start_style);
                     mVideoView.pause();
