@@ -85,14 +85,14 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
             mXWalkView.addJavascriptInterface(new NativeInterface(), "NativeInterface");
         //}
 
-        //if (null != savedInstanceState) {
-            //mXWalkView.restoreState(savedInstanceState);
-        //} else {
+        if (null != savedInstanceState) {
+            mXWalkView.restoreState(savedInstanceState);
+        } else {
 
             String fromLogin = getIntent().getExtras().getString("FROM_SCREEN_LOGIN", null);
-            if (fromLogin != null) { // intent from screen login
-                mCookieManager.removeAllCookie();
-            }
+//            if (fromLogin != null) { // intent from screen login
+//                //mCookieManager.removeAllCookie();
+//            }
 
             Map<String, String> extraHeaders = new HashMap<String, String>();
             if (fromLogin != null) {
@@ -101,15 +101,15 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
                 String url = (String) getIntent().getExtras().get("BASE_URL");
                 mXWalkView.load(String.format(url, BuildConfig.API_PROTOCOL, BuildConfig.API_HOST), null, extraHeaders);
             }
-        //}
+        }
 
         activityRequestPermissions(PERMISSION_REQUEST_CODE);
     }
 
-    //@Override
-    //protected void onSaveInstanceState(Bundle outState) {
-    //    mXWalkView.saveState(outState);
-    //}
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        mXWalkView.saveState(outState);
+    }
 
     private boolean activityRequestPermissions(int requestCode) {
         if (Build.VERSION.SDK_INT >= 23) {

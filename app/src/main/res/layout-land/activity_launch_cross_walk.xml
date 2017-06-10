@@ -4,7 +4,7 @@
     android:id="@+id/activity_launch_cross_walk"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:configChanges="orientation|screenSize"
+    android:configChanges="orientation|screenSize|keyboardHidden"
     tools:context="jp.clipline.clandroid.LaunchCrossWalkActivity">
 
     <RelativeLayout

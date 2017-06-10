@@ -48,6 +48,7 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".LaunchCrossWalkActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
              />
         <activity android:name=".SelectShootingMethodActivity">
             <!--<intent-filter>-->
