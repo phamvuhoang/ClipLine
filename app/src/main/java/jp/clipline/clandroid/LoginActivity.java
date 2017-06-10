@@ -130,8 +130,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mPasswordView.setText(loginSetting.get("password"));
         }
         mAndroidId = (TextView) findViewById(R.id.androidId);
-        mAndroidId.setText(String.format(getString(R.string.android_id_format), AndroidUtility.getAndroidId(getContentResolver())));
-        mAndroidId.setText(String.format("[%s] %s", BuildConfig.ANDROID_ENV, mAndroidId.getText()));
+        String uuid = AndroidUtility.getAndroidId(getContentResolver());
+        String deviceId = AndroidUtility.formatDeviceID(uuid);
+        mAndroidId.setText(String.format(getString(R.string.android_id_format), deviceId));
+        //mAndroidId.setText(String.format("[%s] %s", BuildConfig.ANDROID_ENV, mAndroidId.getText()));
     }
 
 
