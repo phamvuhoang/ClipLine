@@ -15,6 +15,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
@@ -45,6 +47,8 @@ import java.util.Map;
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.PopUpDlg;
 import jp.clipline.clandroid.view.StatusView;
+
+import static android.content.Context.WINDOW_SERVICE;
 
 
 public class CompareActivity extends BaseActivity implements View.OnClickListener, OnPageChangeListener, OnLoadCompleteListener {
@@ -451,6 +455,26 @@ public class CompareActivity extends BaseActivity implements View.OnClickListene
         });
 
         updateStatus();
+
+
+        ///// Programmatically change height of layout Body to match with width
+        // Firsty, only change in portrait orientation
+        Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+        int orientaion = display.getOrientation();
+        if ((Surface.ROTATION_0 == orientaion)
+                || (Surface.ROTATION_180 == orientaion)) {
+            // Then get device width
+            DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+            //float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+            float dpHeigthShouldBe = displayMetrics.widthPixels * 201 / 316; // On Zeplin, the size is setting as 316:201 on landscape
+
+            // Set height
+            RelativeLayout layoutBody = (RelativeLayout) findViewById(R.id.relativeLayoutContent);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)layoutBody.getLayoutParams();
+            params.height = (int) dpHeigthShouldBe;
+            //layoutBody.setLayoutParams(params);
+        }
+
 
         // この内容で提出
         mButtonSummit = (Button) findViewById(R.id.buttonSubmit);
