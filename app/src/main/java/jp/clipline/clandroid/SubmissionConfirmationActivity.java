@@ -3,16 +3,22 @@ package jp.clipline.clandroid;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.ExifInterface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
@@ -26,6 +32,8 @@ import java.util.Map;
 import jp.clipline.clandroid.Utility.AndroidUtility;
 import jp.clipline.clandroid.Utility.PopUpDlg;
 import jp.clipline.clandroid.view.StatusView;
+
+import static android.content.Context.WINDOW_SERVICE;
 
 public class SubmissionConfirmationActivity extends BaseActivity implements View.OnClickListener, OnPageChangeListener, OnLoadCompleteListener {
 
@@ -249,6 +257,24 @@ public class SubmissionConfirmationActivity extends BaseActivity implements View
                         });
             }
         });
+
+        ///// Programmatically change height of layout Body to match with width
+        // Firsty, only change in portrait orientation
+        Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+        int orientaion = display.getOrientation();
+        if ((Surface.ROTATION_0 == orientaion)
+                || (Surface.ROTATION_180 == orientaion)) {
+            // Then get device width
+            DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+            //float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+            float dpHeigthShouldBe = displayMetrics.widthPixels * 201 / 316; // On Zeplin, the size is setting as 316:201 on landscape
+
+            // Set height
+            RelativeLayout layoutBody = (RelativeLayout) findViewById(R.id.relativeLayoutBody);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)layoutBody.getLayoutParams();
+            params.height = (int) dpHeigthShouldBe;
+            //layoutBody.setLayoutParams(params);
+        }
 
         showDisplay();
 
