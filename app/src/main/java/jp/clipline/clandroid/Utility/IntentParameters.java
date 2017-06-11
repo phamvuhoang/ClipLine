@@ -16,17 +16,19 @@ public class IntentParameters {
     private boolean mIsProfile = false;
     private String mGetAction;
     private String mExtraOutput = null;
+    private Intent mIntent = null;
     // FIXME : プロフィール画像撮影モード、
 
     public IntentParameters(Intent intent, boolean isStandardAspectHardWare) {
         mGetAction = intent.getAction();
         Log.d("SimpleCamera", "@@@ getAction = " + mGetAction + " @@@");
 
-
+        mIntent = intent;
         if (intent.getAction().equals(MediaStore.ACTION_IMAGE_CAPTURE)) {
             mIsBrowserCalling = true;
-            mIsVideo = false;
             mExtraOutput = (String) intent.getExtras().get(MediaStore.EXTRA_OUTPUT);
+            mIsVideo = false;
+
             return;
         }
 
@@ -115,6 +117,23 @@ public class IntentParameters {
 
     public void setIsVideo(boolean isVideo) {
         mIsVideo = isVideo;
+
+        if (!isVideo) {
+            mGetAction = MediaStore.ACTION_IMAGE_CAPTURE;
+            //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            //mExtraOutput = (String) intent.getExtras().get(MediaStore.EXTRA_OUTPUT);
+            //getIntent().getExtras().get(MediaStore.EXTRA_OUTPUT);
+        } else {
+            mGetAction = MediaStore.ACTION_VIDEO_CAPTURE;
+        }
+    }
+
+    public void setAction(String action) {
+        mGetAction = action;
+    }
+
+    public void setExtraOutput(String extraOutput) {
+        mExtraOutput = extraOutput;
     }
 
     public void apply(Intent intent) {

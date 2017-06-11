@@ -273,9 +273,9 @@ public class LaunchCrossWalkActivity extends AppCompatActivity {
         // ex) NativeInterface.studentToDo(92680,988,15532);
         @JavascriptInterface
         public void studentToDo(String studentId, String categoryId, String todoContentId, String type) {
-            categoryId = "988";
+            String tempCategoryId = "988";
             AndroidUtility.setBack(LaunchCrossWalkActivity.this, false);
-            ((ClWebWrapperApplication) getApplication()).setTodoParameters(studentId, categoryId, todoContentId, type, true);
+            ((ClWebWrapperApplication) getApplication()).setTodoParameters(studentId, tempCategoryId, todoContentId, type, true);
             // 学習者のログインを反映する為
 //            XWalkCookieManager mCookieManager = new XWalkCookieManager();
             AndroidUtility.setCookie(getApplicationContext(), mCookieManager.getCookie(String.format("%s://%s", BuildConfig.API_PROTOCOL, BuildConfig.API_HOST)));

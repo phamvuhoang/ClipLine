@@ -330,26 +330,39 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 code = mResponse.code();
                 try {
-                    Gson gson = new Gson();
-                    String body = mResponse.body().string();
-                    HashMap<String, Object> fields = gson.fromJson(body, HashMap.class);
-                    message = (String) fields.get("message");
+                    /////////// Temporary go directy to SelectShootingMethod
+                    ((ClWebWrapperApplication) getApplication()).setTodoParameters("92795", "988", "15793", "updates", true);
+                    // 学習者のログインを反映する為
+                    //AndroidUtility.setCookie(getApplicationContext(), mCookieManager.getCookie(String.format("%s://%s", BuildConfig.API_PROTOCOL, BuildConfig.API_HOST)));
 
-                    if ((null == message) || ("".equals(message))) {
-                        mCookie = mResponse.headers().get("Set-Cookie");
-                        AndroidUtility.setCookie(getApplicationContext(), mCookie);
+                    Intent intent = new Intent(getApplicationContext(), SelectShootingMethodActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
 
-                        Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
-                        intent.putExtra("FROM_SCREEN_LOGIN", "from_screen_login");
-                        startActivity(intent);
-                        finish();
+                    return;
+                    /////////// Temporary go directy to SelectShootingMethod
 
-                        mResponse.close();
 
-                        return;
-                    }
-
-                    showError(code);
+//                    Gson gson = new Gson();
+//                    String body = mResponse.body().string();
+//                    HashMap<String, Object> fields = gson.fromJson(body, HashMap.class);
+//                    message = (String) fields.get("message");
+//
+//                    if ((null == message) || ("".equals(message))) {
+//                        mCookie = mResponse.headers().get("Set-Cookie");
+//                        AndroidUtility.setCookie(getApplicationContext(), mCookie);
+//
+//                        Intent intent = new Intent(getApplicationContext(), LaunchCrossWalkActivity.class);
+//                        intent.putExtra("FROM_SCREEN_LOGIN", "from_screen_login");
+//                        startActivity(intent);
+//                        finish();
+//
+//                        mResponse.close();
+//
+//                        return;
+//                    }
+//
+//                    showError(code);
 
                 } catch (Exception e) {
                     e.printStackTrace();

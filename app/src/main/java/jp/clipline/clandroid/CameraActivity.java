@@ -2,6 +2,7 @@ package jp.clipline.clandroid;
 
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -22,6 +23,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
@@ -130,6 +132,7 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
     private static Camera.Size mCurrentAspectPictureSize = null;
 
     @Override
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(TAG, String.format("onCreate - Start"));
@@ -552,6 +555,36 @@ public class CameraActivity extends AppCompatActivity implements NavigationView.
         mButtonPicture.setVisibility(View.VISIBLE);
 
         mIntentParameters.setIsVideo(false);
+        String file_name = System.currentTimeMillis() + ".png";
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, file_name);
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+        Uri uriPicture = Uri.fromFile(new File(CameraUtil.getPhotoFilePath()));
+        mIntentParameters.setExtraOutput(String.valueOf(uriPicture));
+//        mIntentParameters = new IntentParameters(getIntent(), CameraUtil.isStandardAspectHardWare(getWindowManager()));
+//        Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
+//        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+//        String file_name = System.currentTimeMillis() + ".png";
+//        ContentValues values = new ContentValues();
+//        values.put(MediaStore.Images.Media.TITLE, file_name);
+//        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+//        Uri uriPicture = Uri.fromFile(new File(CameraUtil.getPhotoFilePath()));
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, String.valueOf(uriPicture));
+//        mIntentParameters.setIsVideo(false);
+//        mIntentParameters.apply(intent);
+//        startActivity(intent);
+//        overridePendingTransition(0, 0);
+//        finish();
+
+//        mIntentParameters = new IntentParameters(getIntent(), CameraUtil.isStandardAspectHardWare(getWindowManager()));
+//        //mIntentParameters.setIsVideo(false);
+//        Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
+//        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+//        mIntentParameters.apply(intent);
+//        startActivity(intent);
+//        overridePendingTransition(0, 0);
+//
+//        finish();
     }
 
     @Override
